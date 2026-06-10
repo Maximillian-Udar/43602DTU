@@ -1,0 +1,4 @@
+[debug] [vending-test] Classpath dependencies List()
+[debug] [vending-test] Dependencies from configurations List(vending)
+[debug] Bloop wrote the configuration of project 'vending-test' to 'C:\Users\maxim\Digi2_vending_machine\vending\.bloop\vending-test.json'
+[success] Generated .bloop\vending-test.json

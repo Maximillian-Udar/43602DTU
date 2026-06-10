@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[src/main/scala/AlarmClock.scala 106:25] : [module Alarm]  Reference dispMux is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : dispMux.io.disp_content <= mux(io.set_alarm1, _dispMux_io_disp_content_T_6, mux(_T_5, _dispMux_io_disp_content_T_13, VOID))[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) firrtl.passes.CheckInitialization$RefNotInitializedException:  @[src/main/scala/AlarmClock.scala 106:25] : [module Alarm]  Reference dispMux is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : dispMux.io.disp_content <= mux(io.set_alarm1, _dispMux_io_disp_content_T_6, mux(_T_5, _dispMux_io_disp_content_T_13, VOID))[0m
