@@ -2,7 +2,7 @@
 import chisel3._
 import chisel3.util._
 
-class VariablePWM(pwmFreqHz: Int) extends Module {
+class VariablePWM(pwmFreqHz: Int = 1000) extends Module {
   val io = IO(new Bundle {
     val switch_state = Input(Bool())
     val pwmOutPos    = Output(Bool())
