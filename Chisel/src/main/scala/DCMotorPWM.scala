@@ -42,41 +42,41 @@ class PwmFsmAnalogOut extends Module {
   dutyCycle := 0.U 
   d3        := 0.U
   d2        := 0.U
-  d1        := 29.U
-  d0        := 23.U
+  d1        := 0.U
+  d0        := 29.U
 
   switch (stateReg) {
     is (State.s10) { 
       dutyCycle := 333.U
-      d3        := 1.U
-      d2        := 0.U
+      d2        := 1.U
+      d1        := 0.U
     }
     is (State.s25) { 
       dutyCycle := 833.U
-      d3        := 2.U
-      d2        := 5.U
+      d2        := 2.U
+      d1        := 5.U
     }
     is (State.s50) { 
       dutyCycle := 1667.U
-      d3        := 5.U
-      d2        := 0.U
+      d2        := 5.U
+      d1        := 0.U
     }
     is (State.s75) { 
       dutyCycle := 2500.U
-      d3        := 7.U
-      d2        := 5.U
+      d2        := 7.U
+      d1        := 5.U
     }
     is (State.s90) { 
       dutyCycle := 3000.U
-      d3        := 9.U
-      d2        := 0.U
+      d2        := 9.U
+      d1        := 0.U
     }
   }
 
-  val displayMux = Module(new DisplayMultiplexer(refresh_limit = 100000))
+  val displayMux = Module(new DisplayMultiplexer)
   
   displayMux.io.disp_content := Cat(d3, d2, d1, d0)
-  displayMux.io.dots         := "b0000".U
+  displayMux.io.dots         := "b0100".U
   
   io.seg := displayMux.io.seg
   io.an  := displayMux.io.an
