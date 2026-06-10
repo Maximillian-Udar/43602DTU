@@ -5,7 +5,7 @@ class PwmFsmAnalogOut extends Module {
   val io = IO(new Bundle {
     val switch_state = Input(Bool())
     val pwmOut       = Output(Bool())
-    
+    val pwmOutInv    = Output(Bool())
     val seg          = Output(UInt(8.W))
     val an           = Output(UInt(4.W))
   })
@@ -88,4 +88,5 @@ class PwmFsmAnalogOut extends Module {
     pwmCounter := pwmCounter + 1.U
   }
   io.pwmOut := pwmCounter < dutyCycle
+  io.pwmOutInv := ~(pwmCounter < dutyCycle)
 }
