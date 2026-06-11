@@ -1,4 +1,3 @@
-
 import chisel3._
 import chisel3.util._
 
@@ -75,7 +74,7 @@ class VariablePWM(pwmFreqHz: Int = 1000) extends Module {
 
   val displayMux = Module(new DisplayMultiplexer)
   displayMux.io.disp_content := Cat(d3, d2, d1, d0)
-  displayMux.io.dots         := "b0100".U
+  displayMux.io.dots         := "b1000".U
   io.seg := displayMux.io.seg
   io.an  := displayMux.io.an
 
