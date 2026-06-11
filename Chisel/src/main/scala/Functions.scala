@@ -1,5 +1,7 @@
 import chisel3._
 import chisel3.util._
+import chisel3.experimental.FixedPoint
+
 
 object GenerateAllVerilog extends App {
   //emitVerilog(new VariablePWM(30000), Array("-td", "Verilog"))
@@ -159,4 +161,200 @@ class RisingFsm extends Module {
       }
     }
   }
+}
+
+class StuckDetector(val OverCurrentAllowance_ms : Int = 100) extends Module {
+  val io = IO(new Bundle {
+      val externalOvercurrentInput = Input(Bool())      
+      val clearShutdown            = Input(Bool()) 
+      val is_stuck                 = Output(Bool()) 
+      val motorDisable             = Output(Bool()) 
+})
+
+  val clockFreqHz = 100000000
+  val maxCycles   = (clockFreqHz / 1000) * OverCurrentAllowance_ms
+  val durationReg = RegInit(0.U(32.W))
+
+  val isStuckReg  = RegInit(false.B)
+
+  when(io.clearShutdown) {
+  isStuckReg  := false.B
+  durationReg := 0.U
+  }.otherwise {
+      when(!isStuckReg) {
+          when(io.externalOvercurrentInput) {
+          when(durationReg >= maxCycles.U) {
+              isStuckReg := true.B
+          }.otherwise {
+              durationReg := durationReg + 1.U
+          }
+          }.otherwise {
+          durationReg := 0.U 
+          }
+      }
+  }
+
+  io.is_stuck := isStuckReg
+  io.motorDisable   := isStuckReg
+}
+
+class VariablePWM(pwmFreqHz: Int = 1000) extends Module {
+  val io = IO(new Bundle {
+    val duty_cycle = Input(UInt(3.W))
+    val pwmOutPos  = Output(Bool())
+    val pwmOutNeg  = Output(Bool())
+  })
+
+  val clockFreq    = 100000000
+  val periodCycles = clockFreq / pwmFreqHz
+  val counterWidth = log2Ceil(periodCycles).W
+
+  val dutyCycle = Wire(UInt(counterWidth))
+  
+  dutyCycle := (periodCycles * 50 / 100).U
+
+  switch (io.duty_cycle) {
+    is (0.U) { dutyCycle := (periodCycles * 50 / 100).U } // Stopped
+    is (1.U) { dutyCycle := (periodCycles * 25 / 100).U } // Normal Back
+    is (2.U) { dutyCycle := (periodCycles * 75 / 100).U } // Normal Forward
+    is (3.U) { dutyCycle := (periodCycles * 10 / 100).U } // Fast Back
+    is (4.U) { dutyCycle := (periodCycles * 90 / 100).U } // Fast Forward
+  }
+
+  val pwmCounter = RegInit(0.U(counterWidth))
+  
+  when (pwmCounter === (periodCycles - 1).U) {
+    pwmCounter := 0.U
+  } .otherwise {
+    pwmCounter := pwmCounter + 1.U
+  }
+
+  val pwmSignal = pwmCounter < dutyCycle
+  io.pwmOutPos := pwmSignal
+  io.pwmOutNeg := !pwmSignal
+}
+
+class MotorStop extends Module {
+    val io = IO(new Bundle {
+        val motor_cleared     = Input(Bool())
+        val motor_kill        = Input(Bool())
+        val motor_stop_signal = Output(Bool())
+    })
+    
+    io.motor_stop_signal := true.B
+    
+    val sIdle :: sMotorKill :: Nil = Enum(2)
+    val stateReg = RegInit(sMotorKill)
+
+    val rising_confirm = Module(new RisingFsm)
+    rising_confirm.io.btn_in := io.motor_cleared
+    val clearPressed = rising_confirm.io.out
+
+    switch(stateReg) {
+        is(sMotorKill) {
+            io.motor_stop_signal := true.B
+            when(clearPressed && !io.motor_kill) {
+                stateReg := sIdle
+            }
+        }
+        is(sIdle) {
+            io.motor_stop_signal := false.B
+
+            when(io.motor_kill) {
+                stateReg := sMotorKill
+            }
+        }
+    }
+
+    when(io.motor_kill) {
+        io.motor_stop_signal := true.B
+    }
+}
+
+class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
+  val io = IO(new Bundle {
+    // Inputs
+    val setPoint    = Input(FixedPoint(w.W, f.BP))
+    val measuredVal = Input(FixedPoint(w.W, f.BP))
+    val kp          = Input(FixedPoint(w.W, f.BP))
+    val ki          = Input(FixedPoint(w.W, f.BP))
+    val kd          = Input(FixedPoint(w.W, f.BP))
+    val resetBuffer = Input(Bool())
+
+    // Outputs
+    val controlOut  = Output(FixedPoint(w.W, f.BP))
+  })
+  val kpActive = Wire(FixedPoint(w.W, f.BP))
+  val kiActive = Wire(FixedPoint(w.W, f.BP))
+  val kdActive = Wire(FixedPoint(w.W, f.BP))
+
+  when(io.kp === 0.FixedPoint(w.W, f.BP)) { kpActive := 10.FixedPoint(w.W, f.BP) }.otherwise { kpActive := io.kp }
+  when(io.ki === 0.FixedPoint(w.W, f.BP)) { kiActive := 15.FixedPoint(w.W, f.BP) }.otherwise { kiActive := io.ki }
+  when(io.kd === 0.FixedPoint(w.W, f.BP)) { kdActive := 2.FixedPoint(w.W, f.BP) }.otherwise { kdActive := io.kd }
+
+  val error = io.setPoint - io.measuredVal
+
+  val pTerm = io.kp * error
+
+  val prevErrorReg = RegInit(0.FixedPoint(w.W, f.BP))
+  val dTerm        = io.kd * (error - prevErrorReg)
+  prevErrorReg     := error
+
+  val upperLimit = 1.0.FixedPoint(w.W, f.BP)
+  val lowerLimit = 0.0.FixedPoint(w.W, f.BP)
+  
+  val integralReg = RegInit(0.FixedPoint(w.W, f.BP))
+  val iTermNext   = integralReg + (io.ki * error)
+
+  when(io.resetBuffer) {
+    integralReg := 0.FixedPoint(w.W, f.BP)
+  }.otherwise {
+    when(iTermNext > upperLimit) {
+      integralReg := upperLimit
+    }.elsewhen(iTermNext < lowerLimit) {
+      integralReg := lowerLimit
+    }.otherwise {
+      integralReg := iTermNext
+    }
+  }
+  val iTerm = integralReg
+
+  val rawOutput = pTerm + iTerm + dTerm
+
+  val saturatedOut = Wire(FixedPoint(w.W, f.BP))
+  when(rawOutput > upperLimit) {
+    saturatedOut := upperLimit
+  }.elsewhen(rawOutput < lowerLimit) {
+    saturatedOut := lowerLimit
+  }.otherwise {
+    saturatedOut := rawOutput
+  }
+
+  io.controlOut := saturatedOut
+}
+
+class RotationCounter extends Module {
+  val io = IO(new Bundle {
+    val signal_A = Input(Bool())
+    val signal_B = Input(Bool())
+    val turns    = Output(UInt(10.W))
+  })
+
+  val aSync = RegNext(RegNext(io.signal_A))
+  val bSync = RegNext(RegNext(io.signal_B))
+  
+  val aReg = RegNext(aSync)
+  val rise_A = aSync && !aReg
+  val fall_A = !aSync && aReg
+
+  val turns = RegInit(0.U(10.W))
+
+  when(rise_A) {
+    when(!bSync) {
+      turns := turns + 1.U
+    } .otherwise {
+      turns := turns - 1.U
+    }
+  }
+  io.turns := turns
 }
