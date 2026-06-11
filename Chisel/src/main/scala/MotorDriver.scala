@@ -11,6 +11,7 @@ class MotorDriver extends Module {
         // Outputs
         val pwmOutPos    = Output(Bool())
         val pwmOutNeg    = Output(Bool())
+        
     })
     
 }
