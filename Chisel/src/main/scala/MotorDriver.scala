@@ -69,9 +69,9 @@ class MotorDriver(scale_down: Int = 100) extends Module {
     rotation_counter.io.signal_A := io.photo_diode_A
     rotation_counter.io.signal_B := io.photo_diode_B
     
-    // Scaling: 7.5 turns = 1 cm -> 750 turns = 1 m
-    // Calculation: (Turns * 10) / 7500 gives meters with fixed-point accuracy
-    val current_pos_m = (rotation_counter.io.turns * 10.U) / 7500.U 
+
+    val scaled_turns = RegNext(rotation_counter.io.turns * 1398.U)
+    val current_pos_m = RegNext(scaled_turns >> 20)
 
     // --- 5. PID Control Logic ---
     pid.io.setPoint    := target_position.asFixedPoint(12.BP)
@@ -93,7 +93,7 @@ class MotorDriver(scale_down: Int = 100) extends Module {
     stuck_detector.io.clearShutdown := (rx.io.done && cmdByte === 0xFF.U)
 
     // Select source for duty cycle
-    pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
+    pwm_gen.io.duty_cycle := RegNext(Mux(control_mode, pid_duty, manual_speed))
     
     // Safety Brake triggers on hardware over-current OR manual command
     pwm_gen.io.brake := manual_brake || stuck_detector.io.motorDisable
@@ -106,7 +106,7 @@ class MotorDriver(scale_down: Int = 100) extends Module {
 
 
     val txTimer = RegInit(0.U(24.W))
-    tx.io.data  := current_pos_m(7,0)
+    tx.io.data  := current_pos_m
     tx.io.start := false.B
     
     when(txTimer >= 10000000.U) {

@@ -160,47 +160,34 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
     val controlOut  = Output(FixedPoint(w.W, f.BP))
   })
 
-  val kpActive = Mux(io.kp === 0.F(f.BP), 10.F(f.BP), io.kp)
-  val kiActive = Mux(io.ki === 0.F(f.BP), 1.F(f.BP), io.ki)
-  val kdActive = Mux(io.kd === 0.F(f.BP), 0.F(f.BP), io.kd)
+  val errorReg = RegNext(io.setPoint - io.measuredVal)
+  val kpReg    = RegNext(Mux(io.kp === 0.F(f.BP), 10.F(f.BP), io.kp))
+  val kiReg    = RegNext(Mux(io.ki === 0.F(f.BP), 1.F(f.BP), io.ki))
+  val kdReg    = RegNext(Mux(io.kd === 0.F(f.BP), 0.F(f.BP), io.kd))
 
-  val error = io.setPoint - io.measuredVal
-  val pTerm = kpActive * error
-
+  val pTerm = RegNext(kpReg * errorReg)
+  val iTermNext = RegNext(kiReg * errorReg)
+  
   val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm        = kdActive * (error - prevErrorReg)
-  prevErrorReg     := error
+  val dTerm = RegNext(kdReg * (errorReg - prevErrorReg))
+  prevErrorReg := errorReg
 
   val upperLimit = 1.0.F(f.BP)
   val lowerLimit = 0.0.F(f.BP)
-  
   val integralReg = RegInit(0.F(w.W, f.BP))
-  val iTermNext   = integralReg + (kiActive * error)
-
+  
   when(io.resetBuffer) {
     integralReg := 0.F(w.W, f.BP)
   }.otherwise {
-    when(iTermNext > upperLimit) {
-      integralReg := upperLimit
-    }.elsewhen(iTermNext < lowerLimit) {
-      integralReg := lowerLimit
-    }.otherwise {
-      integralReg := iTermNext
-    }
+    val sum = integralReg + iTermNext
+    integralReg := Mux(sum > upperLimit, upperLimit, Mux(sum < lowerLimit, lowerLimit, sum))
   }
 
-  val rawOutput = pTerm + integralReg + dTerm
-  val saturatedOut = Wire(FixedPoint(w.W, f.BP))
-  
-  when(rawOutput > upperLimit) {
-    saturatedOut := upperLimit
-  }.elsewhen(rawOutput < lowerLimit) {
-    saturatedOut := lowerLimit
-  }.otherwise {
-    saturatedOut := rawOutput
-  }
+  // Stage 4: Final Sum & Saturation
+  val rawOutput = RegNext(pTerm + integralReg + dTerm)
+  val saturatedOut = Mux(rawOutput > upperLimit, upperLimit, Mux(rawOutput < lowerLimit, lowerLimit, rawOutput))
 
-  io.controlOut := saturatedOut
+  io.controlOut := RegNext(saturatedOut)
 }
 
 // --- ROTATION COUNTER ---
