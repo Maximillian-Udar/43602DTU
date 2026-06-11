@@ -3,8 +3,8 @@ import chisel3.util._
 
 class MotorStop extends Module {
     val io = IO(new Bundle{
-        val motor_cleared         = Input(Bool())
-        val motor_stop_signal     = Output(Bool())
+        val motor_cleared     = Input(Bool())
+        val motor_stop_signal = Output(Bool())
     })
     io.motor_stop_signal := false.B
     

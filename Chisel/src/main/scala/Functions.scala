@@ -1,6 +1,44 @@
-import chisel3.util._
 import chisel3._
+import chisel3.util._
 
+object GenerateAllVerilog extends App {
+  //emitVerilog(new VariablePWM(30000), Array("-td", "Verilog"))
+  emitVerilog(new RotationCounter, Array("-td", "Verilog"))
+}
+
+class BCD extends Module {
+  val io = IO(new Bundle {
+    val b_number = Input(UInt(6.W))
+    val out      = Output(UInt(8.W))
+  })
+  val tens = io.b_number / 10.U
+  val ones = io.b_number % 10.U
+  io.out := Cat(tens(3, 0), ones(3, 0))
+}
+
+class Debouncer(fac: Int = 100000) extends Module {
+  val io = IO(new Bundle {
+    val btn_in = Input(Bool())
+    val out    = Output(Bool())
+    val state  = Output(Bool())
+  })
+  // Synchronize
+  val btn_sync = RegNext(RegNext(io.btn_in))
+  val btnDebReg = RegInit(false.B)
+  val cntReg = RegInit(0.U(32.W))
+  val tick = cntReg === (fac - 1).U
+
+  // Counter
+  cntReg := cntReg + 1.U
+  when (tick) {
+    cntReg := 0.U
+    btnDebReg := btn_sync
+  }
+
+  val btnCleanPrev = RegNext(btnDebReg)
+  io.out := btnDebReg && !btnCleanPrev
+  io.state := btnDebReg
+}
 
 class DisplayMultiplexer(refresh_limit: Int = 100000, inital_dots: Int = 0) extends Module {
   val io = IO(new Bundle {
@@ -90,4 +128,35 @@ class SevenSegDec extends Module {
     SegSymbol.U     -> "b0111111".U,
     SegSymbol.Blank -> "b0000000".U
   ))
+}
+
+object SegSymbol extends ChiselEnum {
+  val s0, s1, s2, s3, s4, s5, s6, s7, s8, s9 = Value
+  val A, B, C, D, E, F, G, H, I, J, L, N, O, P, Q, R, S, T, U, Blank = Value
+}
+
+class RisingFsm extends Module {
+  val io = IO(new Bundle{
+    val din = Input(Bool())
+    val risingEdge = Output(Bool())
+  })
+  object State extends ChiselEnum {
+    val zero, one = Value
+  }
+  import State._
+  val stateReg = RegInit(zero)
+  io.risingEdge := false.B
+  switch (stateReg) {
+    is(zero) {
+      when(io.din) {
+        stateReg := one
+        io.risingEdge := true.B
+      }
+    }
+    is(one) {
+      when(!io.din) {
+        stateReg := zero
+      }
+    }
+  }
 }
