@@ -18499,3 +18499,4 @@ WARNING: Unmatched cancel notification for request id 24967
 2026.06.11 15:33:43 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.06.11 15:33:44 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.06.11 15:33:47 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.11 15:34:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
