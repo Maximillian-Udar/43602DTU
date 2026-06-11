@@ -22,12 +22,6 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\GenerateAllVerilog$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\GenerateAllVerilog.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	PwmFsmAnalogOut$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\PwmFsmAnalogOut$$anon$1.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	PwmFsmAnalogOut$State$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\PwmFsmAnalogOut$State$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	PwmFsmAnalogOut.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\PwmFsmAnalogOut.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	RisingFsm$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\RisingFsm$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	RisingFsm$State$.class[0m
@@ -42,4 +36,12 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\SevenSegDec$$anon$2.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SevenSegDec.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\SevenSegDec.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	VariablePWM$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\VariablePWM$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	VariablePWM$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\VariablePWM$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	VariablePWM$State$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\VariablePWM$State$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	VariablePWM.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes\VariablePWM.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
