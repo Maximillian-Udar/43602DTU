@@ -210,3 +210,39 @@ INFO: Unsupported notification method: $/setTrace
 2026.06.11 20:59:49 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
 Jun 11, 2026 9:09:08 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.06.11 21:10:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:10:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:10:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:10:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:10:19 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:10:20 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:16:19 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:24:55 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:24:55 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:24:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:24:58 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:24:58 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:25:01 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:25:55 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:25:55 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:32:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:32:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:32:45 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:32:45 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.11 21:39:51 INFO  Shutting down server[0m
+2026.06.11 21:39:51 INFO  Memory monitor stopped[0m
+2026.06.11 21:39:51 INFO  shutting down Metals[0m
+2026.06.11 21:39:51 INFO  Exiting server[0m
+2026.06.11 21:39:51 ERROR Unexpected error initializing server: 
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequest failed with message: Canceled
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:214)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
