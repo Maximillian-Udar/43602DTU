@@ -1,3 +1,22 @@
+error id: file:///C:/Users/maxim/43602DTU/Chisel/src/main/scala/DCMotorPWM.scala:
+file:///C:/Users/maxim/43602DTU/Chisel/src/main/scala/DCMotorPWM.scala
+empty definition using pc, found symbol in pc: 
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+	 -chisel3.
+	 -chisel3#
+	 -chisel3().
+	 -chisel3/util.
+	 -chisel3/util#
+	 -chisel3/util().
+	 -scala/Predef.
+	 -scala/Predef#
+	 -scala/Predef().
+offset: 1357
+uri: file:///C:/Users/maxim/43602DTU/Chisel/src/main/scala/DCMotorPWM.scala
+text:
+```scala
 import chisel3._
 import chisel3.util._
 
@@ -35,13 +54,13 @@ class VariablePWM(pwmFreqHz: Int = 1000) extends Module {
   }
     // Default dutycycle 
   val dutyCycle = Wire(UInt(counterWidth))
-  dutyCycle := (periodCycles * 50 / 100).U
+  dutyCycle := 0.U 
 
 
   switch (stateReg) {
     is (State.s10) { dutyCycle := (periodCycles * 10 / 100).U }
     is (State.s25) { dutyCycle := (periodCycles * 25 / 100).U }
-    is (State.s50) { dutyCycle := (periodCycles * 50 / 100).U }
+    is (State.s50) { dutyCycle := (periodCycles * 50 / 100).U@@ }
     is (State.s75) { dutyCycle := (periodCycles * 75 / 100).U }
     is (State.s90) { dutyCycle := (periodCycles * 90 / 100).U }
   }
@@ -56,3 +75,10 @@ class VariablePWM(pwmFreqHz: Int = 1000) extends Module {
   io.pwmOutPos := pwmCounter < dutyCycle
   io.pwmOutNeg := ~(pwmCounter < dutyCycle)
 }
+
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: 
