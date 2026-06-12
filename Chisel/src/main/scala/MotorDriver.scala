@@ -5,15 +5,15 @@ import chisel3.experimental.FixedPoint
 class MotorDriver(scale_down: Int = 100) extends Module {
     val io = IO(new Bundle{
         val uart_rx        = Input(Bool())
-        val uart_tx        = Output(Bool())
         val photo_diode_A  = Input(Bool())
         val photo_diode_B  = Input(Bool())
         val over_current   = Input(Bool())
         
-        val T1 = Output(Bool()) 
-        val T2 = Output(Bool()) 
-        val T3 = Output(Bool()) 
-        val T4 = Output(Bool()) 
+        val uart_tx        = Output(Bool())
+        val T1             = Output(Bool()) 
+        val T2             = Output(Bool()) 
+        val T3             = Output(Bool()) 
+        val T4             = Output(Bool()) 
     })
 
     val rx               = Module(new UartRx)
@@ -21,7 +21,7 @@ class MotorDriver(scale_down: Int = 100) extends Module {
     val rotation_counter = Module(new RotationCounter)
     val pwm_gen          = Module(new DCMotorPwm)
     val pid              = Module(new PIDController)
-    val stuck_detector   = Module(new StuckDetector(150))
+    val stuck_detector   = Module(new StuckDetector)
 
     val target_position = RegInit(0.U(8.W))
     val manual_speed    = RegInit(512.U(10.W))

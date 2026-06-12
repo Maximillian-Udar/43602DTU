@@ -16,10 +16,10 @@ class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
   val BIT_CNT = ((frequency + baudRate / 2) / baudRate).U
   val START_CNT = ((frequency + baudRate / 2) / (baudRate * 2)).U
 
-  val rxReg = RegNext(RegNext(io.rx))
+  val rxReg    = RegNext(RegNext(io.rx))
   val shiftReg = RegInit(0.U(8.W))
-  val cntReg = RegInit(0.U(32.W))
-  val bitsReg = RegInit(0.U(4.W))
+  val cntReg   = RegInit(0.U(32.W))
+  val bitsReg  = RegInit(0.U(4.W))
 
   val sIdle :: sStart :: sData :: sStop :: Nil = Enum(4)
   val stateReg = RegInit(sIdle)
@@ -159,15 +159,15 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   val kiReg    = RegNext(Mux(io.ki === 0.F(f.BP), 1.F(f.BP), io.ki))
   val kdReg    = RegNext(Mux(io.kd === 0.F(f.BP), 0.F(f.BP), io.kd))
 
-  val pTerm = RegNext(kpReg * errorReg)
+  val pTerm     = RegNext(kpReg * errorReg)
   val iTermNext = RegNext(kiReg * errorReg)
   
   val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm = RegNext(kdReg * (errorReg - prevErrorReg))
-  prevErrorReg := errorReg
+  val dTerm        = RegNext(kdReg * (errorReg - prevErrorReg))
+  prevErrorReg     := errorReg
 
-  val upperLimit = 1.0.F(f.BP)
-  val lowerLimit = 0.0.F(f.BP)
+  val upperLimit  = 1.0.F(f.BP)
+  val lowerLimit  = 0.0.F(f.BP)
   val integralReg = RegInit(0.F(w.W, f.BP))
   
   when(io.resetBuffer) {
@@ -177,7 +177,7 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
     integralReg := Mux(sum > upperLimit, upperLimit, Mux(sum < lowerLimit, lowerLimit, sum))
   }
 
-  val rawOutput = RegNext(pTerm + integralReg + dTerm)
+  val rawOutput    = RegNext(pTerm + integralReg + dTerm)
   val saturatedOut = Mux(rawOutput > upperLimit, upperLimit, Mux(rawOutput < lowerLimit, lowerLimit, rawOutput))
 
   io.controlOut := RegNext(saturatedOut)
@@ -190,9 +190,9 @@ class RotationCounter extends Module {
     val turns    = Output(UInt(16.W))
   })
 
-  val aSync = RegNext(RegNext(io.signal_A))
-  val bSync = RegNext(RegNext(io.signal_B))
-  val aReg  = RegNext(aSync)
+  val aSync  = RegNext(RegNext(io.signal_A))
+  val bSync  = RegNext(RegNext(io.signal_B))
+  val aReg   = RegNext(aSync)
   val rise_A = aSync && !aReg
 
   val turns = RegInit(0.U(16.W))
@@ -207,7 +207,7 @@ class RotationCounter extends Module {
   io.turns := turns
 }
 
-class StuckDetector(val OverCurrentAllowance_ms : Int = 100) extends Module {
+class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
   val io = IO(new Bundle {
       val externalOvercurrentInput = Input(Bool())      
       val clearShutdown            = Input(Bool()) 
@@ -258,10 +258,10 @@ class Debouncer(fac: Int = 100000) extends Module {
     val out    = Output(Bool())
     val state  = Output(Bool())
   })
-  val btn_sync = RegNext(RegNext(io.btn_in))
+  val btn_sync  = RegNext(RegNext(io.btn_in))
   val btnDebReg = RegInit(false.B)
-  val cntReg = RegInit(0.U(32.W))
-  val tick = cntReg === (fac - 1).U
+  val cntReg    = RegInit(0.U(32.W))
+  val tick      = cntReg === (fac - 1).U
 
   cntReg := cntReg + 1.U
   when (tick) {
