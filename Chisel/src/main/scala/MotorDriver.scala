@@ -73,9 +73,9 @@ class MotorDriver(scale_down: Int = 100) extends Module {
     pid.io.measuredVal := current_pos_m.asFixedPoint(12.BP)
     pid.io.resetBuffer := !control_mode || manual_brake
     
-    pid.io.kp := 10.F(12.BP)
-    pid.io.ki := 1.F(12.BP)
-    pid.io.kd := 0.F(12.BP)
+    pid.io.kp := 80.F(12.BP)
+    pid.io.ki := 0.F(12.BP)
+    pid.io.kd := 1.F(12.BP)
 
     val pid_duty_raw = (pid.io.controlOut.asUInt >> 2)
     val pid_duty     = Mux(pid_duty_raw > 1023.U, 1023.U, pid_duty_raw(9,0))
