@@ -1,4 +1,4 @@
-#Wiring the FPGA
+# Wiring the FPGA
 
 ## Inputs:
 
@@ -10,7 +10,7 @@
 
     Pin J2 (Third from right, bottom row): Overcurrent signal
 
-    ### Buttons:
+    Buttons:
         Pin U18 (Middle button): Hardware reset
 
 
