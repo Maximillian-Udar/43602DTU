@@ -6,8 +6,6 @@ object GenerateAllVerilog extends App {
   emitVerilog(new MotorDriver, Array("-td", "Verilog"))
 }
 
-
-// --- UART RECEIVER ---
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
   val io = IO(new Bundle {
     val rx   = Input(Bool())
@@ -60,7 +58,6 @@ class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
   }
 }
 
-// --- UART TRANSMITTER ---
 class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
   val io = IO(new Bundle {
     val data  = Input(UInt(8.W))
@@ -100,15 +97,14 @@ class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
   }
 }
 
-// --- H-BRIDGE PWM CONTROL ---
 class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val io = IO(new Bundle {
     val duty_cycle = Input(UInt(10.W))
     val brake      = Input(Bool())
-    val T1         = Output(Bool()) // NMOS (Low-side Left)
-    val T2         = Output(Bool()) // PMOS (High-side Left)
-    val T3         = Output(Bool()) // NMOS (Low-side Right)
-    val T4         = Output(Bool()) // PMOS (High-side Right)
+    val T1         = Output(Bool())
+    val T2         = Output(Bool())
+    val T3         = Output(Bool())
+    val T4         = Output(Bool())
   })
 
   val clockFreq    = 100000000
@@ -135,20 +131,18 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
     conduct_T3 := true.B  
     conduct_T4 := false.B 
   } .otherwise {
-    conduct_T2 := pwmSignal    // High Pair
+    conduct_T2 := pwmSignal
     conduct_T3 := pwmSignal
-    conduct_T1 := !pwmSignal   // Low Pair
+    conduct_T1 := !pwmSignal
     conduct_T4 := !pwmSignal
   }
 
-  // Polarity handling for PMOS (T2, T4) and NMOS (T1, T3)
   io.T1 := conduct_T1
   io.T3 := conduct_T3
   io.T2 := !conduct_T2 // Invert for PMOS
   io.T4 := !conduct_T4 // Invert for PMOS
 }
 
-// --- PID CONTROLLER ---
 class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
@@ -183,14 +177,12 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
     integralReg := Mux(sum > upperLimit, upperLimit, Mux(sum < lowerLimit, lowerLimit, sum))
   }
 
-  // Stage 4: Final Sum & Saturation
   val rawOutput = RegNext(pTerm + integralReg + dTerm)
   val saturatedOut = Mux(rawOutput > upperLimit, upperLimit, Mux(rawOutput < lowerLimit, lowerLimit, rawOutput))
 
   io.controlOut := RegNext(saturatedOut)
 }
 
-// --- ROTATION COUNTER ---
 class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
@@ -215,7 +207,6 @@ class RotationCounter extends Module {
   io.turns := turns
 }
 
-// --- STUCK DETECTOR ---
 class StuckDetector(val OverCurrentAllowance_ms : Int = 100) extends Module {
   val io = IO(new Bundle {
       val externalOvercurrentInput = Input(Bool())      
@@ -250,7 +241,6 @@ class StuckDetector(val OverCurrentAllowance_ms : Int = 100) extends Module {
   io.motorDisable  := isStuckReg
 }
 
-// --- RISING EDGE DETECTOR ---
 class RisingFsm extends Module {
   val io = IO(new Bundle{
     val din = Input(Bool())
@@ -261,7 +251,6 @@ class RisingFsm extends Module {
   stateReg := io.din
 }
 
-// --- UTILITY MODULES (DEBOUNCER, BCD, DISPLAY) ---
 
 class Debouncer(fac: Int = 100000) extends Module {
   val io = IO(new Bundle {

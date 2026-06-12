@@ -16,21 +16,18 @@ class MotorDriver(scale_down: Int = 100) extends Module {
         val T4 = Output(Bool()) 
     })
 
-    // --- 1. Module Instantiation ---
-    val rx               = Module(new UartRx(100000000, 115200))
-    val tx               = Module(new UartTx(100000000, 115200))
+    val rx               = Module(new UartRx)
+    val tx               = Module(new UartTx)
     val rotation_counter = Module(new RotationCounter)
-    val pwm_gen          = Module(new DCMotorPwm(30000))
-    val pid              = Module(new PIDController(16, 12))
-    val stuck_detector   = Module(new StuckDetector(200)) // 200ms allowance
+    val pwm_gen          = Module(new DCMotorPwm)
+    val pid              = Module(new PIDController)
+    val stuck_detector   = Module(new StuckDetector(150))
 
-    // --- 2. Control Registers ---
-    val target_position = RegInit(0.U(8.W))    // Target in meters (0-90)
-    val manual_speed    = RegInit(512.U(10.W)) // 512 = 50% = Stop in Lock Anti-Phase
-    val control_mode    = RegInit(false.B)     // false = Manual, true = PID
+    val target_position = RegInit(0.U(8.W))
+    val manual_speed    = RegInit(512.U(10.W))
+    val control_mode    = RegInit(false.B)
     val manual_brake    = RegInit(false.B)     
 
-    // --- 3. UART Command Parser (2-Byte Protocol) ---
     rx.io.rx := io.uart_rx
     val cmdByte = RegInit(0.U(8.W))
     val isValueByte = RegInit(false.B)
@@ -41,7 +38,7 @@ class MotorDriver(scale_down: Int = 100) extends Module {
             isValueByte := true.B
         }.otherwise {
             switch(cmdByte) {
-                is(0x01.U) { // Command: Set Target Position (Automatic Mode)
+                is(0x01.U) { // Command: Set Target Position
                     target_position := rx.io.data
                     control_mode := true.B
                     manual_brake := false.B
@@ -65,7 +62,6 @@ class MotorDriver(scale_down: Int = 100) extends Module {
         }
     }
 
-    // --- 4. Feedback Processing ---
     rotation_counter.io.signal_A := io.photo_diode_A
     rotation_counter.io.signal_B := io.photo_diode_B
     
@@ -73,32 +69,24 @@ class MotorDriver(scale_down: Int = 100) extends Module {
     val scaled_turns = RegNext(rotation_counter.io.turns * 1398.U)
     val current_pos_m = RegNext(scaled_turns >> 20)
 
-    // --- 5. PID Control Logic ---
     pid.io.setPoint    := target_position.asFixedPoint(12.BP)
     pid.io.measuredVal := current_pos_m.asFixedPoint(12.BP)
     pid.io.resetBuffer := !control_mode || manual_brake
     
-    // Default Gains (can be made adjustable via UART if needed)
     pid.io.kp := 10.F(12.BP)
     pid.io.ki := 1.F(12.BP)
     pid.io.kd := 0.F(12.BP)
 
-    // Scaling PID output (FixedPoint 12-bit frac) to 10-bit PWM (0-1023)
-    // 0.5 (Stop) in PID is 2048 raw. Right shift by 2 gives 512.
     val pid_duty_raw = (pid.io.controlOut.asUInt >> 2)
     val pid_duty     = Mux(pid_duty_raw > 1023.U, 1023.U, pid_duty_raw(9,0))
 
-    // --- 6. Safety & H-Bridge Driving ---
     stuck_detector.io.externalOvercurrentInput := io.over_current
     stuck_detector.io.clearShutdown := (rx.io.done && cmdByte === 0xFF.U)
 
-    // Select source for duty cycle
     pwm_gen.io.duty_cycle := RegNext(Mux(control_mode, pid_duty, manual_speed))
     
-    // Safety Brake triggers on hardware over-current OR manual command
     pwm_gen.io.brake := manual_brake || stuck_detector.io.motorDisable
 
-    // Drive physical gates
     io.T1 := pwm_gen.io.T1
     io.T2 := pwm_gen.io.T2
     io.T3 := pwm_gen.io.T3
