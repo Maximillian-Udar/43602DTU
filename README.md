@@ -12,7 +12,7 @@
         - Pin U18 (Middle button): Hardware reset
 
 
-## Outputs:
+## Outputs (Wires):
     Bank JXADC
     - Pin J3 (Right-most, bottom row): Transistor T1 (Lower left)
     - Pin L3 (Second from right, bottom row): Transistor T2 (Upper left)
