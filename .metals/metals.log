@@ -955,3 +955,83 @@ org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequ
 2026.06.12 12:52:00 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
 Jun 12, 2026 12:52:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2026.06.12 12:53:08 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+Jun 12, 2026 12:53:08 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 15
+2026.06.12 12:53:08 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:08 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:08 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:08 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:11 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:30 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:30 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
+Jun 12, 2026 12:53:30 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 28
+2026.06.12 12:53:30 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:53:31 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:56:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:56:30 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
+2026.06.12 12:56:30 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:58:49 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala
+Jun 12, 2026 12:58:49 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 39
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7Jun 12, 2026 12:58:49 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 40
+
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:58:49 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:11 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:11 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:11 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:14 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:14 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:16 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:16 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:16 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:16 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:21 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 12:59:28 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:02 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala
+2026.06.12 13:11:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:03 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:02 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:05 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
+2026.06.12 13:11:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:05 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:10 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:15 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:15 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:15 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:15 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
+2026.06.12 13:11:17 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:18 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:19 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:19 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:19 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:19 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:20 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
+2026.06.12 13:11:20 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:20 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.12 13:11:20 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7

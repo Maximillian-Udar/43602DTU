@@ -6,17 +6,17 @@ circuit MotorDriver :
     output io : { flip rx : UInt<1>, done : UInt<1>, data : UInt<8>} @[\\src\\main\\scala\\Functions.scala 10:14]
 
     reg rxReg_REG : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rxReg_REG) @[\\src\\main\\scala\\Functions.scala 19:30]
-    rxReg_REG <= io.rx @[\\src\\main\\scala\\Functions.scala 19:30]
+      reset => (UInt<1>("h0"), rxReg_REG) @[\\src\\main\\scala\\Functions.scala 19:33]
+    rxReg_REG <= io.rx @[\\src\\main\\scala\\Functions.scala 19:33]
     reg rxReg : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rxReg) @[\\src\\main\\scala\\Functions.scala 19:22]
-    rxReg <= rxReg_REG @[\\src\\main\\scala\\Functions.scala 19:22]
+      reset => (UInt<1>("h0"), rxReg) @[\\src\\main\\scala\\Functions.scala 19:25]
+    rxReg <= rxReg_REG @[\\src\\main\\scala\\Functions.scala 19:25]
     reg shiftReg : UInt<8>, clock with :
       reset => (reset, UInt<8>("h0")) @[\\src\\main\\scala\\Functions.scala 20:25]
     reg cntReg : UInt<32>, clock with :
-      reset => (reset, UInt<32>("h0")) @[\\src\\main\\scala\\Functions.scala 21:23]
+      reset => (reset, UInt<32>("h0")) @[\\src\\main\\scala\\Functions.scala 21:25]
     reg bitsReg : UInt<4>, clock with :
-      reset => (reset, UInt<4>("h0")) @[\\src\\main\\scala\\Functions.scala 22:24]
+      reset => (reset, UInt<4>("h0")) @[\\src\\main\\scala\\Functions.scala 22:25]
     reg stateReg : UInt<2>, clock with :
       reset => (reset, UInt<2>("h0")) @[\\src\\main\\scala\\Functions.scala 25:25]
     io.done <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 27:11]
@@ -132,35 +132,35 @@ circuit MotorDriver :
     output io : { flip signal_A : UInt<1>, flip signal_B : UInt<1>, turns : UInt<16>} @[\\src\\main\\scala\\Functions.scala 187:14]
 
     reg aSync_REG : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), aSync_REG) @[\\src\\main\\scala\\Functions.scala 193:30]
-    aSync_REG <= io.signal_A @[\\src\\main\\scala\\Functions.scala 193:30]
+      reset => (UInt<1>("h0"), aSync_REG) @[\\src\\main\\scala\\Functions.scala 193:31]
+    aSync_REG <= io.signal_A @[\\src\\main\\scala\\Functions.scala 193:31]
     reg aSync : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), aSync) @[\\src\\main\\scala\\Functions.scala 193:22]
-    aSync <= aSync_REG @[\\src\\main\\scala\\Functions.scala 193:22]
+      reset => (UInt<1>("h0"), aSync) @[\\src\\main\\scala\\Functions.scala 193:23]
+    aSync <= aSync_REG @[\\src\\main\\scala\\Functions.scala 193:23]
     reg bSync_REG : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), bSync_REG) @[\\src\\main\\scala\\Functions.scala 194:30]
-    bSync_REG <= io.signal_B @[\\src\\main\\scala\\Functions.scala 194:30]
+      reset => (UInt<1>("h0"), bSync_REG) @[\\src\\main\\scala\\Functions.scala 194:31]
+    bSync_REG <= io.signal_B @[\\src\\main\\scala\\Functions.scala 194:31]
     reg bSync : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), bSync) @[\\src\\main\\scala\\Functions.scala 194:22]
-    bSync <= bSync_REG @[\\src\\main\\scala\\Functions.scala 194:22]
+      reset => (UInt<1>("h0"), bSync) @[\\src\\main\\scala\\Functions.scala 194:23]
+    bSync <= bSync_REG @[\\src\\main\\scala\\Functions.scala 194:23]
     reg aReg : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), aReg) @[\\src\\main\\scala\\Functions.scala 195:22]
-    aReg <= aSync @[\\src\\main\\scala\\Functions.scala 195:22]
+      reset => (UInt<1>("h0"), aReg) @[\\src\\main\\scala\\Functions.scala 195:23]
+    aReg <= aSync @[\\src\\main\\scala\\Functions.scala 195:23]
     node _rise_A_T = eq(aReg, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 196:25]
     node rise_A = and(aSync, _rise_A_T) @[\\src\\main\\scala\\Functions.scala 196:22]
     reg turns : UInt<16>, clock with :
-      reset => (reset, UInt<16>("h0")) @[\\src\\main\\scala\\Functions.scala 198:22]
-    when rise_A : @[\\src\\main\\scala\\Functions.scala 200:16]
-      node _T = eq(bSync, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 201:10]
-      when _T : @[\\src\\main\\scala\\Functions.scala 201:18]
-        node _turns_T = add(turns, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 202:22]
-        node _turns_T_1 = tail(_turns_T, 1) @[\\src\\main\\scala\\Functions.scala 202:22]
-        turns <= _turns_T_1 @[\\src\\main\\scala\\Functions.scala 202:13]
+      reset => (reset, UInt<16>("h0")) @[\\src\\main\\scala\\Functions.scala 197:22]
+    when rise_A : @[\\src\\main\\scala\\Functions.scala 199:16]
+      node _T = eq(bSync, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 200:10]
+      when _T : @[\\src\\main\\scala\\Functions.scala 200:18]
+        node _turns_T = add(turns, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 201:22]
+        node _turns_T_1 = tail(_turns_T, 1) @[\\src\\main\\scala\\Functions.scala 201:22]
+        turns <= _turns_T_1 @[\\src\\main\\scala\\Functions.scala 201:13]
       else :
-        node _turns_T_2 = sub(turns, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 204:22]
-        node _turns_T_3 = tail(_turns_T_2, 1) @[\\src\\main\\scala\\Functions.scala 204:22]
-        turns <= _turns_T_3 @[\\src\\main\\scala\\Functions.scala 204:13]
-    io.turns <= turns @[\\src\\main\\scala\\Functions.scala 207:12]
+        node _turns_T_2 = sub(turns, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 203:22]
+        node _turns_T_3 = tail(_turns_T_2, 1) @[\\src\\main\\scala\\Functions.scala 203:22]
+        turns <= _turns_T_3 @[\\src\\main\\scala\\Functions.scala 203:13]
+    io.turns <= turns @[\\src\\main\\scala\\Functions.scala 206:12]
 
   module DCMotorPwm :
     input clock : Clock
@@ -230,24 +230,24 @@ circuit MotorDriver :
     reg kdReg : Fixed<<12>>, clock with :
       reset => (UInt<1>("h0"), kdReg) @[\\src\\main\\scala\\Functions.scala 160:25]
     kdReg <= _kdReg_T_1 @[\\src\\main\\scala\\Functions.scala 160:25]
-    node _pTerm_T = mul(kpReg, errorReg) @[\\src\\main\\scala\\Functions.scala 162:29]
+    node _pTerm_T = mul(kpReg, errorReg) @[\\src\\main\\scala\\Functions.scala 162:33]
     reg pTerm : Fixed<<24>>, clock with :
-      reset => (UInt<1>("h0"), pTerm) @[\\src\\main\\scala\\Functions.scala 162:22]
-    pTerm <= _pTerm_T @[\\src\\main\\scala\\Functions.scala 162:22]
+      reset => (UInt<1>("h0"), pTerm) @[\\src\\main\\scala\\Functions.scala 162:26]
+    pTerm <= _pTerm_T @[\\src\\main\\scala\\Functions.scala 162:26]
     node _iTermNext_T = mul(kiReg, errorReg) @[\\src\\main\\scala\\Functions.scala 163:33]
     reg iTermNext : Fixed<<24>>, clock with :
       reset => (UInt<1>("h0"), iTermNext) @[\\src\\main\\scala\\Functions.scala 163:26]
     iTermNext <= _iTermNext_T @[\\src\\main\\scala\\Functions.scala 163:26]
     reg prevErrorReg : Fixed<16><<12>>, clock with :
       reset => (reset, asFixedPoint(UInt<16>("h0"), 12)) @[\\src\\main\\scala\\Functions.scala 165:29]
-    node _dTerm_T = sub(errorReg, prevErrorReg) @[\\src\\main\\scala\\Functions.scala 166:41]
-    node _dTerm_T_1 = tail(_dTerm_T, 1) @[\\src\\main\\scala\\Functions.scala 166:41]
-    node _dTerm_T_2 = asFixedPoint(_dTerm_T_1, 12) @[\\src\\main\\scala\\Functions.scala 166:41]
-    node _dTerm_T_3 = mul(kdReg, _dTerm_T_2) @[\\src\\main\\scala\\Functions.scala 166:29]
+    node _dTerm_T = sub(errorReg, prevErrorReg) @[\\src\\main\\scala\\Functions.scala 166:48]
+    node _dTerm_T_1 = tail(_dTerm_T, 1) @[\\src\\main\\scala\\Functions.scala 166:48]
+    node _dTerm_T_2 = asFixedPoint(_dTerm_T_1, 12) @[\\src\\main\\scala\\Functions.scala 166:48]
+    node _dTerm_T_3 = mul(kdReg, _dTerm_T_2) @[\\src\\main\\scala\\Functions.scala 166:36]
     reg dTerm : Fixed<<24>>, clock with :
-      reset => (UInt<1>("h0"), dTerm) @[\\src\\main\\scala\\Functions.scala 166:22]
-    dTerm <= _dTerm_T_3 @[\\src\\main\\scala\\Functions.scala 166:22]
-    prevErrorReg <= errorReg @[\\src\\main\\scala\\Functions.scala 167:16]
+      reset => (UInt<1>("h0"), dTerm) @[\\src\\main\\scala\\Functions.scala 166:29]
+    dTerm <= _dTerm_T_3 @[\\src\\main\\scala\\Functions.scala 166:29]
+    prevErrorReg <= errorReg @[\\src\\main\\scala\\Functions.scala 167:20]
     reg integralReg : Fixed<16><<12>>, clock with :
       reset => (reset, asFixedPoint(UInt<16>("h0"), 12)) @[\\src\\main\\scala\\Functions.scala 171:28]
     when io.resetBuffer : @[\\src\\main\\scala\\Functions.scala 173:24]
@@ -261,15 +261,15 @@ circuit MotorDriver :
       node _integralReg_T_2 = mux(_integralReg_T_1, asFixedPoint(UInt<1>("h0"), 12), sum) @[\\src\\main\\scala\\Functions.scala 177:57]
       node _integralReg_T_3 = mux(_integralReg_T, asFixedPoint(UInt<14>("h1000"), 12), _integralReg_T_2) @[\\src\\main\\scala\\Functions.scala 177:23]
       integralReg <= _integralReg_T_3 @[\\src\\main\\scala\\Functions.scala 177:17]
-    node _rawOutput_T = add(pTerm, integralReg) @[\\src\\main\\scala\\Functions.scala 180:33]
-    node _rawOutput_T_1 = tail(_rawOutput_T, 1) @[\\src\\main\\scala\\Functions.scala 180:33]
-    node _rawOutput_T_2 = asFixedPoint(_rawOutput_T_1, 24) @[\\src\\main\\scala\\Functions.scala 180:33]
-    node _rawOutput_T_3 = add(_rawOutput_T_2, dTerm) @[\\src\\main\\scala\\Functions.scala 180:47]
-    node _rawOutput_T_4 = tail(_rawOutput_T_3, 1) @[\\src\\main\\scala\\Functions.scala 180:47]
-    node _rawOutput_T_5 = asFixedPoint(_rawOutput_T_4, 24) @[\\src\\main\\scala\\Functions.scala 180:47]
+    node _rawOutput_T = add(pTerm, integralReg) @[\\src\\main\\scala\\Functions.scala 180:36]
+    node _rawOutput_T_1 = tail(_rawOutput_T, 1) @[\\src\\main\\scala\\Functions.scala 180:36]
+    node _rawOutput_T_2 = asFixedPoint(_rawOutput_T_1, 24) @[\\src\\main\\scala\\Functions.scala 180:36]
+    node _rawOutput_T_3 = add(_rawOutput_T_2, dTerm) @[\\src\\main\\scala\\Functions.scala 180:50]
+    node _rawOutput_T_4 = tail(_rawOutput_T_3, 1) @[\\src\\main\\scala\\Functions.scala 180:50]
+    node _rawOutput_T_5 = asFixedPoint(_rawOutput_T_4, 24) @[\\src\\main\\scala\\Functions.scala 180:50]
     reg rawOutput : Fixed<<24>>, clock with :
-      reset => (UInt<1>("h0"), rawOutput) @[\\src\\main\\scala\\Functions.scala 180:26]
-    rawOutput <= _rawOutput_T_5 @[\\src\\main\\scala\\Functions.scala 180:26]
+      reset => (UInt<1>("h0"), rawOutput) @[\\src\\main\\scala\\Functions.scala 180:29]
+    rawOutput <= _rawOutput_T_5 @[\\src\\main\\scala\\Functions.scala 180:29]
     node _saturatedOut_T = gt(rawOutput, asFixedPoint(UInt<14>("h1000"), 12)) @[\\src\\main\\scala\\Functions.scala 181:36]
     node _saturatedOut_T_1 = lt(rawOutput, asFixedPoint(UInt<1>("h0"), 12)) @[\\src\\main\\scala\\Functions.scala 181:76]
     node _saturatedOut_T_2 = mux(_saturatedOut_T_1, asFixedPoint(UInt<1>("h0"), 12), rawOutput) @[\\src\\main\\scala\\Functions.scala 181:65]
@@ -282,36 +282,36 @@ circuit MotorDriver :
   module StuckDetector :
     input clock : Clock
     input reset : Reset
-    output io : { flip externalOvercurrentInput : UInt<1>, flip clearShutdown : UInt<1>, is_stuck : UInt<1>, motorDisable : UInt<1>} @[\\src\\main\\scala\\Functions.scala 211:14]
+    output io : { flip externalOvercurrentInput : UInt<1>, flip clearShutdown : UInt<1>, is_stuck : UInt<1>, motorDisable : UInt<1>} @[\\src\\main\\scala\\Functions.scala 210:14]
 
-    node maxCycles = mul(UInt<17>("h186a0"), UInt<8>("h96")) @[\\src\\main\\scala\\Functions.scala 219:44]
+    node maxCycles = mul(UInt<17>("h186a0"), UInt<8>("h96")) @[\\src\\main\\scala\\Functions.scala 218:44]
     reg durationReg : UInt<32>, clock with :
-      reset => (reset, UInt<32>("h0")) @[\\src\\main\\scala\\Functions.scala 220:28]
+      reset => (reset, UInt<32>("h0")) @[\\src\\main\\scala\\Functions.scala 219:28]
     reg isStuckReg : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 221:28]
-    when io.clearShutdown : @[\\src\\main\\scala\\Functions.scala 223:26]
-      isStuckReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 224:17]
-      durationReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 225:17]
+      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 220:28]
+    when io.clearShutdown : @[\\src\\main\\scala\\Functions.scala 222:26]
+      isStuckReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 223:17]
+      durationReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 224:17]
     else :
-      node _T = eq(isStuckReg, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 227:10]
-      when _T : @[\\src\\main\\scala\\Functions.scala 227:23]
-        when io.externalOvercurrentInput : @[\\src\\main\\scala\\Functions.scala 228:41]
-          node _T_1 = geq(durationReg, maxCycles) @[\\src\\main\\scala\\Functions.scala 229:26]
-          when _T_1 : @[\\src\\main\\scala\\Functions.scala 229:40]
-            isStuckReg <= UInt<1>("h1") @[\\src\\main\\scala\\Functions.scala 230:22]
+      node _T = eq(isStuckReg, UInt<1>("h0")) @[\\src\\main\\scala\\Functions.scala 226:10]
+      when _T : @[\\src\\main\\scala\\Functions.scala 226:23]
+        when io.externalOvercurrentInput : @[\\src\\main\\scala\\Functions.scala 227:41]
+          node _T_1 = geq(durationReg, maxCycles) @[\\src\\main\\scala\\Functions.scala 228:26]
+          when _T_1 : @[\\src\\main\\scala\\Functions.scala 228:40]
+            isStuckReg <= UInt<1>("h1") @[\\src\\main\\scala\\Functions.scala 229:22]
           else :
-            node _durationReg_T = add(durationReg, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 232:38]
-            node _durationReg_T_1 = tail(_durationReg_T, 1) @[\\src\\main\\scala\\Functions.scala 232:38]
-            durationReg <= _durationReg_T_1 @[\\src\\main\\scala\\Functions.scala 232:23]
+            node _durationReg_T = add(durationReg, UInt<1>("h1")) @[\\src\\main\\scala\\Functions.scala 231:38]
+            node _durationReg_T_1 = tail(_durationReg_T, 1) @[\\src\\main\\scala\\Functions.scala 231:38]
+            durationReg <= _durationReg_T_1 @[\\src\\main\\scala\\Functions.scala 231:23]
         else :
-          durationReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 235:21]
-    io.is_stuck <= isStuckReg @[\\src\\main\\scala\\Functions.scala 240:20]
-    io.motorDisable <= isStuckReg @[\\src\\main\\scala\\Functions.scala 241:20]
+          durationReg <= UInt<1>("h0") @[\\src\\main\\scala\\Functions.scala 234:21]
+    io.is_stuck <= isStuckReg @[\\src\\main\\scala\\Functions.scala 239:20]
+    io.motorDisable <= isStuckReg @[\\src\\main\\scala\\Functions.scala 240:20]
 
   module MotorDriver :
     input clock : Clock
     input reset : UInt<1>
-    output io : { flip uart_rx : UInt<1>, uart_tx : UInt<1>, flip photo_diode_A : UInt<1>, flip photo_diode_B : UInt<1>, flip over_current : UInt<1>, T1 : UInt<1>, T2 : UInt<1>, T3 : UInt<1>, T4 : UInt<1>} @[\\src\\main\\scala\\MotorDriver.scala 6:16]
+    output io : { flip uart_rx : UInt<1>, flip photo_diode_A : UInt<1>, flip photo_diode_B : UInt<1>, flip over_current : UInt<1>, uart_tx : UInt<1>, T1 : UInt<1>, T2 : UInt<1>, T3 : UInt<1>, T4 : UInt<1>} @[\\src\\main\\scala\\MotorDriver.scala 6:16]
 
     inst rx of UartRx @[\\src\\main\\scala\\MotorDriver.scala 19:34]
     rx.clock <= clock
@@ -409,9 +409,9 @@ circuit MotorDriver :
     node _pid_io_resetBuffer_T = eq(control_mode, UInt<1>("h0")) @[\\src\\main\\scala\\MotorDriver.scala 74:27]
     node _pid_io_resetBuffer_T_1 = or(_pid_io_resetBuffer_T, manual_brake) @[\\src\\main\\scala\\MotorDriver.scala 74:41]
     pid.io.resetBuffer <= _pid_io_resetBuffer_T_1 @[\\src\\main\\scala\\MotorDriver.scala 74:24]
-    pid.io.kp <= asFixedPoint(UInt<17>("ha000"), 12) @[\\src\\main\\scala\\MotorDriver.scala 76:15]
-    pid.io.ki <= asFixedPoint(UInt<14>("h1000"), 12) @[\\src\\main\\scala\\MotorDriver.scala 77:15]
-    pid.io.kd <= asFixedPoint(UInt<1>("h0"), 12) @[\\src\\main\\scala\\MotorDriver.scala 78:15]
+    pid.io.kp <= asFixedPoint(UInt<20>("h50000"), 12) @[\\src\\main\\scala\\MotorDriver.scala 76:15]
+    pid.io.ki <= asFixedPoint(UInt<1>("h0"), 12) @[\\src\\main\\scala\\MotorDriver.scala 77:15]
+    pid.io.kd <= asFixedPoint(UInt<14>("h1000"), 12) @[\\src\\main\\scala\\MotorDriver.scala 78:15]
     node _pid_duty_raw_T = asUInt(pid.io.controlOut) @[\\src\\main\\scala\\MotorDriver.scala 80:43]
     node pid_duty_raw = shr(_pid_duty_raw_T, 2) @[\\src\\main\\scala\\MotorDriver.scala 80:50]
     node _pid_duty_T = gt(pid_duty_raw, UInt<10>("h3ff")) @[\\src\\main\\scala\\MotorDriver.scala 81:41]

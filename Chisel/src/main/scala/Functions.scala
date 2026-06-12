@@ -194,7 +194,6 @@ class RotationCounter extends Module {
   val bSync  = RegNext(RegNext(io.signal_B))
   val aReg   = RegNext(aSync)
   val rise_A = aSync && !aReg
-
   val turns = RegInit(0.U(16.W))
 
   when(rise_A) {
