@@ -21,3 +21,6 @@
 
 ## Mixed: 
     - USB port for serial commands
+
+# Notes:
+    Ask for Zener diode to avoid blowing out the header
