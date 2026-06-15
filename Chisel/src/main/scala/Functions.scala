@@ -2,9 +2,8 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-
 object GenerateAllVerilog extends App {
-  emitVerilog(new PWMTest, Array("-td", "Verilog"))
+  emitVerilog(new MotorDriver, Array("-td", "Verilog"))
 }
 
 class RotationCounter extends Module {
@@ -34,10 +33,10 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val io = IO(new Bundle {
     val duty_cycle = Input(UInt(10.W))
     val brake      = Input(Bool())
-    val T1         = Output(Bool()) // Bottom-Left (NMOS)
-    val T2         = Output(Bool()) // Top-Left    (PMOS)
-    val T3         = Output(Bool()) // Bottom-Right (NMOS)
-    val T4         = Output(Bool()) // Top-Right   (PMOS)
+    val T1         = Output(Bool()) 
+    val T2         = Output(Bool()) 
+    val T3         = Output(Bool()) 
+    val T4         = Output(Bool()) 
   })
 
   val clockFreq    = 100000000
@@ -64,22 +63,19 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
     conduct_T3 := true.B
     conduct_T4 := false.B
   } .otherwise {
-    
     conduct_T2 := pwmSignal
     conduct_T3 := pwmSignal
-    
     conduct_T4 := !pwmSignal
     conduct_T1 := !pwmSignal
   }
 
   io.T1 := conduct_T1
   io.T3 := conduct_T3
-  
   io.T2 := !conduct_T2
   io.T4 := !conduct_T4
 }
 
-class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
+class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
     val measuredVal = Input(FixedPoint(w.W, f.BP))
@@ -94,12 +90,16 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   val pTerm = io.kp * errorReg
   val integralReg = RegInit(0.F(w.W, f.BP))
   val iTermNext = io.ki * errorReg
+  
+  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
+  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
+
   when(io.resetBuffer) {
     integralReg := 0.F(w.W, f.BP)
   }.otherwise {
     val nextSum = integralReg + iTermNext
-    integralReg := Mux(nextSum > 0.5.F(f.BP), 0.5.F(f.BP), 
-                   Mux(nextSum < -0.5.F(f.BP), -0.5.F(f.BP), nextSum))
+    integralReg := Mux(nextSum > limit_pos, limit_pos, 
+                   Mux(nextSum < limit_neg, limit_neg, nextSum))
   }
 
   val prevErrorReg = RegInit(0.F(w.W, f.BP))
@@ -107,8 +107,8 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   prevErrorReg := errorReg
 
   val rawOutput = pTerm + integralReg + dTerm
-  io.controlOut := Mux(rawOutput > 0.5.F(f.BP), 0.5.F(f.BP), 
-                   Mux(rawOutput < -0.5.F(f.BP), -0.5.F(f.BP), rawOutput))
+  io.controlOut := Mux(rawOutput > limit_pos, limit_pos, 
+                   Mux(rawOutput < limit_neg, limit_neg, rawOutput))
 }
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
@@ -178,30 +178,6 @@ class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
   io.motorDisable := isStuckReg
 }
 
-class Debouncer(fac: Int = 100000) extends Module {
-  val io = IO(new Bundle {
-    val btn_in = Input(Bool())
-    val out    = Output(Bool())
-    val state  = Output(Bool())
-  })
-  // Synchronize
-  val btn_sync = RegNext(RegNext(io.btn_in))
-  val btnDebReg = RegInit(false.B)
-  val cntReg = RegInit(0.U(32.W))
-  val tick = cntReg === (fac - 1).U
-
-  // Counter
-  cntReg := cntReg + 1.U
-  when (tick) {
-    cntReg := 0.U
-    btnDebReg := btn_sync
-  }
-
-  val btnCleanPrev = RegNext(btnDebReg)
-  io.out := btnDebReg && !btnCleanPrev
-  io.state := btnDebReg
-}
-
 class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   val io = IO(new Bundle {
     val disp_content = Input(UInt(20.W))
@@ -209,18 +185,13 @@ class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
     val seg          = Output(UInt(8.W))
     val an           = Output(UInt(4.W))
   })
-  val sevSeg = WireDefault("b1111111".U(7.W))
-  val select = WireDefault("b0001".U(4.W))
-
-  // Timing logic
+  
   val cnt = RegInit(0.U(log2Up(refresh_limit).W))
   cnt := Mux(cnt === (refresh_limit - 1).U, 0.U, cnt + 1.U)
   val tick = cnt === (refresh_limit - 1).U
 
   val digit = RegInit(0.U(2.W))
-  when(tick) {
-    digit := digit + 1.U
-  }
+  when(tick) { digit := digit + 1.U }
 
   val currentRaw = Wire(UInt(5.W))
   currentRaw := 0.U
@@ -232,14 +203,13 @@ class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   }
 
   val decoder = Module(new SevenSegDec)
+  decoder.io.in := SegSymbol(currentRaw)
+  
+  val sevSeg = decoder.io.out
   val currentDot = io.dots(digit)
-  decoder.io.in := SegSymbol.safe(currentRaw)._1
-  sevSeg := decoder.io.out
   val fullSeg = currentDot ## sevSeg
 
-
-
-  // Anode selection
+  val select = WireDefault("b0001".U(4.W))
   switch(digit) {
     is(0.U) { select := "b0001".U }
     is(1.U) { select := "b0010".U }
@@ -251,44 +221,71 @@ class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   io.an  := ~select
 }
 
+object SegSymbol extends ChiselEnum {
+  val s0, s1, s2, s3, s4, s5, s6, s7, s8, s9 = Value
+  val A, B, C, D, E, F, G, H, I, J, L, N, O, P, Q, R, S, T, U, Blank = Value
+}
+
 class SevenSegDec extends Module {
   val io = IO(new Bundle {
     val in  = Input(SegSymbol())
     val out = Output(UInt(7.W))
   })
 
-  io.out := MuxLookup(io.in, 0.U(7.W))(Seq(
-    SegSymbol.s0    -> "b0111111".U,
-    SegSymbol.s1    -> "b0000110".U,
-    SegSymbol.s2    -> "b1011011".U,
-    SegSymbol.s3    -> "b1001111".U,
-    SegSymbol.s4    -> "b1100110".U,
-    SegSymbol.s5    -> "b1101101".U,
-    SegSymbol.s6    -> "b1111101".U,
-    SegSymbol.s7    -> "b0000111".U,
-    SegSymbol.s8    -> "b1111111".U,
-    SegSymbol.s9    -> "b1101111".U,
-    SegSymbol.A     -> "b1110111".U,
-    SegSymbol.B     -> "b1111100".U,
-    SegSymbol.C     -> "b0111001".U,
-    SegSymbol.D     -> "b1011110".U,
-    SegSymbol.E     -> "b1111001".U,
-    SegSymbol.F     -> "b1110001".U,
-    SegSymbol.G     -> "b0111100".U,
-    SegSymbol.H     -> "b1110110".U,
-    SegSymbol.I     -> "b0000110".U,
-    SegSymbol.J     -> "b0001111".U,
-    SegSymbol.L     -> "b0111000".U,
-    SegSymbol.N     -> "b1110000".U,
-    SegSymbol.O     -> "b0111111".U,
-    SegSymbol.P     -> "b1110011".U,
-    SegSymbol.Q     -> "b1100111".U,
-    SegSymbol.R     -> "b0110001".U,
-    SegSymbol.S     -> "b1101101".U,
-    SegSymbol.T     -> "b1111000".U,
-    SegSymbol.U     -> "b0111111".U,
-    SegSymbol.Blank -> "b0000000".U
+  io.out := MuxLookup(io.in.asUInt, 0.U(7.W))(Seq(
+    SegSymbol.s0.asUInt    -> "b0111111".U,
+    SegSymbol.s1.asUInt    -> "b0000110".U,
+    SegSymbol.s2.asUInt    -> "b1011011".U,
+    SegSymbol.s3.asUInt    -> "b1001111".U,
+    SegSymbol.s4.asUInt    -> "b1100110".U,
+    SegSymbol.s5.asUInt    -> "b1101101".U,
+    SegSymbol.s6.asUInt    -> "b1111101".U,
+    SegSymbol.s7.asUInt    -> "b0000111".U,
+    SegSymbol.s8.asUInt    -> "b1111111".U,
+    SegSymbol.s9.asUInt    -> "b1101111".U,
+    SegSymbol.A.asUInt     -> "b1110111".U,
+    SegSymbol.B.asUInt     -> "b1111100".U,
+    SegSymbol.C.asUInt     -> "b0111001".U,
+    SegSymbol.D.asUInt     -> "b1011110".U,
+    SegSymbol.E.asUInt     -> "b1111001".U,
+    SegSymbol.F.asUInt     -> "b1110001".U,
+    SegSymbol.G.asUInt     -> "b0111100".U,
+    SegSymbol.H.asUInt     -> "b1110110".U,
+    SegSymbol.I.asUInt     -> "b0000110".U,
+    SegSymbol.J.asUInt     -> "b0001111".U,
+    SegSymbol.L.asUInt     -> "b0111000".U,
+    SegSymbol.N.asUInt     -> "b1110000".U,
+    SegSymbol.O.asUInt     -> "b0111111".U,
+    SegSymbol.P.asUInt     -> "b1110011".U,
+    SegSymbol.Q.asUInt     -> "b1100111".U,
+    SegSymbol.R.asUInt     -> "b0110001".U,
+    SegSymbol.S.asUInt     -> "b1101101".U,
+    SegSymbol.T.asUInt     -> "b1111000".U,
+    SegSymbol.U.asUInt     -> "b0111111".U,
+    SegSymbol.Blank.asUInt -> "b0000000".U
   ))
+}
+
+class Debouncer(fac: Int = 100000) extends Module {
+  val io = IO(new Bundle {
+    val btn_in = Input(Bool())
+    val out    = Output(Bool())
+    val state  = Output(Bool())
+  })
+  val btn_sync = RegNext(RegNext(io.btn_in))
+  val btnDebReg = RegInit(false.B)
+  val cntReg = RegInit(0.U(32.W))
+  val tick = cntReg === (fac - 1).U
+
+  cntReg := cntReg + 1.U
+  when (tick) {
+    cntReg := 0.U
+    btnDebReg := btn_sync
+  }
+
+  val btnCleanPrev = RegNext(btnDebReg)
+  io.out := btnDebReg && !btnCleanPrev
+  io.state := btnDebReg
 }
 
 class RisingFsm extends Module {
@@ -296,16 +293,12 @@ class RisingFsm extends Module {
     val din = Input(Bool())
     val risingEdge = Output(Bool())
   })
-  // The two states
   object State extends ChiselEnum {
     val zero, one = Value
   }
   import State._
-  // The state register
   val stateReg = RegInit(zero)
-  // default value for output
   io.risingEdge := false.B
-  // Next state and output logic
   switch (stateReg) {
     is(zero) {
       when(io.din) {
@@ -319,9 +312,4 @@ class RisingFsm extends Module {
       }
     }
   }
-}
-
-object SegSymbol extends ChiselEnum {
-  val s0, s1, s2, s3, s4, s5, s6, s7, s8, s9 = Value
-  val A, B, C, D, E, F, G, H, I, J, L, N, O, P, Q, R, S, T, U, Blank = Value
 }
