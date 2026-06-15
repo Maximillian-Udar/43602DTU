@@ -75,7 +75,7 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   io.T4 := !conduct_T4
 }
 
-class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
+class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
     val measuredVal = Input(FixedPoint(w.W, f.BP))
@@ -87,9 +87,9 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   })
 
   val errorReg = RegNext(io.setPoint - io.measuredVal)
-  val pTerm = io.kp * errorReg
+  val pTerm = RegNext(io.kp * errorReg)
   val integralReg = RegInit(0.F(w.W, f.BP))
-  val iTermNext = io.ki * errorReg
+  val iTermNext = RegNext(io.ki * errorReg)
   
   val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
   val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
@@ -97,13 +97,13 @@ class PIDController(val w: Int = 16, val f: Int = 12) extends Module {
   when(io.resetBuffer) {
     integralReg := 0.F(w.W, f.BP)
   }.otherwise {
-    val nextSum = integralReg + iTermNext
+    val nextSum = RegNext(integralReg + iTermNext)
     integralReg := Mux(nextSum > limit_pos, limit_pos, 
                    Mux(nextSum < limit_neg, limit_neg, nextSum))
   }
 
   val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm = io.kd * (errorReg - prevErrorReg)
+  val dTerm = RegNext(io.kd * (errorReg - prevErrorReg))
   prevErrorReg := errorReg
 
   val rawOutput = pTerm + integralReg + dTerm
@@ -203,8 +203,7 @@ class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   }
 
   val decoder = Module(new SevenSegDec)
-  // Use the safe casting from UInt to ChiselEnum
-  decoder.io.in := SegSymbol.safe(currentRaw)._1
+  decoder.io.in := SegSymbol(currentRaw)
   
   val sevSeg = decoder.io.out
   val currentDot = io.dots(digit)
@@ -267,6 +266,28 @@ class SevenSegDec extends Module {
   ))
 }
 
+class Debouncer(fac: Int = 100000) extends Module {
+  val io = IO(new Bundle {
+    val btn_in = Input(Bool())
+    val out    = Output(Bool())
+    val state  = Output(Bool())
+  })
+  val btn_sync = RegNext(RegNext(io.btn_in))
+  val btnDebReg = RegInit(false.B)
+  val cntReg = RegInit(0.U(32.W))
+  val tick = cntReg === (fac - 1).U
+
+  cntReg := cntReg + 1.U
+  when (tick) {
+    cntReg := 0.U
+    btnDebReg := btn_sync
+  }
+
+  val btnCleanPrev = RegNext(btnDebReg)
+  io.out := btnDebReg && !btnCleanPrev
+  io.state := btnDebReg
+}
+
 class RisingFsm extends Module {
   val io = IO(new Bundle{
     val din = Input(Bool())
@@ -291,29 +312,4 @@ class RisingFsm extends Module {
       }
     }
   }
-}
-
-
-class Debouncer(fac: Int = 100000) extends Module {
-  val io = IO(new Bundle {
-    val btn_in = Input(Bool())
-    val out    = Output(Bool())
-    val state  = Output(Bool())
-  })
-  // Synchronize
-  val btn_sync = RegNext(RegNext(io.btn_in))
-  val btnDebReg = RegInit(false.B)
-  val cntReg = RegInit(0.U(32.W))
-  val tick = cntReg === (fac - 1).U
-
-  // Counter
-  cntReg := cntReg + 1.U
-  when (tick) {
-    cntReg := 0.U
-    btnDebReg := btn_sync
-  }
-
-  val btnCleanPrev = RegNext(btnDebReg)
-  io.out := btnDebReg && !btnCleanPrev
-  io.state := btnDebReg
 }

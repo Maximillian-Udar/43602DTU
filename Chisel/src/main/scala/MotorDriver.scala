@@ -11,13 +11,13 @@ class MotorDriver extends Module {
         val over_current_pos = Input(Bool())
         val over_current_neg = Input(Bool())
         // Outputs
-        val uart_tx         = Output(Bool())
-        val T1              = Output(Bool()) 
-        val T2              = Output(Bool()) 
-        val T3              = Output(Bool()) 
-        val T4              = Output(Bool()) 
-        val seg             = Output(UInt(8.W))
-        val an              = Output(UInt(4.W))
+        val uart_tx          = Output(Bool())
+        val T1               = Output(Bool()) 
+        val T2               = Output(Bool()) 
+        val T3               = Output(Bool()) 
+        val T4               = Output(Bool()) 
+        val seg              = Output(UInt(8.W))
+        val an               = Output(UInt(4.W))
     })
 
     val pidWidth = 32

@@ -11,25 +11,30 @@ class MotorDriver extends Module {
         val over_current_pos = Input(Bool())
         val over_current_neg = Input(Bool())
         // Outputs
-        val uart_tx         = Output(Bool())
-        val T1              = Output(Bool()) 
-        val T2              = Output(Bool()) 
-        val T3              = Output(Bool()) 
-        val T4              = Output(Bool()) 
-        val seg             = Output(UInt(8.W))
-        val an              = Output(UInt(4.W))
+        val uart_tx          = Output(Bool())
+        val T1               = Output(Bool()) 
+        val T2               = Output(Bool()) 
+        val T3               = Output(Bool()) 
+        val T4               = Output(Bool()) 
+        val seg              = Output(UInt(8.W))
+        val an               = Output(UInt(4.W))
     })
+
+    val pidWidth = 32
+    val pidBP    = 12
 
     val rx               = Module(new UartRx)
     val tx               = Module(new UartTx)
     val rotation_counter = Module(new RotationCounter)
     val pwm_gen          = Module(new DCMotorPwm)
-    val pid              = Module(new PIDController(16, 12))
+    val pid              = Module(new PIDController(pidWidth, pidBP))
     val stuck_detector   = Module(new StuckDetector)
     val disp_mux         = Module(new DisplayMultiplexer)
 
     disp_mux.io.dots := "b0000".U
     disp_mux.io.disp_content := Cat(SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt)
+    pwm_gen.io.brake := false.B 
+    
     io.an := disp_mux.io.an
     io.seg := disp_mux.io.seg
 
@@ -48,20 +53,20 @@ class MotorDriver extends Module {
             isValueByte := true.B
         }.otherwise {
             switch(cmdByte) {
-                is(0x01.U) { // Set Target Position (Meters)
+                is(0x01.U) { 
                     target_position := rx.io.data
                     control_mode := true.B
                     manual_brake := false.B
                 }
-                is(0x02.U) { // Set Manual Movement
+                is(0x02.U) { 
                     control_mode := false.B
                     switch(rx.io.data) {
-                        is(0.U) { manual_speed := 512.U; manual_brake := false.B } // Stop
-                        is(1.U) { manual_speed := 650.U; manual_brake := false.B } // Slow Fwd
-                        is(2.U) { manual_speed := 900.U; manual_brake := false.B } // Fast Fwd
-                        is(3.U) { manual_speed := 374.U; manual_brake := false.B } // Slow Back
-                        is(4.U) { manual_speed := 124.U; manual_brake := false.B } // Fast Back
-                        is(5.U) { manual_brake := true.B }                         // Brake
+                        is(0.U) { manual_speed := 512.U; manual_brake := false.B }
+                        is(1.U) { manual_speed := 650.U; manual_brake := false.B }
+                        is(2.U) { manual_speed := 900.U; manual_brake := false.B }
+                        is(3.U) { manual_speed := 374.U; manual_brake := false.B }
+                        is(4.U) { manual_speed := 124.U; manual_brake := false.B }
+                        is(5.U) { manual_brake := true.B }
                     }
                 }
             }
@@ -74,15 +79,15 @@ class MotorDriver extends Module {
     
     val current_pos_m = (rotation_counter.io.turns * 1398.U) >> 20
 
-    pid.io.setPoint    := target_position(3, 0).asFixedPoint(12.BP)
-    pid.io.measuredVal := current_pos_m(3, 0).asFixedPoint(12.BP)
+    pid.io.setPoint    := target_position.asFixedPoint(pidBP.BP)
+    pid.io.measuredVal := current_pos_m.asFixedPoint(pidBP.BP)
     pid.io.resetBuffer := !control_mode || manual_brake
     
-    pid.io.kp := 80.F(16.W, 12.BP)
-    pid.io.ki := 0.F(16.W, 12.BP)
-    pid.io.kd := 1.F(16.W, 12.BP)
+    pid.io.kp := 80.F(pidWidth.W, pidBP.BP)
+    pid.io.ki := 0.F(pidWidth.W, pidBP.BP)
+    pid.io.kd := 1.F(pidWidth.W, pidBP.BP)
 
-    val half_const = FixedPoint.fromDouble(0.5, 16.W, 12.BP)
+    val half_const = FixedPoint.fromDouble(0.5, pidWidth.W, pidBP.BP)
     val pid_duty_shifted = pid.io.controlOut + half_const
     val pid_duty = (pid_duty_shifted.asUInt >> 2)(9, 0)
 
@@ -92,8 +97,9 @@ class MotorDriver extends Module {
     pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
     val brake_active = (stuck_detector.io.motorDisable || manual_brake)
     
+    pwm_gen.io.brake := brake_active
+
     when (brake_active) {
-        pwm_gen.io.brake         := true.B
         disp_mux.io.disp_content := Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
     }
 
