@@ -217,16 +217,25 @@ circuit MotorDriver :
     reg errorReg : Fixed<<12>>, clock with :
       reset => (UInt<1>("h0"), errorReg) @[\\src\\main\\scala\\Functions.scala 89:25]
     errorReg <= _errorReg_T_2 @[\\src\\main\\scala\\Functions.scala 89:25]
-    node pTerm = mul(io.kp, errorReg) @[\\src\\main\\scala\\Functions.scala 90:21]
+    node _pTerm_T = mul(io.kp, errorReg) @[\\src\\main\\scala\\Functions.scala 90:29]
+    reg pTerm : Fixed<<24>>, clock with :
+      reset => (UInt<1>("h0"), pTerm) @[\\src\\main\\scala\\Functions.scala 90:22]
+    pTerm <= _pTerm_T @[\\src\\main\\scala\\Functions.scala 90:22]
     reg integralReg : Fixed<32><<12>>, clock with :
       reset => (reset, asFixedPoint(UInt<32>("h0"), 12)) @[\\src\\main\\scala\\Functions.scala 91:28]
-    node iTermNext = mul(io.ki, errorReg) @[\\src\\main\\scala\\Functions.scala 92:25]
+    node _iTermNext_T = mul(io.ki, errorReg) @[\\src\\main\\scala\\Functions.scala 92:33]
+    reg iTermNext : Fixed<<24>>, clock with :
+      reset => (UInt<1>("h0"), iTermNext) @[\\src\\main\\scala\\Functions.scala 92:26]
+    iTermNext <= _iTermNext_T @[\\src\\main\\scala\\Functions.scala 92:26]
     when io.resetBuffer : @[\\src\\main\\scala\\Functions.scala 97:24]
       integralReg <= asFixedPoint(UInt<32>("h0"), 12) @[\\src\\main\\scala\\Functions.scala 98:17]
     else :
-      node _nextSum_T = add(integralReg, iTermNext) @[\\src\\main\\scala\\Functions.scala 100:31]
-      node _nextSum_T_1 = tail(_nextSum_T, 1) @[\\src\\main\\scala\\Functions.scala 100:31]
-      node nextSum = asFixedPoint(_nextSum_T_1, 24) @[\\src\\main\\scala\\Functions.scala 100:31]
+      node _nextSum_T = add(integralReg, iTermNext) @[\\src\\main\\scala\\Functions.scala 100:39]
+      node _nextSum_T_1 = tail(_nextSum_T, 1) @[\\src\\main\\scala\\Functions.scala 100:39]
+      node _nextSum_T_2 = asFixedPoint(_nextSum_T_1, 24) @[\\src\\main\\scala\\Functions.scala 100:39]
+      reg nextSum : Fixed<<24>>, clock with :
+        reset => (UInt<1>("h0"), nextSum) @[\\src\\main\\scala\\Functions.scala 100:26]
+      nextSum <= _nextSum_T_2 @[\\src\\main\\scala\\Functions.scala 100:26]
       node _integralReg_T = gt(nextSum, asFixedPoint(UInt<32>("h800"), 12)) @[\\src\\main\\scala\\Functions.scala 101:32]
       node _integralReg_T_1 = lt(nextSum, asFixedPoint(UInt<32>("hfffff800"), 12)) @[\\src\\main\\scala\\Functions.scala 102:32]
       node _integralReg_T_2 = mux(_integralReg_T_1, asFixedPoint(UInt<32>("hfffff800"), 12), nextSum) @[\\src\\main\\scala\\Functions.scala 102:23]
@@ -234,10 +243,13 @@ circuit MotorDriver :
       integralReg <= _integralReg_T_3 @[\\src\\main\\scala\\Functions.scala 101:17]
     reg prevErrorReg : Fixed<32><<12>>, clock with :
       reset => (reset, asFixedPoint(UInt<32>("h0"), 12)) @[\\src\\main\\scala\\Functions.scala 105:29]
-    node _dTerm_T = sub(errorReg, prevErrorReg) @[\\src\\main\\scala\\Functions.scala 106:33]
-    node _dTerm_T_1 = tail(_dTerm_T, 1) @[\\src\\main\\scala\\Functions.scala 106:33]
-    node _dTerm_T_2 = asFixedPoint(_dTerm_T_1, 12) @[\\src\\main\\scala\\Functions.scala 106:33]
-    node dTerm = mul(io.kd, _dTerm_T_2) @[\\src\\main\\scala\\Functions.scala 106:21]
+    node _dTerm_T = sub(errorReg, prevErrorReg) @[\\src\\main\\scala\\Functions.scala 106:41]
+    node _dTerm_T_1 = tail(_dTerm_T, 1) @[\\src\\main\\scala\\Functions.scala 106:41]
+    node _dTerm_T_2 = asFixedPoint(_dTerm_T_1, 12) @[\\src\\main\\scala\\Functions.scala 106:41]
+    node _dTerm_T_3 = mul(io.kd, _dTerm_T_2) @[\\src\\main\\scala\\Functions.scala 106:29]
+    reg dTerm : Fixed<<24>>, clock with :
+      reset => (UInt<1>("h0"), dTerm) @[\\src\\main\\scala\\Functions.scala 106:22]
+    dTerm <= _dTerm_T_3 @[\\src\\main\\scala\\Functions.scala 106:22]
     prevErrorReg <= errorReg @[\\src\\main\\scala\\Functions.scala 107:16]
     node _rawOutput_T = add(pTerm, integralReg) @[\\src\\main\\scala\\Functions.scala 109:25]
     node _rawOutput_T_1 = tail(_rawOutput_T, 1) @[\\src\\main\\scala\\Functions.scala 109:25]

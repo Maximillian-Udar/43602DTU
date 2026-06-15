@@ -87,9 +87,9 @@ class PIDController(val w: Int, val f: Int) extends Module {
   })
 
   val errorReg = RegNext(io.setPoint - io.measuredVal)
-  val pTerm = io.kp * errorReg
+  val pTerm = RegNext(io.kp * errorReg)
   val integralReg = RegInit(0.F(w.W, f.BP))
-  val iTermNext = io.ki * errorReg
+  val iTermNext = RegNext(io.ki * errorReg)
   
   val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
   val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
@@ -97,13 +97,13 @@ class PIDController(val w: Int, val f: Int) extends Module {
   when(io.resetBuffer) {
     integralReg := 0.F(w.W, f.BP)
   }.otherwise {
-    val nextSum = integralReg + iTermNext
+    val nextSum = RegNext(integralReg + iTermNext)
     integralReg := Mux(nextSum > limit_pos, limit_pos, 
                    Mux(nextSum < limit_neg, limit_neg, nextSum))
   }
 
   val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm = io.kd * (errorReg - prevErrorReg)
+  val dTerm = RegNext(io.kd * (errorReg - prevErrorReg))
   prevErrorReg := errorReg
 
   val rawOutput = pTerm + integralReg + dTerm

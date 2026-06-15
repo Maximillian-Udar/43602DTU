@@ -470,22 +470,26 @@ module PIDController(
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
-  reg [31:0] _RAND_1;
+  reg [63:0] _RAND_1;
   reg [31:0] _RAND_2;
+  reg [63:0] _RAND_3;
+  reg [63:0] _RAND_4;
+  reg [31:0] _RAND_5;
+  reg [63:0] _RAND_6;
 `endif // RANDOMIZE_REG_INIT
   reg [31:0] errorReg; // @[\\src\\main\\scala\\Functions.scala 89:25]
-  wire [63:0] pTerm = 32'sh50000 * $signed(errorReg); // @[\\src\\main\\scala\\Functions.scala 90:21]
+  reg [63:0] pTerm; // @[\\src\\main\\scala\\Functions.scala 90:22]
   reg [31:0] integralReg; // @[\\src\\main\\scala\\Functions.scala 91:28]
-  wire [63:0] iTermNext = 32'sh0 * $signed(errorReg); // @[\\src\\main\\scala\\Functions.scala 92:25]
-  wire [43:0] _GEN_1 = {$signed(integralReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 100:31]
-  wire [63:0] _GEN_2 = {{20{_GEN_1[43]}},_GEN_1}; // @[\\src\\main\\scala\\Functions.scala 100:31]
-  wire [63:0] nextSum = $signed(_GEN_2) + $signed(iTermNext); // @[\\src\\main\\scala\\Functions.scala 100:31]
+  reg [63:0] iTermNext; // @[\\src\\main\\scala\\Functions.scala 92:26]
+  wire [43:0] _GEN_1 = {$signed(integralReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 100:39]
+  wire [63:0] _GEN_2 = {{20{_GEN_1[43]}},_GEN_1}; // @[\\src\\main\\scala\\Functions.scala 100:39]
+  reg [63:0] nextSum; // @[\\src\\main\\scala\\Functions.scala 100:26]
   wire [63:0] _integralReg_T_2 = $signed(nextSum) < -64'sh800000 ? $signed(-64'sh800000) : $signed(nextSum); // @[\\src\\main\\scala\\Functions.scala 102:23]
   wire [63:0] _integralReg_T_3 = $signed(nextSum) > 64'sh800000 ? $signed(64'sh800000) : $signed(_integralReg_T_2); // @[\\src\\main\\scala\\Functions.scala 101:23]
   wire [63:0] _GEN_0 = io_resetBuffer ? $signed(64'sh0) : $signed(_integralReg_T_3); // @[\\src\\main\\scala\\Functions.scala 101:17 97:24 98:17]
   reg [31:0] prevErrorReg; // @[\\src\\main\\scala\\Functions.scala 105:29]
-  wire [31:0] _dTerm_T_2 = $signed(errorReg) - $signed(prevErrorReg); // @[\\src\\main\\scala\\Functions.scala 106:33]
-  wire [63:0] dTerm = 32'sh1000 * $signed(_dTerm_T_2); // @[\\src\\main\\scala\\Functions.scala 106:21]
+  wire [31:0] _dTerm_T_2 = $signed(errorReg) - $signed(prevErrorReg); // @[\\src\\main\\scala\\Functions.scala 106:41]
+  reg [63:0] dTerm; // @[\\src\\main\\scala\\Functions.scala 106:22]
   wire [63:0] _rawOutput_T_2 = $signed(pTerm) + $signed(_GEN_2); // @[\\src\\main\\scala\\Functions.scala 109:25]
   wire [63:0] rawOutput = $signed(_rawOutput_T_2) + $signed(dTerm); // @[\\src\\main\\scala\\Functions.scala 109:39]
   wire [63:0] _io_controlOut_T_2 = $signed(rawOutput) < -64'sh800000 ? $signed(-64'sh800000) : $signed(rawOutput); // @[\\src\\main\\scala\\Functions.scala 111:23]
@@ -496,12 +500,16 @@ module PIDController(
   assign io_controlOut = _GEN_5[31:0]; // @[\\src\\main\\scala\\Functions.scala 110:17]
   always @(posedge clock) begin
     errorReg <= $signed(io_setPoint) - $signed(io_measuredVal); // @[\\src\\main\\scala\\Functions.scala 89:38]
+    pTerm <= 32'sh50000 * $signed(errorReg); // @[\\src\\main\\scala\\Functions.scala 90:29]
     integralReg <= _GEN_7[31:0]; // @[\\src\\main\\scala\\Functions.scala 91:{28,28}]
+    iTermNext <= 32'sh0 * $signed(errorReg); // @[\\src\\main\\scala\\Functions.scala 92:33]
+    nextSum <= $signed(_GEN_2) + $signed(iTermNext); // @[\\src\\main\\scala\\Functions.scala 100:39]
     if (reset) begin // @[\\src\\main\\scala\\Functions.scala 105:29]
       prevErrorReg <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 105:29]
     end else begin
       prevErrorReg <= errorReg; // @[\\src\\main\\scala\\Functions.scala 107:16]
     end
+    dTerm <= 32'sh1000 * $signed(_dTerm_T_2); // @[\\src\\main\\scala\\Functions.scala 106:29]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -541,10 +549,18 @@ initial begin
 `ifdef RANDOMIZE_REG_INIT
   _RAND_0 = {1{`RANDOM}};
   errorReg = _RAND_0[31:0];
-  _RAND_1 = {1{`RANDOM}};
-  integralReg = _RAND_1[31:0];
+  _RAND_1 = {2{`RANDOM}};
+  pTerm = _RAND_1[63:0];
   _RAND_2 = {1{`RANDOM}};
-  prevErrorReg = _RAND_2[31:0];
+  integralReg = _RAND_2[31:0];
+  _RAND_3 = {2{`RANDOM}};
+  iTermNext = _RAND_3[63:0];
+  _RAND_4 = {2{`RANDOM}};
+  nextSum = _RAND_4[63:0];
+  _RAND_5 = {1{`RANDOM}};
+  prevErrorReg = _RAND_5[31:0];
+  _RAND_6 = {2{`RANDOM}};
+  dTerm = _RAND_6[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
