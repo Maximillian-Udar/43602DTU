@@ -133,11 +133,11 @@ set_property PACKAGE_PIN W4 [get_ports {io_an[3]}]
 #set_property PACKAGE_PIN R18 [get_ports {JC[7]}]
 
 ##Pmod Header JXADC
-set_property -dict { PACKAGE_PIN J3   IOSTANDARD LVCMOS33 } [get_ports io_pwmOut];#Sch name = XA1_P
-set_property -dict { PACKAGE_PIN L3   IOSTANDARD LVCMOS33 } [get_ports io_pwnOutInv];#Sch name = XA2_P
-#set_property -dict { PACKAGE_PIN M2   IOSTANDARD LVCMOS33 } [get_ports {JXADC[2]}];#Sch name = XA3_P
-#set_property -dict { PACKAGE_PIN N2   IOSTANDARD LVCMOS33 } [get_ports {JXADC[3]}];#Sch name = XA4_P
-#set_property -dict { PACKAGE_PIN K3   IOSTANDARD LVCMOS33 } [get_ports {JXADC[4]}];#Sch name = XA1_N
-#set_property -dict { PACKAGE_PIN M3   IOSTANDARD LVCMOS33 } [get_ports {JXADC[5]}];#Sch name = XA2_N
-#set_property -dict { PACKAGE_PIN M1   IOSTANDARD LVCMOS33 } [get_ports {JXADC[6]}];#Sch name = XA3_N
-#set_property -dict { PACKAGE_PIN N1   IOSTANDARD LVCMOS33 } [get_ports {JXADC[7]}];#Sch name = XA4_N
+#set_property PACKAGE_PIN J3 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN L3 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN M2 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN N2 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN K3 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN M3 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN M1 [get_ports io_pwmOut]
+#set_property PACKAGE_PIN N1 [get_ports io_pwmOut]

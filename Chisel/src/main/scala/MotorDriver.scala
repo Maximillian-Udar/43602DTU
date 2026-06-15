@@ -4,16 +4,20 @@ import chisel3.experimental.FixedPoint
 
 class MotorDriver extends Module {
     val io = IO(new Bundle{
-        val uart_rx        = Input(Bool())
-        val photo_diode_A  = Input(Bool())
-        val photo_diode_B  = Input(Bool())
-        val over_current   = Input(Bool())
-        
+        // Inputs
+        val uart_rx          = Input(Bool())
+        val photo_diode_A    = Input(Bool())
+        val photo_diode_B    = Input(Bool())
+        val over_current_pos = Input(Bool())
+        val over_current_neg = Input(Bool())
+        // Outputs
         val uart_tx        = Output(Bool())
         val T1             = Output(Bool()) 
         val T2             = Output(Bool()) 
         val T3             = Output(Bool()) 
         val T4             = Output(Bool()) 
+        val seg            = Output(UInt(8.W))
+        val an             = Ouput(UInt(4.W))
     })
 
     val rx               = Module(new UartRx)
@@ -22,6 +26,13 @@ class MotorDriver extends Module {
     val pwm_gen          = Module(new DCMotorPwm)
     val pid              = Module(new PIDController)
     val stuck_detector   = Module(new StuckDetector)
+    val disp_mux         = Module(new DisplayMultiplexer)
+
+
+    disp_mux.io.dots := "b0000".U
+    disp_mux.io.disp_content := Cat(SegSymbol.Blank, SegSymbol.Blank, SegSymbol.Blank, SegSymbol.Blank)
+    io.an := disp_mux.io.an
+    io.seg := disp_mux.io.seg
 
     val target_position = RegInit(0.U(8.W))
     val manual_speed    = RegInit(512.U(10.W))
@@ -69,17 +80,23 @@ class MotorDriver extends Module {
     pid.io.resetBuffer := !control_mode || manual_brake
     
     pid.io.kp := 80.F(12.BP)
-    pid.io.ki := 1.F(12.BP)
-    pid.io.kd := 0.F(12.BP)
+    pid.io.ki := 0.F(12.BP)
+    pid.io.kd := 1.F(12.BP)
 
     val pid_duty_shifted = pid.io.controlOut + 0.5.F(12.BP) 
     val pid_duty = (pid_duty_shifted.asUInt >> 2)
 
-    stuck_detector.io.externalOvercurrentInput := io.over_current
-    stuck_detector.io.clearShutdown := (rx.io.done && cmdByte === 0xFF.U)
+    stuck_detector.io.externalOvercurrentInput := (io.over_current_pos || io.over_current_neg)
+    stuck_detector.io.clearShutdown            := (rx.io.done && cmdByte === 0xFF.U)
 
     pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
-    pwm_gen.io.brake := manual_brake || stuck_detector.io.motorDisable
+    val brake_active = (manual_brake || stuck_detector.io.motorDisable)
+    
+    when (brake_active) {
+        pwm_gen.io.brake         := true.B
+        io.brake_light           := true.B
+        disp_mux.io.disp_content := Cat(SegSymbol.S, SegSymbol.T, SegSymbol.O, SegSymbol.P)
+    }
 
     io.T1 := pwm_gen.io.T1
     io.T2 := pwm_gen.io.T2

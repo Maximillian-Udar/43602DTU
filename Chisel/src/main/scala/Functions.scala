@@ -202,14 +202,13 @@ class Debouncer(fac: Int = 100000) extends Module {
   io.state := btnDebReg
 }
 
-class DisplayMultiplexer(refresh_limit: Int = 100000, inital_dots: Int = 0) extends Module {
+class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   val io = IO(new Bundle {
     val disp_content = Input(UInt(20.W))
     val dots         = Input(UInt(4.W))
     val seg          = Output(UInt(8.W))
     val an           = Output(UInt(4.W))
   })
-  //io.dots := inital_dots.U
   val sevSeg = WireDefault("b1111111".U(7.W))
   val select = WireDefault("b0001".U(4.W))
 
