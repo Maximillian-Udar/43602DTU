@@ -3,7 +3,7 @@ import time
 import threading
 
 # --- CONFIGURATION ---
-COM_PORT = 'COM3'
+COM_PORT = 'COM4'
 BAUD_RATE = 115200
 
 class MotorController:
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     print("  p [val] : Set Position (0-90m)")
     print("  m [0-5] : Manual (0:Stop, 1:S_Fwd, 2:F_Fwd, 3:S_Back, 4:F_Back, 5:Brake)")
     print("  r       : Reset Stuck Status")
-    print("  q       : Quit")
+    print("  q       : Quit\n")
 
     try:
         while True:

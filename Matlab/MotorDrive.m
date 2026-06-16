@@ -1,6 +1,5 @@
 %% 34602 Ingeniørarbejde 2: Target Retrieval System Simulation
 % This script models the DC motor, H-Bridge limits, and PID Control
-clear all; close all; clc;
 
 % --- 1. Electrical Parameters ---
 V_supply = 10.0;    % Max voltage from H-Bridge (V)
