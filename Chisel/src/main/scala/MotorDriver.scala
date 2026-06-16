@@ -2,16 +2,14 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class MotorDriver extends Module {
+class MotorDriver(KP : Int, KI: Int, KD: Int) extends Module {
     val io = IO(new Bundle{
-        // Inputs
         val uart_rx          = Input(Bool())
         val photo_diode_A    = Input(Bool())
         val photo_diode_B    = Input(Bool())
         val over_current_pos = Input(Bool())
         val over_current_neg = Input(Bool())
         val error_cleared    = Input(Bool())
-        // Outputs
         val uart_tx          = Output(Bool())
         val T1               = Output(Bool()) 
         val T2               = Output(Bool()) 
@@ -24,102 +22,121 @@ class MotorDriver extends Module {
     val pidWidth = 32
     val pidBP    = 12
 
+    // --- Modules ---
     val rx                   = Module(new UartRx)
     val tx                   = Module(new UartTx)
     val rotation_counter     = Module(new RotationCounter)
-    val pwm_gen              = Module(new DCMotorPwm)
+    val pwm_gen              = Module(new DCMotorPwm(20000)) 
     val pid                  = Module(new PIDController(pidWidth, pidBP))
     val stuck_detector       = Module(new StuckDetector)
     val disp_mux             = Module(new DisplayMultiplexer)
-    val error_clear_debounce = Module(new Debouncer)
+    val filter_A             = Module(new Debouncer(50)) 
+    val filter_B             = Module(new Debouncer(50))
+    val error_clear_debounce = Module(new Debouncer(100000))
 
-    error_clear_debounce.io.btn_in := io.error_cleared
-
-    disp_mux.io.dots := "b0000".U
-    disp_mux.io.disp_content := Cat(SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt)
-    pwm_gen.io.brake := false.B 
-    
-    io.an := disp_mux.io.an
-    io.seg := disp_mux.io.seg
-
+    // --- State Registers ---
     val target_position = RegInit(0.U(8.W))
-    val manual_speed    = RegInit(512.U(10.W))
-    val control_mode    = RegInit(false.B)
-    val manual_brake    = RegInit(false.B)     
+    val manual_speed    = RegInit(512.U(10.W)) // 512 = Dead Stop
+    val control_mode    = RegInit(true.B)      // Default to AUTO
+    val manual_brake    = RegInit(true.B)      // START IN BRAKE MODE
 
+    // --- Robust UART Parser (Header -> Cmd -> Value) ---
     rx.io.rx := io.uart_rx
-    val cmdByte = RegInit(0.U(8.W))
-    val isValueByte = RegInit(false.B)
+    val sHeader :: sCmd :: sValue :: Nil = Enum(3)
+    val uartState = RegInit(sHeader)
+    val cmdByte   = RegInit(0.U(8.W))
 
     when(rx.io.done) {
-        when(!isValueByte) {
-            cmdByte := rx.io.data
-            isValueByte := true.B
-        }.otherwise {
-            switch(cmdByte) {
-                is(0x01.U) { 
-                    target_position := rx.io.data
-                    control_mode := true.B
-                    manual_brake := false.B
-                }
-                is(0x02.U) { 
-                    control_mode := false.B
-                    switch(rx.io.data) {
-                        is(0.U) { manual_speed := 512.U; manual_brake := false.B }
-                        is(1.U) { manual_speed := 650.U; manual_brake := false.B }
-                        is(2.U) { manual_speed := 900.U; manual_brake := false.B }
-                        is(3.U) { manual_speed := 374.U; manual_brake := false.B }
-                        is(4.U) { manual_speed := 124.U; manual_brake := false.B }
-                        is(5.U) { manual_brake := true.B }
+        switch(uartState) {
+            is(sHeader) {
+                // Only proceed if the header 0xAA is received
+                when(rx.io.data === 0xAA.U) { uartState := sCmd }
+            }
+            is(sCmd) {
+                cmdByte   := rx.io.data
+                uartState := sValue
+            }
+            is(sValue) {
+                switch(cmdByte) {
+                    is(0x01.U) { // Position Command
+                        target_position := rx.io.data
+                        control_mode    := true.B
+                        manual_brake    := false.B // Release brake to move
+                    }
+                    is(0x02.U) { // Manual Command
+                        control_mode := false.B
+                        manual_brake := false.B
+                        switch(rx.io.data) {
+                            is(0.U) { manual_speed := 512.U; manual_brake := true.B } // Stop & Brake
+                            is(1.U) { manual_speed := 640.U } // Slow Fwd
+                            is(2.U) { manual_speed := 950.U } // Fast Fwd
+                            is(3.U) { manual_speed := 380.U } // Slow Back
+                            is(4.U) { manual_speed := 70.U  } // Fast Back
+                            is(5.U) { manual_brake := true.B } // Hard Brake
+                        }
                     }
                 }
+                uartState := sHeader
             }
-            isValueByte := false.B
         }
     }
 
-    rotation_counter.io.signal_A := io.photo_diode_A
-    rotation_counter.io.signal_B := io.photo_diode_B
-    
+    // --- Sensor Processing ---
+    filter_A.io.btn_in := io.photo_diode_A
+    filter_B.io.btn_in := io.photo_diode_B
+    rotation_counter.io.signal_A := filter_A.io.state
+    rotation_counter.io.signal_B := filter_B.io.state
     val current_pos_m = (rotation_counter.io.turns * 1398.U) >> 20
+    val current_pos_cm = (rotation_counter.io.turns * 136.U) >> 10
 
+    // --- PID Control ---
     pid.io.setPoint    := target_position.asFixedPoint(pidBP.BP)
     pid.io.measuredVal := current_pos_m.asFixedPoint(pidBP.BP)
     pid.io.resetBuffer := !control_mode || manual_brake
-    
-    pid.io.kp := 80.F(pidWidth.W, pidBP.BP)
-    pid.io.ki := 0.F(pidWidth.W, pidBP.BP)
-    pid.io.kd := 1.F(pidWidth.W, pidBP.BP)
+    pid.io.kp := (KP).F(pidWidth.W, pidBP.BP)
+    pid.io.ki := (KI).F(pidWidth.W, pidBP.BP)
+    pid.io.kd := (KD).F(pidWidth.W, pidBP.BP)
 
+    // Map PID (-0.5 to 0.5) to Duty Cycle (0 to 1024)
     val half_const = FixedPoint.fromDouble(0.5, pidWidth.W, pidBP.BP)
     val pid_duty_shifted = pid.io.controlOut + half_const
-    val pid_duty = (pid_duty_shifted.asUInt >> 2)(9, 0)
+    val pid_duty = (pid_duty_shifted.asUInt >> (pidBP - 10).U)(9, 0)
 
+    // --- Safety and Brake Logic ---
+    error_clear_debounce.io.btn_in := io.error_cleared
     stuck_detector.io.externalOvercurrentInput := (io.over_current_pos || io.over_current_neg)
-    stuck_detector.io.clearShutdown            := ((rx.io.done && cmdByte === 0xFF.U) || error_clear_debounce.io.out)
+    stuck_detector.io.clearShutdown := ((rx.io.done && cmdByte === 0xFF.U) || error_clear_debounce.io.out)
 
-    pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
     val brake_active = (stuck_detector.io.motorDisable || manual_brake)
     
-    pwm_gen.io.brake := brake_active
+    pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
+    pwm_gen.io.brake      := brake_active
 
-    when (brake_active) {
-        disp_mux.io.disp_content := Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
-    }
-
+    // --- Outputs ---
     io.T1 := pwm_gen.io.T1
     io.T2 := pwm_gen.io.T2
     io.T3 := pwm_gen.io.T3
     io.T4 := pwm_gen.io.T4
 
+    // --- Display Logic ---
+    io.an := disp_mux.io.an
+    io.seg := disp_mux.io.seg
+    disp_mux.io.dots := "b0000".U
+    when (brake_active) {
+        disp_mux.io.disp_content := Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
+    } .otherwise {
+        val modeLabel = Mux(control_mode, 
+                            Cat(SegSymbol.A.asUInt, SegSymbol.U.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt),
+                            Cat(SegSymbol.Blank.asUInt, SegSymbol.M.asUInt, SegSymbol.A.asUInt, SegSymbol.N.asUInt))
+        disp_mux.io.disp_content := modeLabel
+    }
+
+    // --- Telemetry ---
     val txTimer = RegInit(0.U(24.W))
-    tx.io.data  := current_pos_m(7,0)
+    tx.io.data  := current_pos_cm(7,0)
     tx.io.start := false.B
-    when(txTimer >= 10000000.U) {
-        when(!tx.io.busy) {
-            tx.io.start := true.B
-            txTimer := 0.U
-        }
+    when(txTimer >= 5000000.U) {
+        when(!tx.io.busy) { tx.io.start := true.B; txTimer := 0.U }
     }.otherwise { txTimer := txTimer + 1.U }
     io.uart_tx := tx.io.tx
 }

@@ -1,91 +1,56 @@
 import serial
 import time
 import threading
+import sys
 
-# --- CONFIGURATION ---
-COM_PORT = 'COM4'
+COM_PORT = 'COM4' 
 BAUD_RATE = 115200
 
-class MotorController:
+class FPGAController:
     def __init__(self, port, baud):
-        try:
-            self.ser = serial.Serial(port, baud, timeout=1)
-            print(f"Connected to FPGA on {port}")
-        except Exception as e:
-            print(f"Error connecting: {e}")
-            exit()
-
-        self.current_position = 0
+        self.ser = serial.Serial(port, baud, timeout=0.1)
+        self.current_pos_cm = 0
+        self.last_mode = "STARTUP_LOCK"
         self.running = True
-
-        # Start a background thread to listen for position updates from FPGA
         self.reader_thread = threading.Thread(target=self._read_telemetry, daemon=True)
         self.reader_thread.start()
 
     def _read_telemetry(self):
-        """Reads the 1-byte position updates sent by the FPGA 10 times/sec."""
         while self.running:
             if self.ser.in_waiting > 0:
                 data = self.ser.read(1)
-                self.current_position = int.from_bytes(data, byteorder='big')
-                # Optional: Clear screen and print status
-                print(f"\rCurrent Position: {self.current_position}m | Target: {self.target}m", end="")
+                self.current_pos_cm = int.from_bytes(data, byteorder='big')
+                sys.stdout.write(f"\r[Status] Mode: {self.last_mode} | Position: {self.current_pos_cm} cm   ")
+                sys.stdout.flush()
+
+    def send_packet(self, cmd, val):
+        # 0xAA is the security header
+        self.ser.write(bytearray([0xAA, cmd, val]))
 
     def set_position(self, meters):
-        """Sends Command 0x01: Set Target Position."""
-        if 0 <= meters <= 90:
-            self.target = meters
-            self.ser.write(bytearray([0x01, meters]))
-        else:
-            print("Position must be between 0 and 90m")
+        self.last_mode = "AUTO"
+        self.send_packet(0x01, meters)
 
-    def set_manual_mode(self, mode_id):
-        """Sends Command 0x02: Manual Control.
-        0=Stop, 1=Slow Fwd, 2=Fast Fwd, 3=Slow Back, 4=Fast Back, 5=Brake
-        """
-        self.ser.write(bytearray([0x02, mode_id]))
+    def set_manual(self, mode_id):
+        modes = ["STOP/BRAKE", "SLOW_FWD", "FAST_FWD", "SLOW_BACK", "FAST_BACK", "HARD_BRAKE"]
+        self.last_mode = f"MANUAL({modes[mode_id]})"
+        self.send_packet(0x02, mode_id)
 
-    def reset_stuck(self):
-        """Sends Command 0xFF: Clear stuck detector/shutdown."""
-        self.ser.write(bytearray([0xFF, 0x00]))
-        print("\nReset command sent.")
+    def reset_safety(self):
+        self.send_packet(0xFF, 0x00)
+        print("\n[*] Reset command sent.")
 
-    def close(self):
-        self.running = False
-        self.ser.close()
-
-# --- MAIN INTERFACE ---
+# --- MAIN ---
 if __name__ == "__main__":
-    ctrl = MotorController(COM_PORT, BAUD_RATE)
-    ctrl.target = 0
-
-    print("\n--- FPGA Target Retrieval Controller ---")
-    print("Commands:")
-    print("  p [val] : Set Position (0-90m)")
-    print("  m [0-5] : Manual (0:Stop, 1:S_Fwd, 2:F_Fwd, 3:S_Back, 4:F_Back, 5:Brake)")
-    print("  r       : Reset Stuck Status")
-    print("  q       : Quit\n")
-
+    ctrl = FPGAController(COM_PORT, BAUD_RATE)
+    print("\nCommands: p <m>, m <0-5>, r (Reset), q (Quit)")
     try:
         while True:
-            cmd_input = input("\nEnter command: ").split()
-            if not cmd_input: continue
-            
-            char = cmd_input[0].lower()
-
-            if char == 'p' and len(cmd_input) > 1:
-                ctrl.set_position(int(cmd_input[1]))
-            elif char == 'm' and len(cmd_input) > 1:
-                ctrl.set_manual_mode(int(cmd_input[1]))
-            elif char == 'r':
-                ctrl.reset_stuck()
-            elif char == 'q':
-                break
-            else:
-                print("Invalid command.")
-
-    except KeyboardInterrupt:
-        pass
+            inp = input("\n> ").split()
+            if not inp: continue
+            if inp[0] == 'p': ctrl.set_position(int(inp[1]))
+            elif inp[0] == 'm': ctrl.set_manual(int(inp[1]))
+            elif inp[0] == 'r': ctrl.reset_safety()
+            elif inp[0] == 'q': break
     finally:
-        ctrl.close()
-        print("\nDisconnected.")
+        ctrl.ser.close()
