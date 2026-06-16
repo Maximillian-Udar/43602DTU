@@ -10,6 +10,7 @@ class MotorDriver extends Module {
         val photo_diode_B    = Input(Bool())
         val over_current_pos = Input(Bool())
         val over_current_neg = Input(Bool())
+        val error_cleared    = Input(Bool())
         // Outputs
         val uart_tx          = Output(Bool())
         val T1               = Output(Bool()) 
@@ -23,13 +24,16 @@ class MotorDriver extends Module {
     val pidWidth = 32
     val pidBP    = 12
 
-    val rx               = Module(new UartRx)
-    val tx               = Module(new UartTx)
-    val rotation_counter = Module(new RotationCounter)
-    val pwm_gen          = Module(new DCMotorPwm)
-    val pid              = Module(new PIDController(pidWidth, pidBP))
-    val stuck_detector   = Module(new StuckDetector)
-    val disp_mux         = Module(new DisplayMultiplexer)
+    val rx                   = Module(new UartRx)
+    val tx                   = Module(new UartTx)
+    val rotation_counter     = Module(new RotationCounter)
+    val pwm_gen              = Module(new DCMotorPwm)
+    val pid                  = Module(new PIDController(pidWidth, pidBP))
+    val stuck_detector       = Module(new StuckDetector)
+    val disp_mux             = Module(new DisplayMultiplexer)
+    val error_clear_debounce = Module(new Debouncer)
+
+    error_clear_debounce.io.btn_in := io.error_cleared
 
     disp_mux.io.dots := "b0000".U
     disp_mux.io.disp_content := Cat(SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt, SegSymbol.Blank.asUInt)
@@ -92,7 +96,7 @@ class MotorDriver extends Module {
     val pid_duty = (pid_duty_shifted.asUInt >> 2)(9, 0)
 
     stuck_detector.io.externalOvercurrentInput := (io.over_current_pos || io.over_current_neg)
-    stuck_detector.io.clearShutdown            := (rx.io.done && cmdByte === 0xFF.U)
+    stuck_detector.io.clearShutdown            := ((rx.io.done && cmdByte === 0xFF.U) || error_clear_debounce.io.out)
 
     pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
     val brake_active = (stuck_detector.io.motorDisable || manual_brake)

@@ -106,7 +106,7 @@ class PIDController(val w: Int, val f: Int) extends Module {
   val dTerm = RegNext(io.kd * (errorReg - prevErrorReg))
   prevErrorReg := errorReg
 
-  val rawOutput = pTerm + integralReg + dTerm
+  val rawOutput = RegNext(pTerm + integralReg + dTerm)
   io.controlOut := Mux(rawOutput > limit_pos, limit_pos, 
                    Mux(rawOutput < limit_neg, limit_neg, rawOutput))
 }

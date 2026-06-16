@@ -476,6 +476,7 @@ module PIDController(
   reg [63:0] _RAND_4;
   reg [31:0] _RAND_5;
   reg [63:0] _RAND_6;
+  reg [63:0] _RAND_7;
 `endif // RANDOMIZE_REG_INIT
   reg [31:0] errorReg; // @[\\src\\main\\scala\\Functions.scala 89:25]
   reg [63:0] pTerm; // @[\\src\\main\\scala\\Functions.scala 90:22]
@@ -490,8 +491,8 @@ module PIDController(
   reg [31:0] prevErrorReg; // @[\\src\\main\\scala\\Functions.scala 105:29]
   wire [31:0] _dTerm_T_2 = $signed(errorReg) - $signed(prevErrorReg); // @[\\src\\main\\scala\\Functions.scala 106:41]
   reg [63:0] dTerm; // @[\\src\\main\\scala\\Functions.scala 106:22]
-  wire [63:0] _rawOutput_T_2 = $signed(pTerm) + $signed(_GEN_2); // @[\\src\\main\\scala\\Functions.scala 109:25]
-  wire [63:0] rawOutput = $signed(_rawOutput_T_2) + $signed(dTerm); // @[\\src\\main\\scala\\Functions.scala 109:39]
+  wire [63:0] _rawOutput_T_2 = $signed(pTerm) + $signed(_GEN_2); // @[\\src\\main\\scala\\Functions.scala 109:33]
+  reg [63:0] rawOutput; // @[\\src\\main\\scala\\Functions.scala 109:26]
   wire [63:0] _io_controlOut_T_2 = $signed(rawOutput) < -64'sh800000 ? $signed(-64'sh800000) : $signed(rawOutput); // @[\\src\\main\\scala\\Functions.scala 111:23]
   wire [63:0] _io_controlOut_T_3 = $signed(rawOutput) > 64'sh800000 ? $signed(64'sh800000) : $signed(_io_controlOut_T_2)
     ; // @[\\src\\main\\scala\\Functions.scala 110:23]
@@ -510,6 +511,7 @@ module PIDController(
       prevErrorReg <= errorReg; // @[\\src\\main\\scala\\Functions.scala 107:16]
     end
     dTerm <= 32'sh1000 * $signed(_dTerm_T_2); // @[\\src\\main\\scala\\Functions.scala 106:29]
+    rawOutput <= $signed(_rawOutput_T_2) + $signed(dTerm); // @[\\src\\main\\scala\\Functions.scala 109:47]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -561,6 +563,8 @@ initial begin
   prevErrorReg = _RAND_5[31:0];
   _RAND_6 = {2{`RANDOM}};
   dTerm = _RAND_6[63:0];
+  _RAND_7 = {2{`RANDOM}};
+  rawOutput = _RAND_7[63:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -794,6 +798,98 @@ end // initial
 `endif
 `endif // SYNTHESIS
 endmodule
+module Debouncer(
+  input   clock,
+  input   reset,
+  input   io_btn_in, // @[\\src\\main\\scala\\Functions.scala 270:14]
+  output  io_out // @[\\src\\main\\scala\\Functions.scala 270:14]
+);
+`ifdef RANDOMIZE_REG_INIT
+  reg [31:0] _RAND_0;
+  reg [31:0] _RAND_1;
+  reg [31:0] _RAND_2;
+  reg [31:0] _RAND_3;
+  reg [31:0] _RAND_4;
+`endif // RANDOMIZE_REG_INIT
+  reg  btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 275:33]
+  reg  btn_sync; // @[\\src\\main\\scala\\Functions.scala 275:25]
+  reg  btnDebReg; // @[\\src\\main\\scala\\Functions.scala 276:26]
+  reg [31:0] cntReg; // @[\\src\\main\\scala\\Functions.scala 277:23]
+  wire  tick = cntReg == 32'h1869f; // @[\\src\\main\\scala\\Functions.scala 278:21]
+  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 280:20]
+  reg  btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 286:29]
+  assign io_out = btnDebReg & ~btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 287:23]
+  always @(posedge clock) begin
+    btn_sync_REG <= io_btn_in; // @[\\src\\main\\scala\\Functions.scala 275:33]
+    btn_sync <= btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 275:25]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 276:26]
+      btnDebReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 276:26]
+    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 281:15]
+      btnDebReg <= btn_sync; // @[\\src\\main\\scala\\Functions.scala 283:15]
+    end
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 277:23]
+      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 277:23]
+    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 281:15]
+      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 282:12]
+    end else begin
+      cntReg <= _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 280:10]
+    end
+    btnCleanPrev <= btnDebReg; // @[\\src\\main\\scala\\Functions.scala 286:29]
+  end
+// Register and memory initialization
+`ifdef RANDOMIZE_GARBAGE_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_INVALID_ASSIGN
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_REG_INIT
+`define RANDOMIZE
+`endif
+`ifdef RANDOMIZE_MEM_INIT
+`define RANDOMIZE
+`endif
+`ifndef RANDOM
+`define RANDOM $random
+`endif
+`ifdef RANDOMIZE_MEM_INIT
+  integer initvar;
+`endif
+`ifndef SYNTHESIS
+`ifdef FIRRTL_BEFORE_INITIAL
+`FIRRTL_BEFORE_INITIAL
+`endif
+initial begin
+  `ifdef RANDOMIZE
+    `ifdef INIT_RANDOM
+      `INIT_RANDOM
+    `endif
+    `ifndef VERILATOR
+      `ifdef RANDOMIZE_DELAY
+        #`RANDOMIZE_DELAY begin end
+      `else
+        #0.002 begin end
+      `endif
+    `endif
+`ifdef RANDOMIZE_REG_INIT
+  _RAND_0 = {1{`RANDOM}};
+  btn_sync_REG = _RAND_0[0:0];
+  _RAND_1 = {1{`RANDOM}};
+  btn_sync = _RAND_1[0:0];
+  _RAND_2 = {1{`RANDOM}};
+  btnDebReg = _RAND_2[0:0];
+  _RAND_3 = {1{`RANDOM}};
+  cntReg = _RAND_3[31:0];
+  _RAND_4 = {1{`RANDOM}};
+  btnCleanPrev = _RAND_4[0:0];
+`endif // RANDOMIZE_REG_INIT
+  `endif // RANDOMIZE
+end // initial
+`ifdef FIRRTL_AFTER_INITIAL
+`FIRRTL_AFTER_INITIAL
+`endif
+`endif // SYNTHESIS
+endmodule
 module MotorDriver(
   input        clock,
   input        reset,
@@ -802,6 +898,7 @@ module MotorDriver(
   input        io_photo_diode_B, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
   input        io_over_current_pos, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
   input        io_over_current_neg, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
+  input        io_error_cleared, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
   output       io_uart_tx, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
   output       io_T1, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
   output       io_T2, // @[\\src\\main\\scala\\MotorDriver.scala 6:16]
@@ -819,86 +916,90 @@ module MotorDriver(
   reg [31:0] _RAND_5;
   reg [31:0] _RAND_6;
 `endif // RANDOMIZE_REG_INIT
-  wire  rx_clock; // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
-  wire  rx_reset; // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
-  wire  rx_io_rx; // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
-  wire  rx_io_done; // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
-  wire [7:0] rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
-  wire  tx_clock; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire  tx_reset; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire [7:0] tx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire  tx_io_start; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire  tx_io_tx; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire  tx_io_busy; // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
-  wire  rotation_counter_clock; // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
-  wire  rotation_counter_reset; // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
-  wire  rotation_counter_io_signal_A; // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
-  wire  rotation_counter_io_signal_B; // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
-  wire [31:0] rotation_counter_io_turns; // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
-  wire  pwm_gen_clock; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_reset; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire [9:0] pwm_gen_io_duty_cycle; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_io_brake; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_io_T1; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_io_T2; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_io_T3; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pwm_gen_io_T4; // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
-  wire  pid_clock; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire  pid_reset; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire [31:0] pid_io_setPoint; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire [31:0] pid_io_measuredVal; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire  pid_io_resetBuffer; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire [31:0] pid_io_controlOut; // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
-  wire  stuck_detector_clock; // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
-  wire  stuck_detector_reset; // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
-  wire  stuck_detector_io_externalOvercurrentInput; // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
-  wire  stuck_detector_io_clearShutdown; // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
-  wire  stuck_detector_io_motorDisable; // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
-  wire  disp_mux_clock; // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
-  wire  disp_mux_reset; // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
-  wire [19:0] disp_mux_io_disp_content; // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
-  wire [7:0] disp_mux_io_seg; // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
-  wire [3:0] disp_mux_io_an; // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
-  reg [7:0] target_position; // @[\\src\\main\\scala\\MotorDriver.scala 41:34]
-  reg [9:0] manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 42:34]
-  reg  control_mode; // @[\\src\\main\\scala\\MotorDriver.scala 43:34]
-  reg  manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 44:34]
-  reg [7:0] cmdByte; // @[\\src\\main\\scala\\MotorDriver.scala 47:26]
-  reg  isValueByte; // @[\\src\\main\\scala\\MotorDriver.scala 48:30]
-  wire  _T = ~isValueByte; // @[\\src\\main\\scala\\MotorDriver.scala 51:14]
-  wire  _GEN_0 = 8'h5 == rx_io_data | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 44:34 63:40 69:48]
-  wire [9:0] _GEN_1 = 8'h4 == rx_io_data ? 10'h7c : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 42:34 63:40 68:48]
-  wire  _GEN_2 = 8'h4 == rx_io_data ? 1'h0 : _GEN_0; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 68:71]
-  wire [9:0] _GEN_3 = 8'h3 == rx_io_data ? 10'h176 : _GEN_1; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 67:48]
-  wire  _GEN_4 = 8'h3 == rx_io_data ? 1'h0 : _GEN_2; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 67:71]
-  wire [9:0] _GEN_5 = 8'h2 == rx_io_data ? 10'h384 : _GEN_3; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 66:48]
-  wire  _GEN_6 = 8'h2 == rx_io_data ? 1'h0 : _GEN_4; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 66:71]
-  wire [9:0] _GEN_7 = 8'h1 == rx_io_data ? 10'h28a : _GEN_5; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 65:48]
-  wire  _GEN_8 = 8'h1 == rx_io_data ? 1'h0 : _GEN_6; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 65:71]
-  wire [9:0] _GEN_9 = 8'h0 == rx_io_data ? 10'h200 : _GEN_7; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 64:48]
-  wire  _GEN_10 = 8'h0 == rx_io_data ? 1'h0 : _GEN_8; // @[\\src\\main\\scala\\MotorDriver.scala 63:40 64:71]
-  wire  _GEN_11 = 8'h2 == cmdByte ? 1'h0 : control_mode; // @[\\src\\main\\scala\\MotorDriver.scala 55:29 43:34 62:34]
-  wire [9:0] _GEN_12 = 8'h2 == cmdByte ? _GEN_9 : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 55:29 42:34]
-  wire  _GEN_13 = 8'h2 == cmdByte ? _GEN_10 : manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 55:29 44:34]
-  wire  _GEN_15 = 8'h1 == cmdByte | _GEN_11; // @[\\src\\main\\scala\\MotorDriver.scala 55:29 58:34]
-  wire [42:0] _current_pos_m_T = rotation_counter_io_turns * 11'h576; // @[\\src\\main\\scala\\MotorDriver.scala 80:52]
-  wire [22:0] current_pos_m = _current_pos_m_T[42:20]; // @[\\src\\main\\scala\\MotorDriver.scala 80:62]
-  wire [7:0] _pid_io_setPoint_T = target_position; // @[\\src\\main\\scala\\MotorDriver.scala 82:55]
-  wire [22:0] _pid_io_measuredVal_T = _current_pos_m_T[42:20]; // @[\\src\\main\\scala\\MotorDriver.scala 83:53]
-  wire [31:0] _pid_duty_T = $signed(pid_io_controlOut) + 32'sh800; // @[\\src\\main\\scala\\MotorDriver.scala 92:38]
-  wire [9:0] pid_duty = _pid_duty_T[11:2]; // @[\\src\\main\\scala\\MotorDriver.scala 92:50]
-  wire  brake_active = stuck_detector_io_motorDisable | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 98:56]
-  reg [23:0] txTimer; // @[\\src\\main\\scala\\MotorDriver.scala 111:26]
-  wire  _T_10 = ~tx_io_busy; // @[\\src\\main\\scala\\MotorDriver.scala 115:14]
-  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\MotorDriver.scala 119:38]
-  UartRx rx ( // @[\\src\\main\\scala\\MotorDriver.scala 26:34]
+  wire  rx_clock; // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
+  wire  rx_reset; // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
+  wire  rx_io_rx; // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
+  wire  rx_io_done; // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
+  wire [7:0] rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
+  wire  tx_clock; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire  tx_reset; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire [7:0] tx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire  tx_io_start; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire  tx_io_tx; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire  tx_io_busy; // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
+  wire  rotation_counter_clock; // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
+  wire  rotation_counter_reset; // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
+  wire  rotation_counter_io_signal_A; // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
+  wire  rotation_counter_io_signal_B; // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
+  wire [31:0] rotation_counter_io_turns; // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
+  wire  pwm_gen_clock; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_reset; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire [9:0] pwm_gen_io_duty_cycle; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_io_brake; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_io_T1; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_io_T2; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_io_T3; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pwm_gen_io_T4; // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
+  wire  pid_clock; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire  pid_reset; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire [31:0] pid_io_setPoint; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire [31:0] pid_io_measuredVal; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire  pid_io_resetBuffer; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire [31:0] pid_io_controlOut; // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
+  wire  stuck_detector_clock; // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
+  wire  stuck_detector_reset; // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
+  wire  stuck_detector_io_externalOvercurrentInput; // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
+  wire  stuck_detector_io_clearShutdown; // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
+  wire  stuck_detector_io_motorDisable; // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
+  wire  disp_mux_clock; // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
+  wire  disp_mux_reset; // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
+  wire [19:0] disp_mux_io_disp_content; // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
+  wire [7:0] disp_mux_io_seg; // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
+  wire [3:0] disp_mux_io_an; // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
+  wire  error_clear_debounce_clock; // @[\\src\\main\\scala\\MotorDriver.scala 34:38]
+  wire  error_clear_debounce_reset; // @[\\src\\main\\scala\\MotorDriver.scala 34:38]
+  wire  error_clear_debounce_io_btn_in; // @[\\src\\main\\scala\\MotorDriver.scala 34:38]
+  wire  error_clear_debounce_io_out; // @[\\src\\main\\scala\\MotorDriver.scala 34:38]
+  reg [7:0] target_position; // @[\\src\\main\\scala\\MotorDriver.scala 45:34]
+  reg [9:0] manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 46:34]
+  reg  control_mode; // @[\\src\\main\\scala\\MotorDriver.scala 47:34]
+  reg  manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 48:34]
+  reg [7:0] cmdByte; // @[\\src\\main\\scala\\MotorDriver.scala 51:26]
+  reg  isValueByte; // @[\\src\\main\\scala\\MotorDriver.scala 52:30]
+  wire  _T = ~isValueByte; // @[\\src\\main\\scala\\MotorDriver.scala 55:14]
+  wire  _GEN_0 = 8'h5 == rx_io_data | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 48:34 67:40 73:48]
+  wire [9:0] _GEN_1 = 8'h4 == rx_io_data ? 10'h7c : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 46:34 67:40 72:48]
+  wire  _GEN_2 = 8'h4 == rx_io_data ? 1'h0 : _GEN_0; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 72:71]
+  wire [9:0] _GEN_3 = 8'h3 == rx_io_data ? 10'h176 : _GEN_1; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 71:48]
+  wire  _GEN_4 = 8'h3 == rx_io_data ? 1'h0 : _GEN_2; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 71:71]
+  wire [9:0] _GEN_5 = 8'h2 == rx_io_data ? 10'h384 : _GEN_3; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 70:48]
+  wire  _GEN_6 = 8'h2 == rx_io_data ? 1'h0 : _GEN_4; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 70:71]
+  wire [9:0] _GEN_7 = 8'h1 == rx_io_data ? 10'h28a : _GEN_5; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 69:48]
+  wire  _GEN_8 = 8'h1 == rx_io_data ? 1'h0 : _GEN_6; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 69:71]
+  wire [9:0] _GEN_9 = 8'h0 == rx_io_data ? 10'h200 : _GEN_7; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 68:48]
+  wire  _GEN_10 = 8'h0 == rx_io_data ? 1'h0 : _GEN_8; // @[\\src\\main\\scala\\MotorDriver.scala 67:40 68:71]
+  wire  _GEN_11 = 8'h2 == cmdByte ? 1'h0 : control_mode; // @[\\src\\main\\scala\\MotorDriver.scala 59:29 47:34 66:34]
+  wire [9:0] _GEN_12 = 8'h2 == cmdByte ? _GEN_9 : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 59:29 46:34]
+  wire  _GEN_13 = 8'h2 == cmdByte ? _GEN_10 : manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 59:29 48:34]
+  wire  _GEN_15 = 8'h1 == cmdByte | _GEN_11; // @[\\src\\main\\scala\\MotorDriver.scala 59:29 62:34]
+  wire [42:0] _current_pos_m_T = rotation_counter_io_turns * 11'h576; // @[\\src\\main\\scala\\MotorDriver.scala 84:52]
+  wire [22:0] current_pos_m = _current_pos_m_T[42:20]; // @[\\src\\main\\scala\\MotorDriver.scala 84:62]
+  wire [7:0] _pid_io_setPoint_T = target_position; // @[\\src\\main\\scala\\MotorDriver.scala 86:55]
+  wire [22:0] _pid_io_measuredVal_T = _current_pos_m_T[42:20]; // @[\\src\\main\\scala\\MotorDriver.scala 87:53]
+  wire [31:0] _pid_duty_T = $signed(pid_io_controlOut) + 32'sh800; // @[\\src\\main\\scala\\MotorDriver.scala 96:38]
+  wire [9:0] pid_duty = _pid_duty_T[11:2]; // @[\\src\\main\\scala\\MotorDriver.scala 96:50]
+  wire  brake_active = stuck_detector_io_motorDisable | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 102:56]
+  reg [23:0] txTimer; // @[\\src\\main\\scala\\MotorDriver.scala 115:26]
+  wire  _T_10 = ~tx_io_busy; // @[\\src\\main\\scala\\MotorDriver.scala 119:14]
+  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\MotorDriver.scala 123:38]
+  UartRx rx ( // @[\\src\\main\\scala\\MotorDriver.scala 27:38]
     .clock(rx_clock),
     .reset(rx_reset),
     .io_rx(rx_io_rx),
     .io_done(rx_io_done),
     .io_data(rx_io_data)
   );
-  UartTx tx ( // @[\\src\\main\\scala\\MotorDriver.scala 27:34]
+  UartTx tx ( // @[\\src\\main\\scala\\MotorDriver.scala 28:38]
     .clock(tx_clock),
     .reset(tx_reset),
     .io_data(tx_io_data),
@@ -906,14 +1007,14 @@ module MotorDriver(
     .io_tx(tx_io_tx),
     .io_busy(tx_io_busy)
   );
-  RotationCounter rotation_counter ( // @[\\src\\main\\scala\\MotorDriver.scala 28:34]
+  RotationCounter rotation_counter ( // @[\\src\\main\\scala\\MotorDriver.scala 29:38]
     .clock(rotation_counter_clock),
     .reset(rotation_counter_reset),
     .io_signal_A(rotation_counter_io_signal_A),
     .io_signal_B(rotation_counter_io_signal_B),
     .io_turns(rotation_counter_io_turns)
   );
-  DCMotorPwm pwm_gen ( // @[\\src\\main\\scala\\MotorDriver.scala 29:34]
+  DCMotorPwm pwm_gen ( // @[\\src\\main\\scala\\MotorDriver.scala 30:38]
     .clock(pwm_gen_clock),
     .reset(pwm_gen_reset),
     .io_duty_cycle(pwm_gen_io_duty_cycle),
@@ -923,7 +1024,7 @@ module MotorDriver(
     .io_T3(pwm_gen_io_T3),
     .io_T4(pwm_gen_io_T4)
   );
-  PIDController pid ( // @[\\src\\main\\scala\\MotorDriver.scala 30:34]
+  PIDController pid ( // @[\\src\\main\\scala\\MotorDriver.scala 31:38]
     .clock(pid_clock),
     .reset(pid_reset),
     .io_setPoint(pid_io_setPoint),
@@ -931,111 +1032,120 @@ module MotorDriver(
     .io_resetBuffer(pid_io_resetBuffer),
     .io_controlOut(pid_io_controlOut)
   );
-  StuckDetector stuck_detector ( // @[\\src\\main\\scala\\MotorDriver.scala 31:34]
+  StuckDetector stuck_detector ( // @[\\src\\main\\scala\\MotorDriver.scala 32:38]
     .clock(stuck_detector_clock),
     .reset(stuck_detector_reset),
     .io_externalOvercurrentInput(stuck_detector_io_externalOvercurrentInput),
     .io_clearShutdown(stuck_detector_io_clearShutdown),
     .io_motorDisable(stuck_detector_io_motorDisable)
   );
-  DisplayMultiplexer disp_mux ( // @[\\src\\main\\scala\\MotorDriver.scala 32:34]
+  DisplayMultiplexer disp_mux ( // @[\\src\\main\\scala\\MotorDriver.scala 33:38]
     .clock(disp_mux_clock),
     .reset(disp_mux_reset),
     .io_disp_content(disp_mux_io_disp_content),
     .io_seg(disp_mux_io_seg),
     .io_an(disp_mux_io_an)
   );
-  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\MotorDriver.scala 120:16]
-  assign io_T1 = pwm_gen_io_T1; // @[\\src\\main\\scala\\MotorDriver.scala 106:11]
-  assign io_T2 = pwm_gen_io_T2; // @[\\src\\main\\scala\\MotorDriver.scala 107:11]
-  assign io_T3 = pwm_gen_io_T3; // @[\\src\\main\\scala\\MotorDriver.scala 108:11]
-  assign io_T4 = pwm_gen_io_T4; // @[\\src\\main\\scala\\MotorDriver.scala 109:11]
-  assign io_seg = disp_mux_io_seg; // @[\\src\\main\\scala\\MotorDriver.scala 39:12]
-  assign io_an = disp_mux_io_an; // @[\\src\\main\\scala\\MotorDriver.scala 38:11]
+  Debouncer error_clear_debounce ( // @[\\src\\main\\scala\\MotorDriver.scala 34:38]
+    .clock(error_clear_debounce_clock),
+    .reset(error_clear_debounce_reset),
+    .io_btn_in(error_clear_debounce_io_btn_in),
+    .io_out(error_clear_debounce_io_out)
+  );
+  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\MotorDriver.scala 124:16]
+  assign io_T1 = pwm_gen_io_T1; // @[\\src\\main\\scala\\MotorDriver.scala 110:11]
+  assign io_T2 = pwm_gen_io_T2; // @[\\src\\main\\scala\\MotorDriver.scala 111:11]
+  assign io_T3 = pwm_gen_io_T3; // @[\\src\\main\\scala\\MotorDriver.scala 112:11]
+  assign io_T4 = pwm_gen_io_T4; // @[\\src\\main\\scala\\MotorDriver.scala 113:11]
+  assign io_seg = disp_mux_io_seg; // @[\\src\\main\\scala\\MotorDriver.scala 43:12]
+  assign io_an = disp_mux_io_an; // @[\\src\\main\\scala\\MotorDriver.scala 42:11]
   assign rx_clock = clock;
   assign rx_reset = reset;
-  assign rx_io_rx = io_uart_rx; // @[\\src\\main\\scala\\MotorDriver.scala 46:14]
+  assign rx_io_rx = io_uart_rx; // @[\\src\\main\\scala\\MotorDriver.scala 50:14]
   assign tx_clock = clock;
   assign tx_reset = reset;
-  assign tx_io_data = current_pos_m[7:0]; // @[\\src\\main\\scala\\MotorDriver.scala 112:33]
-  assign tx_io_start = txTimer >= 24'h989680 & _T_10; // @[\\src\\main\\scala\\MotorDriver.scala 113:17 114:33]
+  assign tx_io_data = current_pos_m[7:0]; // @[\\src\\main\\scala\\MotorDriver.scala 116:33]
+  assign tx_io_start = txTimer >= 24'h989680 & _T_10; // @[\\src\\main\\scala\\MotorDriver.scala 117:17 118:33]
   assign rotation_counter_clock = clock;
   assign rotation_counter_reset = reset;
-  assign rotation_counter_io_signal_A = io_photo_diode_A; // @[\\src\\main\\scala\\MotorDriver.scala 77:34]
-  assign rotation_counter_io_signal_B = io_photo_diode_B; // @[\\src\\main\\scala\\MotorDriver.scala 78:34]
+  assign rotation_counter_io_signal_A = io_photo_diode_A; // @[\\src\\main\\scala\\MotorDriver.scala 81:34]
+  assign rotation_counter_io_signal_B = io_photo_diode_B; // @[\\src\\main\\scala\\MotorDriver.scala 82:34]
   assign pwm_gen_clock = clock;
   assign pwm_gen_reset = reset;
-  assign pwm_gen_io_duty_cycle = control_mode ? pid_duty : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 97:33]
-  assign pwm_gen_io_brake = stuck_detector_io_motorDisable | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 98:56]
+  assign pwm_gen_io_duty_cycle = control_mode ? pid_duty : manual_speed; // @[\\src\\main\\scala\\MotorDriver.scala 101:33]
+  assign pwm_gen_io_brake = stuck_detector_io_motorDisable | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 102:56]
   assign pid_clock = clock;
   assign pid_reset = reset;
-  assign pid_io_setPoint = {{24{_pid_io_setPoint_T[7]}},_pid_io_setPoint_T}; // @[\\src\\main\\scala\\MotorDriver.scala 82:24]
-  assign pid_io_measuredVal = {{9{_pid_io_measuredVal_T[22]}},_pid_io_measuredVal_T}; // @[\\src\\main\\scala\\MotorDriver.scala 83:24]
-  assign pid_io_resetBuffer = ~control_mode | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 84:41]
+  assign pid_io_setPoint = {{24{_pid_io_setPoint_T[7]}},_pid_io_setPoint_T}; // @[\\src\\main\\scala\\MotorDriver.scala 86:24]
+  assign pid_io_measuredVal = {{9{_pid_io_measuredVal_T[22]}},_pid_io_measuredVal_T}; // @[\\src\\main\\scala\\MotorDriver.scala 87:24]
+  assign pid_io_resetBuffer = ~control_mode | manual_brake; // @[\\src\\main\\scala\\MotorDriver.scala 88:41]
   assign stuck_detector_clock = clock;
   assign stuck_detector_reset = reset;
-  assign stuck_detector_io_externalOvercurrentInput = io_over_current_pos | io_over_current_neg; // @[\\src\\main\\scala\\MotorDriver.scala 94:72]
-  assign stuck_detector_io_clearShutdown = rx_io_done & cmdByte == 8'hff; // @[\\src\\main\\scala\\MotorDriver.scala 95:63]
+  assign stuck_detector_io_externalOvercurrentInput = io_over_current_pos | io_over_current_neg; // @[\\src\\main\\scala\\MotorDriver.scala 98:72]
+  assign stuck_detector_io_clearShutdown = rx_io_done & cmdByte == 8'hff | error_clear_debounce_io_out; // @[\\src\\main\\scala\\MotorDriver.scala 99:87]
   assign disp_mux_clock = clock;
   assign disp_mux_reset = reset;
-  assign disp_mux_io_disp_content = brake_active ? 20'hd6ed7 : 20'hef7bd; // @[\\src\\main\\scala\\MotorDriver.scala 102:25 103:34 35:30]
+  assign disp_mux_io_disp_content = brake_active ? 20'hd6ed7 : 20'hef7bd; // @[\\src\\main\\scala\\MotorDriver.scala 106:25 107:34 39:30]
+  assign error_clear_debounce_clock = clock;
+  assign error_clear_debounce_reset = reset;
+  assign error_clear_debounce_io_btn_in = io_error_cleared; // @[\\src\\main\\scala\\MotorDriver.scala 36:36]
   always @(posedge clock) begin
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 41:34]
-      target_position <= 8'h0; // @[\\src\\main\\scala\\MotorDriver.scala 41:34]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
-      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:28]
-        if (8'h1 == cmdByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:29]
-          target_position <= rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 57:37]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 45:34]
+      target_position <= 8'h0; // @[\\src\\main\\scala\\MotorDriver.scala 45:34]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
+      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:28]
+        if (8'h1 == cmdByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 59:29]
+          target_position <= rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 61:37]
         end
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 42:34]
-      manual_speed <= 10'h200; // @[\\src\\main\\scala\\MotorDriver.scala 42:34]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
-      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:28]
-        if (!(8'h1 == cmdByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:29]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 46:34]
+      manual_speed <= 10'h200; // @[\\src\\main\\scala\\MotorDriver.scala 46:34]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
+      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:28]
+        if (!(8'h1 == cmdByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 59:29]
           manual_speed <= _GEN_12;
         end
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 43:34]
-      control_mode <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 43:34]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
-      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:28]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 47:34]
+      control_mode <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 47:34]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
+      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:28]
         control_mode <= _GEN_15;
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 44:34]
-      manual_brake <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 44:34]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
-      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:28]
-        if (8'h1 == cmdByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:29]
-          manual_brake <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 59:34]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 48:34]
+      manual_brake <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 48:34]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
+      if (!(~isValueByte)) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:28]
+        if (8'h1 == cmdByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 59:29]
+          manual_brake <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 63:34]
         end else begin
           manual_brake <= _GEN_13;
         end
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 47:26]
-      cmdByte <= 8'h0; // @[\\src\\main\\scala\\MotorDriver.scala 47:26]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
-      if (~isValueByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:28]
-        cmdByte <= rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 52:21]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 51:26]
+      cmdByte <= 8'h0; // @[\\src\\main\\scala\\MotorDriver.scala 51:26]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
+      if (~isValueByte) begin // @[\\src\\main\\scala\\MotorDriver.scala 55:28]
+        cmdByte <= rx_io_data; // @[\\src\\main\\scala\\MotorDriver.scala 56:21]
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 48:30]
-      isValueByte <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 48:30]
-    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 50:22]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 52:30]
+      isValueByte <= 1'h0; // @[\\src\\main\\scala\\MotorDriver.scala 52:30]
+    end else if (rx_io_done) begin // @[\\src\\main\\scala\\MotorDriver.scala 54:22]
       isValueByte <= _T;
     end
-    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 111:26]
-      txTimer <= 24'h0; // @[\\src\\main\\scala\\MotorDriver.scala 111:26]
-    end else if (txTimer >= 24'h989680) begin // @[\\src\\main\\scala\\MotorDriver.scala 114:33]
-      if (~tx_io_busy) begin // @[\\src\\main\\scala\\MotorDriver.scala 115:27]
-        txTimer <= 24'h0; // @[\\src\\main\\scala\\MotorDriver.scala 117:21]
+    if (reset) begin // @[\\src\\main\\scala\\MotorDriver.scala 115:26]
+      txTimer <= 24'h0; // @[\\src\\main\\scala\\MotorDriver.scala 115:26]
+    end else if (txTimer >= 24'h989680) begin // @[\\src\\main\\scala\\MotorDriver.scala 118:33]
+      if (~tx_io_busy) begin // @[\\src\\main\\scala\\MotorDriver.scala 119:27]
+        txTimer <= 24'h0; // @[\\src\\main\\scala\\MotorDriver.scala 121:21]
       end
     end else begin
-      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\MotorDriver.scala 119:27]
+      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\MotorDriver.scala 123:27]
     end
   end
 // Register and memory initialization
