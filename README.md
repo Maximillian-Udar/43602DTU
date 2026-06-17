@@ -8,11 +8,11 @@
     - Pin L2 (Second from right, bottom row): Photo diode B
     - Pin J2 (Third from right, bottom row): Overcurrent Positive
     - Pin G2 (Fourth from right, bottom row- closest to ground): Overcurrent Negative
-    *** Note: This bank requires a Ground (GND) to process the above signals
+    *** Note: This bank requires a Ground (GND) to process the above input signals
 
     Buttons:
         - Pin U18 (Middle button): Hardware reset
-        - Pin T18 (Top button): Error cleared
+        - Pin T18 (Top button): Clear error button
 
 
 ## Outputs (Wires):
