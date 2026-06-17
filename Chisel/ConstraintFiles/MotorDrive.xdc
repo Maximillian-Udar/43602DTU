@@ -101,10 +101,10 @@ set_property PACKAGE_PIN A18 [get_ports io_uart_tx]
 
 
 ##Pmod Header JA
-set_property PACKAGE_PIN J1 [get_ports io_photo_diode_A]
-set_property PACKAGE_PIN L2 [get_ports io_photo_diode_B]
-set_property PACKAGE_PIN J2 [get_ports io_over_current_pos]
-set_property PACKAGE_PIN G2 [get_ports io_over_current_neg]
+set_property PACKAGE_PIN J1 [get_ports io_photo_sensor_A]
+set_property PACKAGE_PIN L2 [get_ports io_photo_sensor_B]
+set_property PACKAGE_PIN J2 [get_ports io_over_current_positive]
+set_property PACKAGE_PIN G2 [get_ports io_over_current_negative]
 #set_property PACKAGE_PIN H1 [get_ports {JA[4]}]
 #set_property PACKAGE_PIN K2 [get_ports {JA[5]}]
 #set_property PACKAGE_PIN H2 [get_ports {JA[6]}]
