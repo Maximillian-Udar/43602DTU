@@ -2,10 +2,6 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(1, 0.5, 0.1), Array("-td", "Verilog"))
-}
-
 class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
@@ -172,22 +168,20 @@ class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
   val io = IO(new Bundle {
       val external_overcurrent_input = Input(Bool())      
       val clear_shutdown            = Input(Bool()) 
-      val is_stuck                 = Output(Bool()) 
-      val motorDisable             = Output(Bool()) 
+      val motor_disable             = Output(Bool())
   })
   val clockFreqHz = 100000000
   val maxCycles   = (clockFreqHz / 1000).U * OverCurrentAllowance_ms.U
   val durationReg = RegInit(0.U(32.W))
   val isStuckReg  = RegInit(false.B)
-  when(io.clearShutdown) { isStuckReg := false.B; durationReg := 0.U }.otherwise {
+  when(io.clear_shutdown) { isStuckReg := false.B; durationReg := 0.U }.otherwise {
     when(!isStuckReg) {
-      when(io.externalOvercurrentInput) {
+      when(io.external_overcurrent_input) {
         when(durationReg >= maxCycles) { isStuckReg := true.B }.otherwise { durationReg := durationReg + 1.U }
       }.otherwise { durationReg := 0.U }
     }
   }
-  io.is_stuck := isStuckReg
-  io.motorDisable := isStuckReg
+  io.motor_disable := isStuckReg
 }
 
 class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {

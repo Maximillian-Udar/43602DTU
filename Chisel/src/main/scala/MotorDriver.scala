@@ -65,7 +65,7 @@ class MotorDriver(KP: Double, KI: Double, KD: Double) extends Module {
 
   rx.io.rx := io.uart_rx
   disp_mux.io.dots := 0.U
-  stuck_detector.io.externalOvercurrentInput := (io.over_current_pos || io.over_current_neg)
+  stuck_detector.io.external_overcurrent_input := (io.over_current_pos || io.over_current_neg)
 
   // UART Parser
   val sHeader :: sCmd :: sValue :: Nil = Enum(3)
@@ -94,7 +94,7 @@ class MotorDriver(KP: Double, KI: Double, KD: Double) extends Module {
       }
     }
   }
-  stuck_detector.io.clearShutdown := io.error_cleared || uart_reset
+  stuck_detector.io.clear_shutdown := io.error_cleared || uart_reset
 
   // --- 4. PID WITH STRICT DEADBAND (Stops oscillation) ---
   val error_abs = Mux(target_pos_cm > current_pos_cm, target_pos_cm - current_pos_cm, current_pos_cm - target_pos_cm)
@@ -111,7 +111,7 @@ class MotorDriver(KP: Double, KI: Double, KD: Double) extends Module {
   val pid_duty = Mux(near_target, 512.U, Mux(pid_duty_raw > 1023.U, 1023.U, pid_duty_raw(9,0)))
   
   pwm_gen.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
-  val is_stopped = manual_brake || stuck_detector.io.motorDisable || !system_active || near_target
+  val is_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || near_target
   pwm_gen.io.brake := is_stopped
 
   // HI-Z Conduct Logic

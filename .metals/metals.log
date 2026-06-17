@@ -6734,6 +6734,52 @@ WARNING: Unmatched cancel notification for request id 8071
 2026.06.15 15:05:38 INFO  shutting down Metals
 2026.06.15 15:05:39 INFO  Shut down connection with build server.
 2026.06.15 15:05:38 INFO  Exiting server
+2026.06.17 10:06:36 INFO  Database: jdbc:h2:file:/home/udar/43602DTU/.metals/metals (H2 2.4)[0m
+2026.06.17 10:06:36 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 10:06:36 INFO  Successfully validated 7 migrations (execution time 00:00.003s)[0m
+2026.06.17 10:06:36 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 10:06:36 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 10:06:47 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.17 10:06:47 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.17 10:06:47 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.17 10:06:47 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.17 10:06:47 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.17 10:06:57 INFO  Shutting down server[0m
+2026.06.17 10:06:57 INFO  Memory monitor stopped[0m
+2026.06.17 10:06:57 INFO  shutting down Metals[0m
+2026.06.17 10:06:57 INFO  Exiting server[0m
 2026.06.15 15:07:09 INFO  Started: Metals version 1.6.7 in folders 'C:\Users\maxim\My Drive\Uni, C:\Users\maxim\SwimBox, C:\Users\maxim\chisel-book, C:\Users\maxim\FPGA_Programs, C:\Users\maxim\43602DTU' for client Visual Studio Code 1.124.2.
 2026.06.15 15:07:09 INFO  Memory monitor started
 2026.06.15 15:07:12 INFO  Database: jdbc:h2:file:C:\Users\maxim\My Drive\Uni\.metals\metals (H2 2.4)
@@ -7605,6 +7651,157 @@ INFO: Unsupported notification method: $/setTrace
 Jun 16, 2026 10:47:16 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
 Jun 16, 2026 10:51:03 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.17 19:18:39 INFO  Started: Metals version 1.6.7 in folders '/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni, /home/udar/SwimBox, /home/udar/FPGA_Programs, /home/udar/43602DTU' for client Visual Studio Code 1.124.2.[0m
+2026.06.17 19:18:39 INFO  Memory monitor started[0m
+2026.06.17 19:18:40 INFO  Database: jdbc:h2:file:/home/udar/FPGA_Programs/.metals/metals (H2 2.4)[0m
+2026.06.17 19:18:40 INFO  Database: jdbc:h2:file:/home/udar/43602DTU/.metals/metals (H2 2.4)[0m
+2026.06.17 19:18:40 INFO  Database: jdbc:h2:file:/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/metals (H2 2.4)[0m
+2026.06.17 19:18:40 INFO  Database: jdbc:h2:file:/home/udar/SwimBox/.metals/metals (H2 2.4)[0m
+2026.06.17 19:18:40 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:18:40 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:18:40 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:18:40 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:18:40 INFO  Successfully validated 7 migrations (execution time 00:00.018s)[0m
+2026.06.17 19:18:40 INFO  Successfully validated 7 migrations (execution time 00:00.017s)[0m
+2026.06.17 19:18:40 INFO  Successfully validated 7 migrations (execution time 00:00.018s)[0m
+2026.06.17 19:18:40 INFO  Successfully validated 7 migrations (execution time 00:00.017s)[0m
+2026.06.17 19:18:40 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:18:40 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:18:40 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:18:40 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:18:40 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:18:40 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:18:40 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:18:40 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:18:41 INFO  Attempting to connect to the build server...[0m
+2026.06.17 19:18:41 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.17 19:18:41 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.17 19:18:40 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+Jun 17, 2026 7:19:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.17 19:19:26 INFO  Shutting down server[0m
+2026.06.17 19:19:26 INFO  Memory monitor stopped[0m
+2026.06.17 19:19:26 INFO  shutting down Metals[0m
+2026.06.17 19:19:26 INFO  Exiting server[0m
+2026.06.17 19:19:26 ERROR Unexpected error initializing server: 
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequest failed with message: Canceled
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:214)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.17 19:19:29 INFO  Started: Metals version 1.6.7 in folders '/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni, /home/udar/SwimBox, /home/udar/FPGA_Programs, /home/udar/43602DTU' for client Visual Studio Code 1.124.2.[0m
+2026.06.17 19:19:29 INFO  Memory monitor started[0m
+2026.06.17 19:19:31 INFO  Database: jdbc:h2:file:/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/metals (H2 2.4)[0m
+2026.06.17 19:19:31 INFO  Database: jdbc:h2:file:/home/udar/SwimBox/.metals/metals (H2 2.4)[0m
+2026.06.17 19:19:31 INFO  Database: jdbc:h2:file:/home/udar/43602DTU/.metals/metals (H2 2.4)[0m
+2026.06.17 19:19:31 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:19:31 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:19:31 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:19:31 INFO  Successfully validated 7 migrations (execution time 00:00.026s)[0m
+2026.06.17 19:19:31 INFO  Successfully validated 7 migrations (execution time 00:00.026s)[0m
+2026.06.17 19:19:31 INFO  Successfully validated 7 migrations (execution time 00:00.031s)[0m
+2026.06.17 19:19:31 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:19:31 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:19:31 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:19:31 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:19:31 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:19:31 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:19:31 INFO  Database: jdbc:h2:file:/home/udar/FPGA_Programs/.metals/metals (H2 2.4)[0m
+2026.06.17 19:19:31 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.17 19:19:31 INFO  Successfully validated 7 migrations (execution time 00:00.005s)[0m
+2026.06.17 19:19:31 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.17 19:19:31 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.17 19:19:31 INFO  Attempting to connect to the build server...[0m
+2026.06.17 19:19:31 INFO  skipping build import with status 'Dismissed'[0m
+2026.06.17 19:19:31 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.17 19:19:31 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.17 19:19:31 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.17 19:19:31 INFO  skipping build import with status 'Dismissed'[0m
+Jun 17, 2026 7:19:34 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 17, 2026 7:19:34 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 17, 2026 7:19:34 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
 2026.06.16 13:28:20 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.06.16 13:28:20 WARN  no build target for: C:\Users\maxim\43602DTU\Chisel\src\main\scala\MotorDriver.scala
