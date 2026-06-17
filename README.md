@@ -6,10 +6,13 @@
 
     - Pin J1 (Right-most, bottom row): Photo diode A
     - Pin L2 (Second from right, bottom row): Photo diode B
-    - Pin J2 (Third from right, bottom row): Overcurrent signal
+    - Pin J2 (Third from right, bottom row): Overcurrent Positive
+    - Pin G2 (Fourth from right, bottom row- closest to ground): Overcurrent Negative
+    *** Note: This bank requires a Ground (GND) to process the above signals
 
     Buttons:
         - Pin U18 (Middle button): Hardware reset
+        - Pin T18 (Top button): Error cleared
 
 
 ## Outputs (Wires):
@@ -22,5 +25,3 @@
 ## Mixed: 
     - USB port for serial commands
 
-# Notes:
-    Ask for Zener diode to avoid blowing out the header
