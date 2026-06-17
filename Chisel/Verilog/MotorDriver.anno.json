@@ -1,17 +1,5 @@
 [
   {
-    "class":"firrtl.transforms.DedupedResult",
-    "original":"~MotorDriver|Debouncer",
-    "duplicate":"~MotorDriver|MotorDriver/filter_A:Debouncer",
-    "index":0.7272727272727273
-  },
-  {
-    "class":"firrtl.transforms.DedupedResult",
-    "original":"~MotorDriver|Debouncer_1",
-    "duplicate":"~MotorDriver|MotorDriver/filter_B:Debouncer",
-    "index":0.8181818181818182
-  },
-  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.VerilogEmitter"
   },

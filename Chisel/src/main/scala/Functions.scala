@@ -3,32 +3,24 @@ import chisel3.util._
 import chisel3.experimental.FixedPoint
 
 object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(80, 5, 1), Array("-td", "Verilog"))
+  emitVerilog(new MotorDriver(1, 0.5, 0.1), Array("-td", "Verilog"))
 }
 
 class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
     val signal_B = Input(Bool())
-    val turns    = Output(UInt(32.W))
+    val turns    = Output(SInt(32.W))
   })
-
-  val aSync  = RegNext(RegNext(io.signal_A))
-  val bSync  = RegNext(RegNext(io.signal_B))
-  
-  val aReg   = RegNext(aSync)
-  val bReg   = RegNext(bSync)
-
-  val turns  = RegInit(0.U(32.W))
-
-  when(aSync && !aReg) {
-    when(!bSync) {
-      turns := turns + 1.U
-    } .otherwise {
-      when(turns > 0.U) { turns := turns - 1.U }
-    }
+  val aSync = RegNext(RegNext(io.signal_A))
+  val bSync = RegNext(RegNext(io.signal_B))
+  val aReg  = RegNext(aSync)
+  val rise_A = aSync && !aReg
+  val turns = RegInit(0.S(32.W))
+  when(rise_A) {
+    when(!bSync) { turns := turns + 1.S }
+      .otherwise { turns := turns - 1.S }
   }
-  
   io.turns := turns
 }
 
@@ -265,7 +257,7 @@ class SevenSegDec extends Module {
     SegSymbol.R.asUInt     -> "b0110001".U,
     SegSymbol.S.asUInt     -> "b1101101".U,
     SegSymbol.T.asUInt     -> "b1111000".U,
-    SegSymbol.U.asUInt     -> "b0111111".U,
+    SegSymbol.U.asUInt     -> "b0111110".U,
     SegSymbol.Blank.asUInt -> "b0000000".U
   ))
 }

@@ -20,16 +20,16 @@ rad_to_m = 1 / (2 * pi * 7.5 * 100);
 
 % --- 4. Simulation Settings ---
 dt = 0.0005;        % Time step (0.5ms for better numerical stability)
-T_total = 20;        % Duration (5 seconds)
+T_total = 500;        % Duration (5 seconds)
 time = 0:dt:T_total;
 N = length(time);
 
 % --- 5. PID Controller Settings ---
 target_pos = 1;   % Target position (meters)
 curr_pos = 0;
-Kp = 80;          % Proportional Gain
-Ki = 0;          % Integral Gain
-Kd = 1;           % Derivative Gain
+Kp = 1;          % Proportional Gain
+Ki = .5;          % Integral Gain
+Kd = .1;           % Derivative Gain
 
 % --- 6. Initialization ---
 curr_vel = 0;
