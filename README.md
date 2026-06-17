@@ -17,10 +17,10 @@
 
 ## Outputs (Wires):
     Bank JXADC
-    - Pin J3 (Right-most, bottom row): Transistor T1 (Lower left)
-    - Pin L3 (Second from right, bottom row): Transistor T2 (Upper left)
-    - Pin M2 (Third from right, bottom row): Transistor T3 (Lower right)
-    - Pin N2 (Fourth from right, bottom row- closest to ground): Transistor T4 (Upper right)
+    - Pin J3 (Right-most, top row): Transistor T1 (Lower left)
+    - Pin L3 (Second from right, top row): Transistor T2 (Upper left)
+    - Pin M2 (Third from right, top row): Transistor T3 (Lower right)
+    - Pin N2 (Fourth from right, top row- closest to ground): Transistor T4 (Upper right)
 
 ## Mixed: 
     - USB port for serial commands
