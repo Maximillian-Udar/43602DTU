@@ -3,7 +3,7 @@ import chisel3.util._
 import chisel3.experimental.FixedPoint
 
 object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(1, 1, 1), Array("-td", "Verilog"))
+  emitVerilog(new MotorDriver(80, 5, 1), Array("-td", "Verilog"))
 }
 
 class RotationCounter extends Module {
