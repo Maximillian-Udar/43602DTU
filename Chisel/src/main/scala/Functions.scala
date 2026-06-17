@@ -3,75 +3,125 @@ import chisel3.util._
 import chisel3.experimental.FixedPoint
 
 object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(2, 0.05, 0.4), Array("-td", "Verilog"))
+  emitVerilog(new MotorDriver(1, 0.5, 0.1), Array("-td", "Verilog"))
 }
 
 class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
     val signal_B = Input(Bool())
-    val turns    = Output(SInt(32.W))
+    val turns    = Output(UInt(32.W))
   })
-  val aSync = RegNext(RegNext(io.signal_A))
-  val bSync = RegNext(RegNext(io.signal_B))
-  val aReg  = RegNext(aSync)
-  val rise_A = aSync && !aReg
-  val turns = RegInit(0.S(32.W))
-  when(rise_A) {
-    when(!bSync) { turns := turns + 1.S }
-      .otherwise { turns := turns - 1.S }
+
+  val aSync  = RegNext(RegNext(io.signal_A))
+  val bSync  = RegNext(RegNext(io.signal_B))
+  val aReg   = RegNext(aSync)
+  val turns  = RegInit(0.U(32.W))
+
+  val edge_A = aSync && !aReg
+
+  when(edge_A) {
+    when(!bSync) {
+      turns := turns + 1.U
+    } .otherwise {
+      when(turns > 0.U) {
+        turns := turns - 1.U
+      }
+    }
   }
   io.turns := turns
 }
 
-class DCMotorPwm(pwmFreqHz: Int = 20000) extends Module {
+class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val io = IO(new Bundle {
-    val duty_cycle = Input(UInt(10.W)); val brake = Input(Bool())
-    val T1, T2, T3, T4 = Output(Bool()) 
+    val duty_cycle = Input(UInt(10.W))
+    val brake      = Input(Bool())
+    val T1         = Output(Bool()) 
+    val T2         = Output(Bool()) 
+    val T3         = Output(Bool()) 
+    val T4         = Output(Bool()) 
   })
-  val clockFreq = 100000000
-  val periodCycles = (clockFreq / pwmFreqHz).U
-  val pwmCounter = RegInit(0.U(32.W))
-  pwmCounter := Mux(pwmCounter >= periodCycles - 1.U, 0.U, pwmCounter + 1.U)
-  val pwmSignal = pwmCounter < ((io.duty_cycle * periodCycles) >> 10)
 
-  // LOGICAL CONDUCT: TRUE = Transistor ON
-  val conduct_T1 = Wire(Bool()); val conduct_T2 = Wire(Bool())
-  val conduct_T3 = Wire(Bool()); val conduct_T4 = Wire(Bool())
+  val clockFreq    = 100000000
+  val periodCycles = (clockFreq / pwmFreqHz).U
+  val pwmCounter   = RegInit(0.U(32.W))
+
+  when(pwmCounter >= periodCycles - 1.U) {
+    pwmCounter := 0.U
+  } .otherwise {
+    pwmCounter := pwmCounter + 1.U
+  }
+
+  val threshold = (io.duty_cycle * periodCycles) >> 10
+  val pwmSignal = pwmCounter < threshold
+
+  val conduct_T1 = Wire(Bool())
+  val conduct_T2 = Wire(Bool())
+  val conduct_T3 = Wire(Bool())
+  val conduct_T4 = Wire(Bool())
 
   when(io.brake) {
-    conduct_T1 := true.B; conduct_T3 := true.B // Bottoms conducting (GND)
-    conduct_T2 := false.B; conduct_T4 := false.B // Tops non-conducting
+    conduct_T1 := true.B
+    conduct_T2 := false.B
+    conduct_T3 := true.B
+    conduct_T4 := false.B
   } .otherwise {
-    conduct_T1 := !pwmSignal; conduct_T2 := pwmSignal
-    conduct_T3 := pwmSignal;  conduct_T4 := !pwmSignal
+    conduct_T2 := pwmSignal
+    conduct_T3 := pwmSignal
+    conduct_T4 := !pwmSignal
+    conduct_T1 := !pwmSignal
   }
-  io.T1 := conduct_T1;  io.T3 := conduct_T3
-  io.T2 := !conduct_T2; io.T4 := !conduct_T4
+
+  io.T1 := conduct_T1
+  io.T3 := conduct_T3
+  io.T2 := !conduct_T2
+  io.T4 := !conduct_T4
 }
-
-
 
 class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
-    val setPoint, measuredVal, kp, ki, kd = Input(FixedPoint(w.W, f.BP))
-    val tick, resetBuffer = Input(Bool()); val controlOut = Output(FixedPoint(w.W, f.BP))
+    val setPoint    = Input(FixedPoint(w.W, f.BP))
+    val measuredVal = Input(FixedPoint(w.W, f.BP))
+    val kp          = Input(FixedPoint(w.W, f.BP))
+    val ki          = Input(FixedPoint(w.W, f.BP))
+    val kd          = Input(FixedPoint(w.W, f.BP))
+    val tick        = Input(Bool())        // New: slow-down signal
+    val resetBuffer = Input(Bool())
+    val controlOut  = Output(FixedPoint(w.W, f.BP))
   })
+
+  val integralReg  = RegInit(0.F(w.W, f.BP))
+  val prevErrorReg = RegInit(0.F(w.W, f.BP))
+  val outputReg    = RegInit(0.F(w.W, f.BP))
+
+  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
+  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
+
   val error = io.setPoint - io.measuredVal
-  val integralReg = RegInit(0.F(w.W, f.BP)); val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val outReg = RegInit(0.F(w.W, f.BP)); val limit = FixedPoint.fromDouble(0.5, w.W, f.BP)
-  when(io.resetBuffer) { integralReg := 0.F(w.W, f.BP); outReg := 0.F(w.W, f.BP) }
-  .elsewhen(io.tick) {
-    val nextI = integralReg + (error * io.ki)
-    integralReg := Mux(nextI > limit, limit, Mux(nextI < -limit, -limit, nextI))
-    val deriv = (error - prevErrorReg) * io.kd; prevErrorReg := error
-    val raw = (error * io.kp) + integralReg + deriv
-    outReg := Mux(raw > limit, limit, Mux(raw < -limit, -limit, raw))
+
+  when(io.resetBuffer) {
+    integralReg  := 0.F(w.W, f.BP)
+    prevErrorReg := 0.F(w.W, f.BP)
+    outputReg    := 0.F(w.W, f.BP)
+  } .elsewhen(io.tick) {
+    // Kp
+    val pTerm = io.kp * error
+    val iTermNext = io.ki * error
+    val nextSum   = integralReg + iTermNext
+    integralReg := Mux(nextSum > limit_pos, limit_pos, 
+                   Mux(nextSum < limit_neg, limit_neg, nextSum))
+
+    // Kd
+    val dTerm = io.kd * (error - prevErrorReg)
+    prevErrorReg := error // Save current error for the next tick
+
+    // Clamp output
+    val rawOutput = pTerm + integralReg + dTerm
+    outputReg := Mux(rawOutput > limit_pos, limit_pos, 
+                 Mux(rawOutput < limit_neg, limit_neg, rawOutput))
   }
-  io.controlOut := outReg
+  io.controlOut := outputReg
 }
-
-
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
   val io = IO(new Bundle {
@@ -120,8 +170,8 @@ class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
 
 class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
   val io = IO(new Bundle {
-      val externalOvercurrentInput = Input(Bool())      
-      val clearShutdown            = Input(Bool()) 
+      val external_overcurrent_input = Input(Bool())      
+      val clear_shutdown            = Input(Bool()) 
       val is_stuck                 = Output(Bool()) 
       val motorDisable             = Output(Bool()) 
   })
