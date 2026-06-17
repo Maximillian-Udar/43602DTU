@@ -3,7 +3,7 @@ import chisel3.util._
 import chisel3.experimental.FixedPoint
 
 object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(1, 0.5, 0.1), Array("-td", "Verilog"))
+  emitVerilog(new MotorDriver(2, 0.05, 0.4), Array("-td", "Verilog"))
 }
 
 class RotationCounter extends Module {
@@ -24,87 +24,54 @@ class RotationCounter extends Module {
   io.turns := turns
 }
 
-class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
+class DCMotorPwm(pwmFreqHz: Int = 20000) extends Module {
   val io = IO(new Bundle {
-    val duty_cycle = Input(UInt(10.W))
-    val brake      = Input(Bool())
-    val T1         = Output(Bool()) 
-    val T2         = Output(Bool()) 
-    val T3         = Output(Bool()) 
-    val T4         = Output(Bool()) 
+    val duty_cycle = Input(UInt(10.W)); val brake = Input(Bool())
+    val T1, T2, T3, T4 = Output(Bool()) 
   })
-
-  val clockFreq    = 100000000
+  val clockFreq = 100000000
   val periodCycles = (clockFreq / pwmFreqHz).U
-  val pwmCounter   = RegInit(0.U(32.W))
+  val pwmCounter = RegInit(0.U(32.W))
+  pwmCounter := Mux(pwmCounter >= periodCycles - 1.U, 0.U, pwmCounter + 1.U)
+  val pwmSignal = pwmCounter < ((io.duty_cycle * periodCycles) >> 10)
 
-  when(pwmCounter >= periodCycles - 1.U) {
-    pwmCounter := 0.U
-  } .otherwise {
-    pwmCounter := pwmCounter + 1.U
-  }
-
-  val threshold = (io.duty_cycle * periodCycles) >> 10
-  val pwmSignal = pwmCounter < threshold
-
-  val conduct_T1 = Wire(Bool())
-  val conduct_T2 = Wire(Bool())
-  val conduct_T3 = Wire(Bool())
-  val conduct_T4 = Wire(Bool())
+  // LOGICAL CONDUCT: TRUE = Transistor ON
+  val conduct_T1 = Wire(Bool()); val conduct_T2 = Wire(Bool())
+  val conduct_T3 = Wire(Bool()); val conduct_T4 = Wire(Bool())
 
   when(io.brake) {
-    conduct_T1 := true.B
-    conduct_T2 := false.B
-    conduct_T3 := true.B
-    conduct_T4 := false.B
+    conduct_T1 := true.B; conduct_T3 := true.B // Bottoms conducting (GND)
+    conduct_T2 := false.B; conduct_T4 := false.B // Tops non-conducting
   } .otherwise {
-    conduct_T2 := pwmSignal
-    conduct_T3 := pwmSignal
-    conduct_T4 := !pwmSignal
-    conduct_T1 := !pwmSignal
+    conduct_T1 := !pwmSignal; conduct_T2 := pwmSignal
+    conduct_T3 := pwmSignal;  conduct_T4 := !pwmSignal
   }
-
-  io.T1 := conduct_T1
-  io.T3 := conduct_T3
-  io.T2 := !conduct_T2
-  io.T4 := !conduct_T4
+  io.T1 := conduct_T1;  io.T3 := conduct_T3
+  io.T2 := !conduct_T2; io.T4 := !conduct_T4
 }
+
+
 
 class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
-    val setPoint    = Input(FixedPoint(w.W, f.BP))
-    val measuredVal = Input(FixedPoint(w.W, f.BP))
-    val kp          = Input(FixedPoint(w.W, f.BP))
-    val ki          = Input(FixedPoint(w.W, f.BP))
-    val kd          = Input(FixedPoint(w.W, f.BP))
-    val resetBuffer = Input(Bool())
-    val controlOut  = Output(FixedPoint(w.W, f.BP))
+    val setPoint, measuredVal, kp, ki, kd = Input(FixedPoint(w.W, f.BP))
+    val tick, resetBuffer = Input(Bool()); val controlOut = Output(FixedPoint(w.W, f.BP))
   })
-
-  val errorReg = RegNext(io.setPoint - io.measuredVal)
-  val pTerm = RegNext(io.kp * errorReg)
-  val integralReg = RegInit(0.F(w.W, f.BP))
-  val iTermNext = RegNext(io.ki * errorReg)
-  
-  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
-  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
-
-  when(io.resetBuffer) {
-    integralReg := 0.F(w.W, f.BP)
-  }.otherwise {
-    val nextSum = RegNext(integralReg + iTermNext)
-    integralReg := Mux(nextSum > limit_pos, limit_pos, 
-                   Mux(nextSum < limit_neg, limit_neg, nextSum))
+  val error = io.setPoint - io.measuredVal
+  val integralReg = RegInit(0.F(w.W, f.BP)); val prevErrorReg = RegInit(0.F(w.W, f.BP))
+  val outReg = RegInit(0.F(w.W, f.BP)); val limit = FixedPoint.fromDouble(0.5, w.W, f.BP)
+  when(io.resetBuffer) { integralReg := 0.F(w.W, f.BP); outReg := 0.F(w.W, f.BP) }
+  .elsewhen(io.tick) {
+    val nextI = integralReg + (error * io.ki)
+    integralReg := Mux(nextI > limit, limit, Mux(nextI < -limit, -limit, nextI))
+    val deriv = (error - prevErrorReg) * io.kd; prevErrorReg := error
+    val raw = (error * io.kp) + integralReg + deriv
+    outReg := Mux(raw > limit, limit, Mux(raw < -limit, -limit, raw))
   }
-
-  val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm = RegNext(io.kd * (errorReg - prevErrorReg))
-  prevErrorReg := errorReg
-
-  val rawOutput = RegNext(pTerm + integralReg + dTerm)
-  io.controlOut := Mux(rawOutput > limit_pos, limit_pos, 
-                   Mux(rawOutput < limit_neg, limit_neg, rawOutput))
+  io.controlOut := outReg
 }
+
+
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
   val io = IO(new Bundle {
