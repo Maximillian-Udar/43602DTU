@@ -50,7 +50,8 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val pid_timer = RegInit(0.U(17.W))
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
-
+  
+  // Scaling and states
   val target_position_cm = RegInit(0.S(32.W))
   val manual_speed = RegInit(512.U(10.W))
   val control_mode = RegInit(true.B)
@@ -61,7 +62,6 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val current_turns = rotations.io.turns - initial_offset
   val cm_per_pulse = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)
   
-  // FIX: Explicitly handle 64-bit result to prevent truncation and register for timing
   val full_pos_calc = current_turns.asFixedPoint(0.BP) * cm_per_pulse
   val current_position_fixed_point = RegNext(full_pos_calc(31, 0).asFixedPoint(pidDP.BP))
   val current_position_cm = Mux(system_active, (current_position_fixed_point >> pidDP).asSInt, 0.S)
@@ -71,10 +71,10 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val CMDByte = RegInit(0.U(8.W))
   val reset_triggered = WireDefault(false.B)
   
-  // FIX: Use RegInit so the slow PID tick can capture the fast UART trigger
   val target_updated = RegInit(false.B)
   when(pid_tick) { target_updated := false.B }
-
+  
+  // Recieve data
   when (rx.io.done) {
     switch (uartState){
       is(sHeader) { when(rx.io.data === 0xAA.U) { uartState := sCMD}}
@@ -108,8 +108,9 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   }
   stuck_detector.io.clear_shutdown := (error_clear_debounce.io.out || reset_triggered)
 
+  // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - 2.S && current_turns <= target_turns + 2.S), true.B)
+  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - 1.S && current_turns <= target_turns + 1.S), true.B)
   
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
@@ -131,17 +132,18 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back && !at_position
   val block_pos = (current_position_cm >= 90.S) && is_moving_fwd && !at_position
 
-  // TIMING FIX: Register duty cycle before PWM input
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty))
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
   pwm_signal.io.brake := motor_stopped
 
+  // Brake
   when (!system_active) {
     io.T1 := false.B; io.T2 := true.B; io.T3 := false.B; io.T4 := true.B
   } .otherwise {
     io.T1 := pwm_signal.io.T1; io.T2 := pwm_signal.io.T2; io.T3 := pwm_signal.io.T3; io.T4 := pwm_signal.io.T4
   }
 
+  // Transmit
   val txTimer = RegInit(0.U(24.W))
   val sSync :: sHigh :: sLow :: Nil = Enum(3)
   val txState = RegInit(sSync)
@@ -155,12 +157,23 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   }.otherwise { txTimer := txTimer + 1.U }
   io.uart_tx := tx.io.tx
 
+  // Display
   io.an := display.io.an; io.seg := display.io.seg
   val letters_AUTO = Cat(SegSymbol.A.asUInt, SegSymbol.U.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt)
   val letters_STOP = Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
   display.io.disp_content := Mux(motor_stopped, letters_STOP, letters_AUTO)
 }
 
+
+
+/* 
+Gains to test:
+Kp: 50, Ki: 0, Kd: 5
+*/
 object GenerateAllVerilog extends App {
-  emitVerilog(new SecondDriver(1.0, 0.5, 0.1), Array("-td", "Verilog"))
+  val matlab_Kp = 10
+  val matlab_Ki = 0
+  val matlab_Kd = 4
+  val Ts = 0.001
+  emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts), Array("-td", "Verilog"))
 }

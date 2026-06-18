@@ -20,17 +20,18 @@ rad_to_m = 1 / (2 * pi * 7.5 * 100);
 
 % --- 4. Simulation Settings ---
 dt = 0.0005;        % Time step (0.5ms for better numerical stability)
-T_total = 600;        % Duration (5 seconds)
+T_total = 100;        % Duration (5 seconds)
 time = 0:dt:T_total;
 N = length(time);
 
 % --- 5. PID Controller Settings ---
 target_pos = 1;   % Target position (meters)
 curr_pos = 0;
-Kp = 10;          % Proportional Gain
+Kp = 50;          % Proportional Gain
 Ki = 0;          % Integral Gain
-Kd = 4;           % Derivative Gain
-fprintf('Chisel Gains: Kp=%.2f, Ki=%.2f, Kd=%.2f\n', Kp/2000, Ki/2000, Kd/2000);
+Kd = 5;           % Derivative Gain
+t_s = 0.001;
+fprintf('Chisel Gains: Kp=%.2f, Ki=%.2f, Kd=%.2f\n', Kp, Ki*t_s, Kd/t_s);
 
 % --- 6. Initialization ---
 curr_vel = 0;
