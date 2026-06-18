@@ -101,18 +101,18 @@ class PIDController(val w: Int, val f: Int) extends Module {
     outputReg    := 0.F(w.W, f.BP)
   } .elsewhen(io.tick) {
     // Kp
-    val pTerm = io.kp * error
-    val iTermNext = io.ki * error
-    val nextSum   = integralReg + iTermNext
+    val pTerm = RegNext(io.kp * error)
+    val iTermNext = RegNext(io.ki * error)
+    val nextSum   = RegNext(integralReg + iTermNext)
     integralReg := Mux(nextSum > limit_pos, limit_pos, 
                    Mux(nextSum < limit_neg, limit_neg, nextSum))
 
     // Kd
-    val dTerm = io.kd * (error - prevErrorReg)
-    prevErrorReg := error // Save current error for the next tick
+    val dTerm = RegNext(io.kd * (error - prevErrorReg))
+    prevErrorReg := error
 
     // Clamp output
-    val rawOutput = pTerm + integralReg + dTerm
+    val rawOutput = RegNext(pTerm + integralReg + dTerm)
     outputReg := Mux(rawOutput > limit_pos, limit_pos, 
                  Mux(rawOutput < limit_neg, limit_neg, rawOutput))
   }

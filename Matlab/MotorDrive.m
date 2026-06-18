@@ -27,9 +27,9 @@ N = length(time);
 % --- 5. PID Controller Settings ---
 target_pos = 1;   % Target position (meters)
 curr_pos = 0;
-Kp = 2.8;          % Proportional Gain
-Ki = 0.15;          % Integral Gain
-Kd = 0.6;           % Derivative Gain
+Kp = 10;          % Proportional Gain
+Ki = 0;          % Integral Gain
+Kd = 4;           % Derivative Gain
 fprintf('Chisel Gains: Kp=%.2f, Ki=%.2f, Kd=%.2f\n', Kp/2000, Ki/2000, Kd/2000);
 
 % --- 6. Initialization ---

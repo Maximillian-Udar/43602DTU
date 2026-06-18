@@ -2,24 +2,28 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-object GenerateAllVerilog extends App {
-  emitVerilog(new MotorDriver(40, 45, 1), Array("-td", "Verilog"))
-}
-
 class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
     val signal_B = Input(Bool())
-    val turns    = Output(SInt(32.W))
+    val turns    = Output(UInt(32.W))
   })
-  val aSync = RegNext(RegNext(io.signal_A))
-  val bSync = RegNext(RegNext(io.signal_B))
-  val aReg  = RegNext(aSync)
-  val rise_A = aSync && !aReg
-  val turns = RegInit(0.S(32.W))
-  when(rise_A) {
-    when(!bSync) { turns := turns + 1.S }
-      .otherwise { turns := turns - 1.S }
+
+  val aSync  = RegNext(RegNext(io.signal_A))
+  val bSync  = RegNext(RegNext(io.signal_B))
+  val aReg   = RegNext(aSync)
+  val turns  = RegInit(0.U(32.W))
+
+  val edge_A = aSync && !aReg
+
+  when(edge_A) {
+    when(!bSync) {
+      turns := turns + 1.U
+    } .otherwise {
+      when(turns > 0.U) {
+        turns := turns - 1.U
+      }
+    }
   }
   io.turns := turns
 }
@@ -77,33 +81,42 @@ class PIDController(val w: Int, val f: Int) extends Module {
     val kp          = Input(FixedPoint(w.W, f.BP))
     val ki          = Input(FixedPoint(w.W, f.BP))
     val kd          = Input(FixedPoint(w.W, f.BP))
+    val tick        = Input(Bool())        // New: slow-down signal
     val resetBuffer = Input(Bool())
     val controlOut  = Output(FixedPoint(w.W, f.BP))
   })
 
-  val errorReg = RegNext(io.setPoint - io.measuredVal)
-  val pTerm = RegNext(io.kp * errorReg)
-  val integralReg = RegInit(0.F(w.W, f.BP))
-  val iTermNext = RegNext(io.ki * errorReg)
-  
+  val integralReg  = RegInit(0.F(w.W, f.BP))
+  val prevErrorReg = RegInit(0.F(w.W, f.BP))
+  val outputReg    = RegInit(0.F(w.W, f.BP))
+
   val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
   val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
 
+  val error = io.setPoint - io.measuredVal
+
   when(io.resetBuffer) {
-    integralReg := 0.F(w.W, f.BP)
-  }.otherwise {
-    val nextSum = RegNext(integralReg + iTermNext)
+    integralReg  := 0.F(w.W, f.BP)
+    prevErrorReg := 0.F(w.W, f.BP)
+    outputReg    := 0.F(w.W, f.BP)
+  } .elsewhen(io.tick) {
+    // Kp
+    val pTerm = io.kp * error
+    val iTermNext = io.ki * error
+    val nextSum   = integralReg + iTermNext
     integralReg := Mux(nextSum > limit_pos, limit_pos, 
                    Mux(nextSum < limit_neg, limit_neg, nextSum))
+
+    // Kd
+    val dTerm = io.kd * (error - prevErrorReg)
+    prevErrorReg := error // Save current error for the next tick
+
+    // Clamp output
+    val rawOutput = pTerm + integralReg + dTerm
+    outputReg := Mux(rawOutput > limit_pos, limit_pos, 
+                 Mux(rawOutput < limit_neg, limit_neg, rawOutput))
   }
-
-  val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val dTerm = RegNext(io.kd * (errorReg - prevErrorReg))
-  prevErrorReg := errorReg
-
-  val rawOutput = RegNext(pTerm + integralReg + dTerm)
-  io.controlOut := Mux(rawOutput > limit_pos, limit_pos, 
-                   Mux(rawOutput < limit_neg, limit_neg, rawOutput))
+  io.controlOut := outputReg
 }
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
@@ -153,24 +166,22 @@ class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
 
 class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
   val io = IO(new Bundle {
-      val externalOvercurrentInput = Input(Bool())      
-      val clearShutdown            = Input(Bool()) 
-      val is_stuck                 = Output(Bool()) 
-      val motorDisable             = Output(Bool()) 
+      val external_overcurrent_input = Input(Bool())      
+      val clear_shutdown            = Input(Bool()) 
+      val motor_disable             = Output(Bool())
   })
   val clockFreqHz = 100000000
   val maxCycles   = (clockFreqHz / 1000).U * OverCurrentAllowance_ms.U
   val durationReg = RegInit(0.U(32.W))
   val isStuckReg  = RegInit(false.B)
-  when(io.clearShutdown) { isStuckReg := false.B; durationReg := 0.U }.otherwise {
+  when(io.clear_shutdown) { isStuckReg := false.B; durationReg := 0.U }.otherwise {
     when(!isStuckReg) {
-      when(io.externalOvercurrentInput) {
+      when(io.external_overcurrent_input) {
         when(durationReg >= maxCycles) { isStuckReg := true.B }.otherwise { durationReg := durationReg + 1.U }
       }.otherwise { durationReg := 0.U }
     }
   }
-  io.is_stuck := isStuckReg
-  io.motorDisable := isStuckReg
+  io.motor_disable := isStuckReg
 }
 
 class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
