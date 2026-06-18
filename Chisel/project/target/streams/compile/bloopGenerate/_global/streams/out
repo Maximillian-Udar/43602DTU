@@ -1,4 +1,4 @@
 [0m[[0m[0mdebug[0m] [0m[0m[chisel-build] Classpath dependencies List()[0m
 [0m[[0m[0mdebug[0m] [0m[0m[chisel-build] Dependencies from configurations List()[0m
-[0m[[0m[0mdebug[0m] [0m[0mBloop wrote the configuration of project 'chisel-build' to 'C:\Users\maxim\43602DTU\Chisel\project\.bloop\chisel-build.json'[0m
-[0m[[0m[32msuccess[0m] [0m[0mGenerated .bloop\chisel-build.json[0m
+[0m[[0m[0mdebug[0m] [0m[0mBloop wrote the configuration of project 'chisel-build' to '/home/udar/43602DTU/Chisel/project/.bloop/chisel-build.json'[0m
+[0m[[0m[32msuccess[0m] [0m[0mGenerated .bloop/chisel-build.json[0m
