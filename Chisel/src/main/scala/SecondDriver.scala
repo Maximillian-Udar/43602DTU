@@ -47,8 +47,8 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
 
   // Wiring modules
   rx.io.rx := io.uart_rx
-  rotations.io.signal_A := filter(io.photo_sensor_A)
-  rotations.io.signal_B := filter(io.photo_sensor_B)
+  rotations.io.signal_A := io.photo_sensor_A
+  rotations.io.signal_B := io.photo_sensor_B
   display.io.dots := 0.U
   stuck_detector.io.external_overcurrent_input := (io.over_current_positive|| io.over_current_negative)
   error_clear_debounce.io.btn_in := io.error_cleared

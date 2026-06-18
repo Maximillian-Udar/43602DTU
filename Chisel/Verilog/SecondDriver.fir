@@ -531,48 +531,8 @@ circuit SecondDriver :
     error_clear_debounce.clock <= clock
     error_clear_debounce.reset <= reset
     rx.io.rx <= io.uart_rx @[\\src\\main\\scala\\SecondDriver.scala 49:12]
-    reg rotations_io_signal_A_sync_REG : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rotations_io_signal_A_sync_REG) @[\\src\\main\\scala\\SecondDriver.scala 40:31]
-    rotations_io_signal_A_sync_REG <= io.photo_sensor_A @[\\src\\main\\scala\\SecondDriver.scala 40:31]
-    reg rotations_io_signal_A_sync : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rotations_io_signal_A_sync) @[\\src\\main\\scala\\SecondDriver.scala 40:23]
-    rotations_io_signal_A_sync <= rotations_io_signal_A_sync_REG @[\\src\\main\\scala\\SecondDriver.scala 40:23]
-    reg rotations_io_signal_A_cnt : UInt<14>, clock with :
-      reset => (reset, UInt<14>("h0")) @[\\src\\main\\scala\\SecondDriver.scala 41:23]
-    reg rotations_io_signal_A_out : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\SecondDriver.scala 42:23]
-    node _rotations_io_signal_A_T = eq(rotations_io_signal_A_sync, rotations_io_signal_A_out) @[\\src\\main\\scala\\SecondDriver.scala 43:15]
-    when _rotations_io_signal_A_T : @[\\src\\main\\scala\\SecondDriver.scala 43:24]
-      rotations_io_signal_A_cnt <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 43:30]
-    else :
-      node _rotations_io_signal_A_cnt_T = add(rotations_io_signal_A_cnt, UInt<1>("h1")) @[\\src\\main\\scala\\SecondDriver.scala 44:29]
-      node _rotations_io_signal_A_cnt_T_1 = tail(_rotations_io_signal_A_cnt_T, 1) @[\\src\\main\\scala\\SecondDriver.scala 44:29]
-      rotations_io_signal_A_cnt <= _rotations_io_signal_A_cnt_T_1 @[\\src\\main\\scala\\SecondDriver.scala 44:22]
-      node _rotations_io_signal_A_T_1 = eq(rotations_io_signal_A_cnt, UInt<14>("h2710")) @[\\src\\main\\scala\\SecondDriver.scala 44:45]
-      when _rotations_io_signal_A_T_1 : @[\\src\\main\\scala\\SecondDriver.scala 44:58]
-        rotations_io_signal_A_out <= rotations_io_signal_A_sync @[\\src\\main\\scala\\SecondDriver.scala 44:64]
-    rotations.io.signal_A <= rotations_io_signal_A_out @[\\src\\main\\scala\\SecondDriver.scala 50:25]
-    reg rotations_io_signal_B_sync_REG : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rotations_io_signal_B_sync_REG) @[\\src\\main\\scala\\SecondDriver.scala 40:31]
-    rotations_io_signal_B_sync_REG <= io.photo_sensor_B @[\\src\\main\\scala\\SecondDriver.scala 40:31]
-    reg rotations_io_signal_B_sync : UInt<1>, clock with :
-      reset => (UInt<1>("h0"), rotations_io_signal_B_sync) @[\\src\\main\\scala\\SecondDriver.scala 40:23]
-    rotations_io_signal_B_sync <= rotations_io_signal_B_sync_REG @[\\src\\main\\scala\\SecondDriver.scala 40:23]
-    reg rotations_io_signal_B_cnt : UInt<14>, clock with :
-      reset => (reset, UInt<14>("h0")) @[\\src\\main\\scala\\SecondDriver.scala 41:23]
-    reg rotations_io_signal_B_out : UInt<1>, clock with :
-      reset => (reset, UInt<1>("h0")) @[\\src\\main\\scala\\SecondDriver.scala 42:23]
-    node _rotations_io_signal_B_T = eq(rotations_io_signal_B_sync, rotations_io_signal_B_out) @[\\src\\main\\scala\\SecondDriver.scala 43:15]
-    when _rotations_io_signal_B_T : @[\\src\\main\\scala\\SecondDriver.scala 43:24]
-      rotations_io_signal_B_cnt <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 43:30]
-    else :
-      node _rotations_io_signal_B_cnt_T = add(rotations_io_signal_B_cnt, UInt<1>("h1")) @[\\src\\main\\scala\\SecondDriver.scala 44:29]
-      node _rotations_io_signal_B_cnt_T_1 = tail(_rotations_io_signal_B_cnt_T, 1) @[\\src\\main\\scala\\SecondDriver.scala 44:29]
-      rotations_io_signal_B_cnt <= _rotations_io_signal_B_cnt_T_1 @[\\src\\main\\scala\\SecondDriver.scala 44:22]
-      node _rotations_io_signal_B_T_1 = eq(rotations_io_signal_B_cnt, UInt<14>("h2710")) @[\\src\\main\\scala\\SecondDriver.scala 44:45]
-      when _rotations_io_signal_B_T_1 : @[\\src\\main\\scala\\SecondDriver.scala 44:58]
-        rotations_io_signal_B_out <= rotations_io_signal_B_sync @[\\src\\main\\scala\\SecondDriver.scala 44:64]
-    rotations.io.signal_B <= rotations_io_signal_B_out @[\\src\\main\\scala\\SecondDriver.scala 51:25]
+    rotations.io.signal_A <= io.photo_sensor_A @[\\src\\main\\scala\\SecondDriver.scala 50:25]
+    rotations.io.signal_B <= io.photo_sensor_B @[\\src\\main\\scala\\SecondDriver.scala 51:25]
     display.io.dots <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 52:19]
     node _stuck_detector_io_external_overcurrent_input_T = or(io.over_current_positive, io.over_current_negative) @[\\src\\main\\scala\\SecondDriver.scala 53:76]
     stuck_detector.io.external_overcurrent_input <= _stuck_detector_io_external_overcurrent_input_T @[\\src\\main\\scala\\SecondDriver.scala 53:48]
@@ -635,22 +595,27 @@ circuit SecondDriver :
                 node _T_6 = eq(UInt<1>("h0"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                 when _T_6 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                   manual_speed <= UInt<10>("h200") @[\\src\\main\\scala\\SecondDriver.scala 95:38]
+                  manual_brake <= UInt<1>("h1") @[\\src\\main\\scala\\SecondDriver.scala 95:61]
                 else :
                   node _T_7 = eq(UInt<1>("h1"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                   when _T_7 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]
-                    manual_speed <= UInt<10>("h280") @[\\src\\main\\scala\\SecondDriver.scala 96:38]
+                    manual_speed <= UInt<10>("h2a8") @[\\src\\main\\scala\\SecondDriver.scala 96:38]
+                    manual_brake <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 96:61]
                   else :
                     node _T_8 = eq(UInt<2>("h2"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                     when _T_8 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                       manual_speed <= UInt<10>("h2ee") @[\\src\\main\\scala\\SecondDriver.scala 97:38]
+                      manual_brake <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 97:61]
                     else :
                       node _T_9 = eq(UInt<2>("h3"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                       when _T_9 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                         manual_speed <= UInt<9>("h17c") @[\\src\\main\\scala\\SecondDriver.scala 98:38]
+                        manual_brake <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 98:61]
                       else :
                         node _T_10 = eq(UInt<3>("h4"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                         when _T_10 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                           manual_speed <= UInt<9>("h10e") @[\\src\\main\\scala\\SecondDriver.scala 99:38]
+                          manual_brake <= UInt<1>("h0") @[\\src\\main\\scala\\SecondDriver.scala 99:61]
                         else :
                           node _T_11 = eq(UInt<3>("h5"), rx.io.data) @[\\src\\main\\scala\\SecondDriver.scala 93:32]
                           when _T_11 : @[\\src\\main\\scala\\SecondDriver.scala 93:32]

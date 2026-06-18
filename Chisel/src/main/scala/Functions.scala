@@ -6,24 +6,16 @@ class RotationCounter extends Module {
   val io = IO(new Bundle {
     val signal_A = Input(Bool())
     val signal_B = Input(Bool())
-    val turns    = Output(UInt(32.W))
+    val turns    = Output(SInt(32.W))
   })
-
-  val aSync  = RegNext(RegNext(io.signal_A))
-  val bSync  = RegNext(RegNext(io.signal_B))
-  val aReg   = RegNext(aSync)
-  val turns  = RegInit(0.U(32.W))
-
-  val edge_A = aSync && !aReg
-
-  when(edge_A) {
-    when(!bSync) {
-      turns := turns + 1.U
-    } .otherwise {
-      when(turns > 0.U) {
-        turns := turns - 1.U
-      }
-    }
+  val aSync = RegNext(RegNext(io.signal_A))
+  val bSync = RegNext(RegNext(io.signal_B))
+  val aReg  = RegNext(aSync)
+  val rise_A = aSync && !aReg
+  val turns = RegInit(0.S(32.W))
+  when(rise_A) {
+    when(!bSync) { turns := turns + 1.S }
+      .otherwise { turns := turns - 1.S }
   }
   io.turns := turns
 }
