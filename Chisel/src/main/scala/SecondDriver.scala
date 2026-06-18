@@ -171,9 +171,9 @@ Gains to test:
 Kp: 50, Ki: 0, Kd: 5
 */
 object GenerateAllVerilog extends App {
-  val matlab_Kp = 10
+  val matlab_Kp = 80
   val matlab_Ki = 0
-  val matlab_Kd = 4
+  val matlab_Kd = 2
   val Ts = 0.001
   emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts), Array("-td", "Verilog"))
 }

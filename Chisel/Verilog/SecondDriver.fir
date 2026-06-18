@@ -730,9 +730,9 @@ circuit SecondDriver :
     node _pid_io_resetBuffer_T_4 = or(_pid_io_resetBuffer_T_3, at_position) @[src/main/scala/SecondDriver.scala 118:73]
     node _pid_io_resetBuffer_T_5 = or(_pid_io_resetBuffer_T_4, target_updated) @[src/main/scala/SecondDriver.scala 118:88]
     pid.io.resetBuffer <= _pid_io_resetBuffer_T_5 @[src/main/scala/SecondDriver.scala 118:22]
-    pid.io.kp <= asFixedPoint(UInt<32>("ha000"), 12) @[src/main/scala/SecondDriver.scala 120:13]
+    pid.io.kp <= asFixedPoint(UInt<32>("h50000"), 12) @[src/main/scala/SecondDriver.scala 120:13]
     pid.io.ki <= asFixedPoint(UInt<32>("h0"), 12) @[src/main/scala/SecondDriver.scala 121:13]
-    pid.io.kd <= asFixedPoint(UInt<32>("hfa0000"), 12) @[src/main/scala/SecondDriver.scala 122:13]
+    pid.io.kd <= asFixedPoint(UInt<32>("h7d0000"), 12) @[src/main/scala/SecondDriver.scala 122:13]
     node _pid_offset_T = asSInt(pid.io.controlOut) @[src/main/scala/SecondDriver.scala 124:46]
     node _pid_offset_T_1 = shr(_pid_offset_T, 2) @[src/main/scala/SecondDriver.scala 124:53]
     reg pid_offset : SInt, clock with :
