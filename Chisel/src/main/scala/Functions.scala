@@ -67,47 +67,6 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
 }
 
 
-class PIDController(val w: Int, val f: Int) extends Module {
-  val io = IO(new Bundle {
-    val setPoint    = Input(FixedPoint(w.W, f.BP))
-    val measuredVal = Input(FixedPoint(w.W, f.BP))
-    val kp          = Input(FixedPoint(w.W, f.BP))
-    val ki          = Input(FixedPoint(w.W, f.BP))
-    val kd          = Input(FixedPoint(w.W, f.BP))
-    val tick        = Input(Bool())        
-    val resetBuffer = Input(Bool())
-    val controlOut  = Output(FixedPoint(w.W, f.BP))
-  })
-
-  val integralReg  = RegInit(0.F(w.W, f.BP))
-  val prevErrorReg = RegInit(0.F(w.W, f.BP))
-  val outputReg    = RegInit(0.F(w.W, f.BP))
-
-  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
-  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
-
-  val error = io.setPoint - io.measuredVal
-
-  when(io.resetBuffer) {
-    integralReg  := 0.F(w.W, f.BP)
-    prevErrorReg := 0.F(w.W, f.BP)
-    outputReg    := 0.F(w.W, f.BP)
-  } .elsewhen(io.tick) {
-    val pTerm = RegNext(io.kp * error)
-    val iTermNext = RegNext(io.ki * error)
-    val nextSum   = RegNext(integralReg + iTermNext)
-    integralReg := Mux(nextSum > limit_pos, limit_pos, 
-                   Mux(nextSum < limit_neg, limit_neg, nextSum))
-
-    val dTerm = RegNext(io.kd * (error - prevErrorReg))
-    prevErrorReg := error
-
-    val rawOutput = RegNext(pTerm + integralReg + dTerm)
-    outputReg := Mux(rawOutput > limit_pos, limit_pos, 
-                 Mux(rawOutput < limit_neg, limit_neg, rawOutput))
-  }
-  io.controlOut := outputReg
-}
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {
   val io = IO(new Bundle {
@@ -309,4 +268,55 @@ class RisingFsm extends Module {
       }
     }
   }
+}
+
+class PIDController(val w: Int, val f: Int) extends Module {
+  val io = IO(new Bundle {
+    val setPoint    = Input(FixedPoint(w.W, f.BP))
+    val measuredVal = Input(FixedPoint(w.W, f.BP))
+    val kp          = Input(FixedPoint(w.W, f.BP))
+    val ki          = Input(FixedPoint(w.W, f.BP))
+    val kd          = Input(FixedPoint(w.W, f.BP))
+    val tick        = Input(Bool())        
+    val resetBuffer = Input(Bool())
+    val controlOut  = Output(FixedPoint(w.W, f.BP))
+  })
+
+  val integralReg  = RegInit(0.F(w.W, f.BP))
+  val prevErrorReg = RegInit(0.F(w.W, f.BP))
+  val outputReg    = RegInit(0.F(w.W, f.BP))
+  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)
+  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)
+
+  val tick_s1 = io.tick
+  val tick_s2 = RegNext(tick_s1)
+  val tick_s3 = RegNext(tick_s2)
+
+  val error = io.setPoint - io.measuredVal
+  val pTerm_s1 = RegEnable(io.kp * error, tick_s1)
+  val iInc_s1  = RegEnable(io.ki * error, tick_s1)
+  val dDiff_s1 = RegEnable(error - prevErrorReg, tick_s1)
+  
+  val iSum_s2   = RegEnable(integralReg + iInc_s1, tick_s2)
+  val pTerm_s2  = RegEnable(pTerm_s1, tick_s2)
+  val dTerm_s2  = RegEnable(io.kd * dDiff_s1, tick_s2)
+  val error_s2  = RegEnable(error, tick_s2) 
+
+  val iClamped_s3 = Mux(iSum_s2 > limit_pos, limit_pos, Mux(iSum_s2 < limit_neg, limit_neg, iSum_s2))
+  val rawOutput_s3 = pTerm_s2 + iClamped_s3 + dTerm_s2
+  
+  val tick_s4 = RegNext(tick_s3)
+  val sum_s3 = RegEnable(pTerm_s2 + iClamped_s3 + dTerm_s2, tick_s3)
+
+  when(io.resetBuffer) {
+    integralReg  := 0.F(w.W, f.BP)
+    prevErrorReg := 0.F(w.W, f.BP)
+    outputReg    := 0.F(w.W, f.BP)
+  } .elsewhen(tick_s3) {
+    integralReg  := iClamped_s3
+    prevErrorReg := error_s2
+  } .elsewhen(tick_s4) {
+    outputReg    := Mux(sum_s3 > limit_pos, limit_pos, Mux(sum_s3 < limit_neg, limit_neg, sum_s3))
+  }
+  io.controlOut := outputReg
 }
