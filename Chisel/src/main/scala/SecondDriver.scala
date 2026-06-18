@@ -92,11 +92,11 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
             manual_brake := false.B
             switch(rx.io.data) {
               // MAYBE ADD MANUAL BRAKE??
-              is(0.U) { manual_speed := 512.U } //; manual_brake := true.B}
-              is(1.U) { manual_speed := 640.U } // s_fwd
-              is(2.U) { manual_speed := 750.U } // f_fwd
-              is(3.U) { manual_speed := 380.U } // s_back
-              is(4.U) { manual_speed := 270.U } // f_back
+              is(0.U) { manual_speed := 512.U; manual_brake := true.B }
+              is(1.U) { manual_speed := 680.U; manual_brake := false.B } // s_fwd
+              is(2.U) { manual_speed := 750.U; manual_brake := false.B } // f_fwd
+              is(3.U) { manual_speed := 380.U; manual_brake := false.B } // s_back
+              is(4.U) { manual_speed := 270.U; manual_brake := false.B } // f_back
               is(5.U) { manual_brake := true.B }
             }
             }
