@@ -41,11 +41,11 @@ if __name__ == "__main__":
             if not l: continue
             c = l[0]
             if c == 'p':  ctrl.send(0x01, int(l[1]))
+            elif c == 's': ctrl.send(0x02, 0)
             elif c == 'sf': ctrl.send(0x02, 1)
             elif c == 'ff': ctrl.send(0x02, 2)
             elif c == 'sb': ctrl.send(0x02, 3)
             elif c == 'fb': ctrl.send(0x02, 4)
-            elif c == 's':  ctrl.send(0x02, 0)
             elif c == 'r':  ctrl.send(0xFF, 0x00)
             elif c == 'q':  break
         except (KeyboardInterrupt, EOFError): break

@@ -66,6 +66,7 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   io.T4 := !conduct_T4
 }
 
+
 class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
@@ -73,7 +74,7 @@ class PIDController(val w: Int, val f: Int) extends Module {
     val kp          = Input(FixedPoint(w.W, f.BP))
     val ki          = Input(FixedPoint(w.W, f.BP))
     val kd          = Input(FixedPoint(w.W, f.BP))
-    val tick        = Input(Bool())        // New: slow-down signal
+    val tick        = Input(Bool())        
     val resetBuffer = Input(Bool())
     val controlOut  = Output(FixedPoint(w.W, f.BP))
   })
@@ -92,18 +93,15 @@ class PIDController(val w: Int, val f: Int) extends Module {
     prevErrorReg := 0.F(w.W, f.BP)
     outputReg    := 0.F(w.W, f.BP)
   } .elsewhen(io.tick) {
-    // Kp
     val pTerm = RegNext(io.kp * error)
     val iTermNext = RegNext(io.ki * error)
     val nextSum   = RegNext(integralReg + iTermNext)
     integralReg := Mux(nextSum > limit_pos, limit_pos, 
                    Mux(nextSum < limit_neg, limit_neg, nextSum))
 
-    // Kd
     val dTerm = RegNext(io.kd * (error - prevErrorReg))
     prevErrorReg := error
 
-    // Clamp output
     val rawOutput = RegNext(pTerm + integralReg + dTerm)
     outputReg := Mux(rawOutput > limit_pos, limit_pos, 
                  Mux(rawOutput < limit_neg, limit_neg, rawOutput))

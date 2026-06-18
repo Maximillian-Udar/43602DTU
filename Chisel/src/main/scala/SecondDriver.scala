@@ -37,18 +37,18 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
 
   // Functions
   def filter(in: Bool): Bool = {
-    val sync = RegNext(RegNext(in))
+    val sync = in
     val cnt  = RegInit(0.U(14.W))
     val out  = RegInit(false.B)
     when(sync === out) { cnt := 0.U }
-    .otherwise { cnt := cnt + 1.U; when(cnt === 10000.U) { out := sync } }
+    .otherwise { cnt := cnt + 1.U; when(cnt === 100.U) { out := sync } }
     out
   }
 
   // Wiring modules
   rx.io.rx := io.uart_rx
-  rotations.io.signal_A := io.photo_sensor_A
-  rotations.io.signal_B := io.photo_sensor_B
+  rotations.io.signal_A := filter(io.photo_sensor_A)
+  rotations.io.signal_B := filter(io.photo_sensor_B)
   display.io.dots := 0.U
   stuck_detector.io.external_overcurrent_input := (io.over_current_positive|| io.over_current_negative)
   error_clear_debounce.io.btn_in := io.error_cleared
@@ -91,13 +91,11 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
             control_mode := false.B
             manual_brake := false.B
             switch(rx.io.data) {
-              // MAYBE ADD MANUAL BRAKE??
-              is(0.U) { manual_speed := 512.U; manual_brake := true.B }
-              is(1.U) { manual_speed := 680.U; manual_brake := false.B } // s_fwd
-              is(2.U) { manual_speed := 750.U; manual_brake := false.B } // f_fwd
-              is(3.U) { manual_speed := 380.U; manual_brake := false.B } // s_back
-              is(4.U) { manual_speed := 270.U; manual_brake := false.B } // f_back
-              is(5.U) { manual_brake := true.B }
+              is(0.U) { manual_brake := true.B }
+              is(1.U) { manual_speed := 700.U; manual_brake := false.B } // s_fwd
+              is(2.U) { manual_speed := 800.U; manual_brake := false.B } // f_fwd
+              is(3.U) { manual_speed := 300.U; manual_brake := false.B } // s_back
+              is(4.U) { manual_speed := 200.U; manual_brake := false.B } // f_back
             }
             }
         is(0xFF.U) { reset_triggered := true.B }
@@ -109,17 +107,19 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   stuck_detector.io.clear_shutdown := (error_clear_debounce.io.out || reset_triggered)
 
   // PID
-  val at_position = (control_mode && (target_position_cm === current_position_cm))
+  val at_position = control_mode && (current_position_cm >= target_position_cm - 1.S && current_position_cm <= target_position_cm + 1.S)
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(pidDP.BP)
   pid.io.tick := true.B
-  pid.io.resetBuffer := !control_mode || manual_brake || !system_active
+  pid.io.resetBuffer := !control_mode || manual_brake || !system_active || at_position
     // Gains
   pid.io.kp := Kp.F(pidWidth.W, pidDP.BP)
   pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)
   pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)
-  val pid_duty_raw = ((pid.io.controlOut + 0.5.F(pidDP.BP)).asUInt >> (pidDP - 10).U)
+  
+  val pid_duty_raw = ((pid.io.controlOut + 0.5.F(pidDP.BP)) * 1023.F(pidDP.BP) >> pidDP).asUInt
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.U, 1023.U, pid_duty_raw(9, 0)))
+
   pwm_signal.io.duty_cycle := Mux(control_mode, pid_duty, manual_speed)
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position
   pwm_signal.io.brake := motor_stopped

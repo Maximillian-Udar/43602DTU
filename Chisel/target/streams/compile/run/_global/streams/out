@@ -1,12 +1,23 @@
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassExceptions: [0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\MotorDriver.scala 27:32] : [module MotorDriver]  Reference stuck_detector is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : stuck_detector.io.clearShutdown <= VOID[0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\MotorDriver.scala 27:32] : [module MotorDriver]  Reference stuck_detector is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : stuck_detector.io.externalOvercurrentInput <= VOID[0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassException: 2 errors detected![0m
-[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) firrtl.passes.PassExceptions: [0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\MotorDriver.scala 27:32] : [module MotorDriver]  Reference stuck_detector is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : stuck_detector.io.clearShutdown <= VOID[0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\MotorDriver.scala 27:32] : [module MotorDriver]  Reference stuck_detector is not fully initialized.[0m
-[0m[[0m[31merror[0m] [0m[0m   : stuck_detector.io.externalOvercurrentInput <= VOID[0m
-[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassException: 2 errors detected![0m
+[0m[[0m[31merror[0m] [0m[0mchisel3.package$ChiselException: Connection between sink (SecondDriver.target_position_cm: Reg[SInt<32>]) and source (SecondDriver.target_position_cm_?: OpResult[UInt<15>]) failed @: Sink (SInt<32>) and Source (UInt<15>) have different types.[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
+[0m[[0m[31merror[0m] [0m[0m	at SecondDriver.$anonfun$new$22(SecondDriver.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.<init>(When.scala:135)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.when$.apply(When.scala:38)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.util.SwitchContext.is(Conditional.scala:38)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.util.SwitchContext.is(Conditional.scala:45)[0m
+[0m[[0m[31merror[0m] [0m[0m	at SecondDriver.$anonfun$new$21(SecondDriver.scala:88)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.<init>(When.scala:135)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.elsewhen(When.scala:112)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.util.SwitchContext.is(Conditional.scala:37)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.util.SwitchContext.is(Conditional.scala:45)[0m
+[0m[[0m[31merror[0m] [0m[0m	at SecondDriver.$anonfun$new$13(SecondDriver.scala:84)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.<init>(When.scala:135)[0m
+[0m[[0m[31merror[0m] [0m[0m	at chisel3.when$.apply(When.scala:38)[0m
+[0m[[0m[31merror[0m] [0m[0m	at SecondDriver.<init>(SecondDriver.scala:83)[0m
+[0m[[0m[31merror[0m] [0m[0m	at GenerateAllVerilog$.$anonfun$new$99(SecondDriver.scala:182)[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
+[0m[[0m[31merror[0m] [0m[0m	at ... (Stack trace trimmed to user code only. Rerun with --full-stacktrace to see the full stack trace)[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) chisel3.package$ChiselException: Connection between sink (SecondDriver.target_position_cm: Reg[SInt<32>]) and source (SecondDriver.target_position_cm_?: OpResult[UInt<15>]) failed @: Sink (SInt<32>) and Source (UInt<15>) have different types.[0m
