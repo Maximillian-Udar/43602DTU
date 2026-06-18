@@ -71,7 +71,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val target_position_cm = RegInit(0.S(32.W))
   val manual_speed = RegInit(512.U(10.W))
   val control_mode = RegInit(true.B)
-  val manual_brake = RegInit(true.B)
+  val manual_brake = RegInit(false.B)
   val system_active = RegInit(false.B)
 
   // UART commands
@@ -86,7 +86,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
       is(sCMD) { CMDByte := rx.io.data; uartState := sValue}
       is(sValue) {
         switch(CMDByte) {
-          is(0x01.U) { target_position_cm := (rx.io.data * 100.U).asSInt }
+          is(0x01.U) { target_position_cm := (rx.io.data * 100.U).asSInt; system_active := true.B; manual_brake := false.B}
           is(0x02.U) { 
             control_mode := false.B
             manual_brake := false.B
@@ -155,7 +155,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
         when(!tx.io.busy) {
           tx.io.data := current_position_cm(15, 8).asUInt
           tx.io.start := true.B
-          txState := sSync
+          txState := sLow
           txTimer := 0.U
         }}
       is(sLow) {
