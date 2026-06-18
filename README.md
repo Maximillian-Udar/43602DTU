@@ -24,5 +24,3 @@
 
 ## Mixed: 
     - USB port for serial commands
-
-holger test
