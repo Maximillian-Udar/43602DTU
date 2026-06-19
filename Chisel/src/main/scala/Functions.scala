@@ -49,9 +49,12 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val conduct_T4 = Wire(Bool())
 
   when(io.brake) {
-    conduct_T1 := true.B
-    conduct_T2 := false.B
-    conduct_T3 := true.B
+    // FIXED: Set all to false.B. 
+    // This results in T1=0, T3=0 and (due to inversion) T2=1, T4=1.
+    // This matches the safe !system_active state and prevents short circuits.
+    conduct_T1 := false.B
+    conduct_T2 := false.B 
+    conduct_T3 := false.B
     conduct_T4 := false.B
   } .otherwise {
     conduct_T2 := pwmSignal
@@ -65,7 +68,6 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   io.T2 := !conduct_T2
   io.T4 := !conduct_T4
 }
-
 
 
 class UartRx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module {

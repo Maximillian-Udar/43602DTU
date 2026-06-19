@@ -44,16 +44,27 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   rotations.io.signal_A := filter(io.photo_sensor_A)
   rotations.io.signal_B := filter(io.photo_sensor_B)
   display.io.dots := 0.U
-  stuck_detector.io.external_overcurrent_input := (io.over_current_positive || io.over_current_negative)
+  stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
   error_clear_debounce.io.btn_in := io.error_cleared
   
   val pid_timer = RegInit(0.U(17.W))
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
+
+  // --- Manual Ramping Logic ---
+  val manual_speed  = RegInit(512.U(10.W))
+  val manual_ramped = RegInit(512.U(10.W))
+  val ramp_timer    = RegInit(0.U(17.W))
+  val ramp_tick     = ramp_timer === 99999.U // 1ms increment tick
+
+  when(ramp_tick) {
+    ramp_timer := 0.U
+    when(manual_ramped < manual_speed) { manual_ramped := manual_ramped + 1.U }
+    .elsewhen(manual_ramped > manual_speed) { manual_ramped := manual_ramped - 1.U }
+  } .otherwise { ramp_timer := ramp_timer + 1.U }
   
   // Scaling and states
   val target_position_cm = RegInit(0.S(32.W))
-  val manual_speed = RegInit(512.U(10.W))
   val control_mode = RegInit(true.B)
   val manual_brake = RegInit(false.B)
   val system_active = RegInit(false.B)
@@ -95,7 +106,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
             control_mode := false.B
             manual_brake := false.B
             switch(rx.io.data) {
-              is(0.U) { manual_brake := true.B }
+              is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Reset target so it ramps up when released
               is(1.U) { manual_speed := 700.U; manual_brake := false.B }
               is(2.U) { manual_speed := 730.U; manual_brake := false.B }
               is(3.U) { manual_speed := 475.U; manual_brake := false.B }
@@ -112,7 +123,9 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
 
   // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - 5.S && current_turns <= target_turns + 5.S), true.B)
+  // 
+  val tolerance = 5.S
+  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - tolerance && current_turns <= target_turns + tolerance), true.B)
   
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
@@ -123,14 +136,15 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)
   pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)
   
-  // PID SPEED LIMIT FIX: Increased shifts to 5 and 6 to lower the maximum speed ceiling
   val raw_pid_out = pid.io.controlOut.asSInt
-  val pid_offset = RegNext(Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 140.S, (raw_pid_out >> 6)))
-  
+  // Adjust how agressive the PID is
+  // 115 is forward, 35 is backwards
+  val pid_offset = RegNext(Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S))
+
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
 
-  val active_duty = Mux(control_mode, pid_duty, manual_speed)
+  val active_duty = Mux(control_mode, pid_duty, manual_ramped)
   val is_moving_back = active_duty < 512.U
   val is_moving_fwd = active_duty > 512.U
 
