@@ -4,19 +4,19 @@ import chisel3.experimental.FixedPoint
 
 class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val io = IO(new Bundle {
-    val uart_rx = Input(Bool())
-    val photo_sensor_A = Input(Bool())
-    val photo_sensor_B = Input(Bool())
+    val uart_rx               = Input(Bool())
+    val photo_sensor_A        = Input(Bool())
+    val photo_sensor_B        = Input(Bool())
     val over_current_positive = Input(Bool())
     val over_current_negative = Input(Bool())
-    val error_cleared = Input(Bool())
-    val uart_tx = Output(Bool())
-    val T1 = Output(Bool())
-    val T2 = Output(Bool())
-    val T3 = Output(Bool())
-    val T4 = Output(Bool())
-    val seg = Output(UInt(8.W))
-    val an = Output(UInt(4.W))
+    val error_cleared         = Input(Bool())
+    val uart_tx               = Output(Bool())
+    val T1                    = Output(Bool())
+    val T2                    = Output(Bool())
+    val T3                    = Output(Bool())
+    val T4                    = Output(Bool())
+    val seg                   = Output(UInt(8.W))
+    val an                    = Output(UInt(4.W))
   })
   
   val pidWidth = 32
@@ -90,15 +90,16 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
             target_updated := true.B
           }
           is(0x02.U) { 
+            when(!system_active) { initial_offset := rotations.io.turns }
+            system_active := true.B
             control_mode := false.B
             manual_brake := false.B
-            system_active := true.B
             switch(rx.io.data) {
-              is(0.U) { manual_brake := true.B; system_active := false.B} // Brake
-              is(1.U) { manual_speed := 700.U; manual_brake := false.B; system_active := true.B } // sf
-              is(2.U) { manual_speed := 730.U; manual_brake := false.B; system_active := true.B } // ff
-              is(3.U) { manual_speed := 475.U; manual_brake := false.B; system_active := true.B } // sb
-              is(4.U) { manual_speed := 448.U; manual_brake := false.B; system_active := true.B } // fb
+              is(0.U) { manual_brake := true.B }
+              is(1.U) { manual_speed := 700.U; manual_brake := false.B }
+              is(2.U) { manual_speed := 730.U; manual_brake := false.B }
+              is(3.U) { manual_speed := 475.U; manual_brake := false.B }
+              is(4.U) { manual_speed := 448.U; manual_brake := false.B }
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -111,7 +112,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
 
   // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - 1.S && current_turns <= target_turns + 1.S), true.B)
+  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - 5.S && current_turns <= target_turns + 5.S), true.B)
   
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
@@ -122,7 +123,10 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)
   pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)
   
-  val pid_offset = RegNext(pid.io.controlOut.asSInt >> 2)
+  // PID SPEED LIMIT FIX: Increased shifts to 5 and 6 to lower the maximum speed ceiling
+  val raw_pid_out = pid.io.controlOut.asSInt
+  val pid_offset = RegNext(Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 140.S, (raw_pid_out >> 6)))
+  
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
 
@@ -165,12 +169,6 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   display.io.disp_content := Mux(motor_stopped, letters_STOP, letters_AUTO)
 }
 
-
-
-/* 
-Gains to test:
-Kp: 50, Ki: 0, Kd: 5
-*/
 object GenerateAllVerilog extends App {
   val matlab_Kp = .3
   val matlab_Ki = 0

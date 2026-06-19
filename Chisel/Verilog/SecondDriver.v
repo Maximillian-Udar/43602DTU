@@ -1059,83 +1059,86 @@ module SecondDriver(
   wire  _T_5 = ~system_active; // @[\\src\\main\\scala\\SecondDriver.scala 85:18]
   wire [31:0] _GEN_9 = ~system_active ? $signed(rotations_io_turns) : $signed(initial_offset); // @[\\src\\main\\scala\\SecondDriver.scala 60:31 85:{34,51}]
   wire [7:0] _target_position_cm_T = rx_io_data; // @[\\src\\main\\scala\\SecondDriver.scala 86:48]
-  wire  _T_7 = 8'h0 == rx_io_data; // @[\\src\\main\\scala\\SecondDriver.scala 96:32]
-  wire [9:0] _GEN_10 = 8'h4 == rx_io_data ? 10'h1c0 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 96:32 101:38 56:29]
-  wire [9:0] _GEN_13 = 8'h3 == rx_io_data ? 10'h1db : _GEN_10; // @[\\src\\main\\scala\\SecondDriver.scala 96:32 100:38]
-  wire [9:0] _GEN_16 = 8'h2 == rx_io_data ? 10'h2da : _GEN_13; // @[\\src\\main\\scala\\SecondDriver.scala 96:32 99:38]
-  wire [9:0] _GEN_19 = 8'h1 == rx_io_data ? 10'h2bc : _GEN_16; // @[\\src\\main\\scala\\SecondDriver.scala 96:32 98:38]
-  wire  _GEN_23 = 8'h0 == rx_io_data ? 1'h0 : 1'h1; // @[\\src\\main\\scala\\SecondDriver.scala 96:32 97:63]
-  wire [9:0] _GEN_24 = 8'h0 == rx_io_data ? manual_speed : _GEN_19; // @[\\src\\main\\scala\\SecondDriver.scala 56:29 96:32]
-  wire  _GEN_26 = 8'h2 == CMDByte ? 1'h0 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 93:26 57:29]
-  wire  _GEN_27 = 8'h2 == CMDByte ? _T_7 : manual_brake; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 58:29]
-  wire  _GEN_28 = 8'h2 == CMDByte ? _GEN_23 : system_active; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 59:30]
-  wire [9:0] _GEN_29 = 8'h2 == CMDByte ? _GEN_24 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 56:29]
-  wire  _GEN_30 = 8'h2 == CMDByte ? 1'h0 : 8'hff == CMDByte; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 72:36]
-  wire [31:0] _GEN_31 = 8'h1 == CMDByte ? $signed(_GEN_9) : $signed(initial_offset); // @[\\src\\main\\scala\\SecondDriver.scala 83:25 60:31]
-  wire [31:0] _GEN_32 = 8'h1 == CMDByte ? $signed({{24{_target_position_cm_T[7]}},_target_position_cm_T}) : $signed(
+  wire  _T_8 = 8'h0 == rx_io_data; // @[\\src\\main\\scala\\SecondDriver.scala 97:32]
+  wire [9:0] _GEN_11 = 8'h4 == rx_io_data ? 10'h1c0 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 97:32 102:38 56:29]
+  wire [9:0] _GEN_13 = 8'h3 == rx_io_data ? 10'h1db : _GEN_11; // @[\\src\\main\\scala\\SecondDriver.scala 97:32 101:38]
+  wire [9:0] _GEN_15 = 8'h2 == rx_io_data ? 10'h2da : _GEN_13; // @[\\src\\main\\scala\\SecondDriver.scala 97:32 100:38]
+  wire [9:0] _GEN_17 = 8'h1 == rx_io_data ? 10'h2bc : _GEN_15; // @[\\src\\main\\scala\\SecondDriver.scala 97:32 99:38]
+  wire [9:0] _GEN_20 = 8'h0 == rx_io_data ? manual_speed : _GEN_17; // @[\\src\\main\\scala\\SecondDriver.scala 56:29 97:32]
+  wire [31:0] _GEN_22 = 8'h2 == CMDByte ? $signed(_GEN_9) : $signed(initial_offset); // @[\\src\\main\\scala\\SecondDriver.scala 83:25 60:31]
+  wire  _GEN_23 = 8'h2 == CMDByte | system_active; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 94:27 59:30]
+  wire  _GEN_24 = 8'h2 == CMDByte ? 1'h0 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 95:26 57:29]
+  wire  _GEN_25 = 8'h2 == CMDByte ? _T_8 : manual_brake; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 58:29]
+  wire [9:0] _GEN_26 = 8'h2 == CMDByte ? _GEN_20 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 56:29]
+  wire  _GEN_27 = 8'h2 == CMDByte ? 1'h0 : 8'hff == CMDByte; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 72:36]
+  wire [31:0] _GEN_28 = 8'h1 == CMDByte ? $signed(_GEN_9) : $signed(_GEN_22); // @[\\src\\main\\scala\\SecondDriver.scala 83:25]
+  wire [31:0] _GEN_29 = 8'h1 == CMDByte ? $signed({{24{_target_position_cm_T[7]}},_target_position_cm_T}) : $signed(
     target_position_cm); // @[\\src\\main\\scala\\SecondDriver.scala 83:25 86:32 55:35]
-  wire  _GEN_33 = 8'h1 == CMDByte | _GEN_28; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 87:27]
-  wire  _GEN_34 = 8'h1 == CMDByte | _GEN_26; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 88:26]
-  wire  _GEN_35 = 8'h1 == CMDByte ? 1'h0 : _GEN_27; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 89:26]
-  wire  _GEN_36 = 8'h1 == CMDByte | _GEN_7; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 90:28]
-  wire [9:0] _GEN_37 = 8'h1 == CMDByte ? manual_speed : _GEN_29; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 56:29]
-  wire  _GEN_38 = 8'h1 == CMDByte ? 1'h0 : _GEN_30; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 72:36]
-  wire [31:0] _GEN_39 = 2'h2 == uartState ? $signed(_GEN_31) : $signed(initial_offset); // @[\\src\\main\\scala\\SecondDriver.scala 79:23 60:31]
-  wire [31:0] _GEN_40 = 2'h2 == uartState ? $signed(_GEN_32) : $signed(target_position_cm); // @[\\src\\main\\scala\\SecondDriver.scala 79:23 55:35]
-  wire  _GEN_41 = 2'h2 == uartState ? _GEN_33 : system_active; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 59:30]
-  wire  _GEN_42 = 2'h2 == uartState ? _GEN_34 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
-  wire  _GEN_43 = 2'h2 == uartState ? _GEN_35 : manual_brake; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 58:29]
-  wire  _GEN_44 = 2'h2 == uartState ? _GEN_36 : _GEN_7; // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-  wire [9:0] _GEN_45 = 2'h2 == uartState ? _GEN_37 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 56:29]
-  wire [1:0] _GEN_47 = 2'h2 == uartState ? 2'h0 : uartState; // @[\\src\\main\\scala\\SecondDriver.scala 106:19 79:23 70:26]
-  wire  _GEN_53 = 2'h1 == uartState ? control_mode : _GEN_42; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
-  wire  _GEN_57 = 2'h1 == uartState ? 1'h0 : 2'h2 == uartState & _GEN_38; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 72:36]
-  wire  _GEN_63 = 2'h0 == uartState ? control_mode : _GEN_53; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
-  wire  _GEN_67 = 2'h0 == uartState ? 1'h0 : _GEN_57; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 72:36]
-  wire  _GEN_73 = rx_io_done ? _GEN_63 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 78:21 57:29]
-  wire  reset_triggered = rx_io_done & _GEN_67; // @[\\src\\main\\scala\\SecondDriver.scala 78:21 72:36]
-  wire [36:0] _target_turns_T = $signed(target_position_cm) * 5'shf; // @[\\src\\main\\scala\\SecondDriver.scala 113:50]
-  reg [37:0] target_turns; // @[\\src\\main\\scala\\SecondDriver.scala 113:29]
-  wire [37:0] _at_position_T_2 = $signed(target_turns) - 38'sh1; // @[\\src\\main\\scala\\SecondDriver.scala 114:87]
-  wire [37:0] _GEN_109 = {{6{current_turns[31]}},current_turns}; // @[\\src\\main\\scala\\SecondDriver.scala 114:71]
-  wire [37:0] _at_position_T_6 = $signed(target_turns) + 38'sh1; // @[\\src\\main\\scala\\SecondDriver.scala 114:126]
-  wire  _at_position_T_9 = system_active ? $signed(_GEN_109) >= $signed(_at_position_T_2) & $signed(_GEN_109) <=
-    $signed(_at_position_T_6) : 1'h1; // @[\\src\\main\\scala\\SecondDriver.scala 114:40]
-  wire  at_position = control_mode & _at_position_T_9; // @[\\src\\main\\scala\\SecondDriver.scala 114:34]
-  wire [31:0] _pid_offset_T = pid_io_controlOut; // @[\\src\\main\\scala\\SecondDriver.scala 125:46]
-  reg [29:0] pid_offset; // @[\\src\\main\\scala\\SecondDriver.scala 125:27]
-  wire [29:0] pid_duty_raw = 30'sh200 + $signed(pid_offset); // @[\\src\\main\\scala\\SecondDriver.scala 126:28]
-  wire [29:0] _pid_duty_T_2 = 30'sh200 + $signed(pid_offset); // @[\\src\\main\\scala\\SecondDriver.scala 127:119]
-  wire [29:0] _pid_duty_T_3 = $signed(pid_duty_raw) < 30'sh0 ? 30'h0 : _pid_duty_T_2; // @[\\src\\main\\scala\\SecondDriver.scala 127:80]
-  wire [29:0] _pid_duty_T_4 = $signed(pid_duty_raw) > 30'sh3ff ? 30'h3ff : _pid_duty_T_3; // @[\\src\\main\\scala\\SecondDriver.scala 127:45]
-  wire [29:0] pid_duty = at_position ? 30'h200 : _pid_duty_T_4; // @[\\src\\main\\scala\\SecondDriver.scala 127:21]
-  wire [29:0] active_duty = control_mode ? pid_duty : {{20'd0}, manual_speed}; // @[\\src\\main\\scala\\SecondDriver.scala 129:24]
-  wire  is_moving_back = active_duty < 30'h200; // @[\\src\\main\\scala\\SecondDriver.scala 130:36]
-  wire  is_moving_fwd = active_duty > 30'h200; // @[\\src\\main\\scala\\SecondDriver.scala 131:35]
-  wire  _block_neg_T_3 = ~at_position; // @[\\src\\main\\scala\\SecondDriver.scala 133:96]
-  wire  block_neg = system_active & $signed(current_position_cm) <= 20'sh0 & is_moving_back & ~at_position; // @[\\src\\main\\scala\\SecondDriver.scala 133:93]
-  wire  block_pos = $signed(current_position_cm) >= 20'sh5a & is_moving_fwd & _block_neg_T_3; // @[\\src\\main\\scala\\SecondDriver.scala 134:66]
-  reg [29:0] pwm_signal_io_duty_cycle_REG; // @[\\src\\main\\scala\\SecondDriver.scala 136:38]
-  wire  motor_stopped = manual_brake | stuck_detector_io_motor_disable | _T_5 | at_position | block_neg | block_pos; // @[\\src\\main\\scala\\SecondDriver.scala 137:117]
-  reg [23:0] txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 148:24]
-  reg [1:0] txState; // @[\\src\\main\\scala\\SecondDriver.scala 150:24]
-  wire  _T_16 = ~tx_io_busy; // @[\\src\\main\\scala\\SecondDriver.scala 154:24]
-  wire [7:0] _GEN_82 = ~tx_io_busy ? 8'hff : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 151:14 154:{37,50}]
-  wire [7:0] _GEN_85 = _T_16 ? current_position_cm[15:8] : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 151:14 155:{37,50}]
-  wire [1:0] _GEN_87 = _T_16 ? 2'h2 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 155:119 150:24 155:37]
-  wire [23:0] _GEN_88 = _T_16 ? 24'h0 : txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 155:136 148:24 155:37]
-  wire [7:0] _GEN_89 = _T_16 ? current_position_cm[7:0] : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 151:14 156:{36,49}]
-  wire [1:0] _GEN_91 = _T_16 ? 2'h0 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 156:117 150:24 156:36]
-  wire [7:0] _GEN_93 = 2'h2 == txState ? _GEN_89 : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 151:14 153:21]
-  wire  _GEN_94 = 2'h2 == txState & _T_16; // @[\\src\\main\\scala\\SecondDriver.scala 153:21 151:34]
-  wire [1:0] _GEN_95 = 2'h2 == txState ? _GEN_91 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 153:21 150:24]
-  wire [23:0] _GEN_96 = 2'h2 == txState ? _GEN_88 : txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 153:21 148:24]
-  wire [7:0] _GEN_97 = 2'h1 == txState ? _GEN_85 : _GEN_93; // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-  wire  _GEN_98 = 2'h1 == txState ? _T_16 : _GEN_94; // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-  wire [7:0] _GEN_101 = 2'h0 == txState ? _GEN_82 : _GEN_97; // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-  wire  _GEN_102 = 2'h0 == txState ? _T_16 : _GEN_98; // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\SecondDriver.scala 158:36]
-  wire [43:0] _GEN_111 = {$signed(target_position_cm), 12'h0}; // @[\\src\\main\\scala\\SecondDriver.scala 117:19]
+  wire  _GEN_30 = 8'h1 == CMDByte | _GEN_23; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 87:27]
+  wire  _GEN_31 = 8'h1 == CMDByte | _GEN_24; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 88:26]
+  wire  _GEN_32 = 8'h1 == CMDByte ? 1'h0 : _GEN_25; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 89:26]
+  wire  _GEN_33 = 8'h1 == CMDByte | _GEN_7; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 90:28]
+  wire [9:0] _GEN_34 = 8'h1 == CMDByte ? manual_speed : _GEN_26; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 56:29]
+  wire  _GEN_35 = 8'h1 == CMDByte ? 1'h0 : _GEN_27; // @[\\src\\main\\scala\\SecondDriver.scala 83:25 72:36]
+  wire [31:0] _GEN_36 = 2'h2 == uartState ? $signed(_GEN_28) : $signed(initial_offset); // @[\\src\\main\\scala\\SecondDriver.scala 79:23 60:31]
+  wire [31:0] _GEN_37 = 2'h2 == uartState ? $signed(_GEN_29) : $signed(target_position_cm); // @[\\src\\main\\scala\\SecondDriver.scala 79:23 55:35]
+  wire  _GEN_38 = 2'h2 == uartState ? _GEN_30 : system_active; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 59:30]
+  wire  _GEN_39 = 2'h2 == uartState ? _GEN_31 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
+  wire  _GEN_40 = 2'h2 == uartState ? _GEN_32 : manual_brake; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 58:29]
+  wire  _GEN_41 = 2'h2 == uartState ? _GEN_33 : _GEN_7; // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
+  wire [9:0] _GEN_42 = 2'h2 == uartState ? _GEN_34 : manual_speed; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 56:29]
+  wire [1:0] _GEN_44 = 2'h2 == uartState ? 2'h0 : uartState; // @[\\src\\main\\scala\\SecondDriver.scala 107:19 79:23 70:26]
+  wire  _GEN_50 = 2'h1 == uartState ? control_mode : _GEN_39; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
+  wire  _GEN_54 = 2'h1 == uartState ? 1'h0 : 2'h2 == uartState & _GEN_35; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 72:36]
+  wire  _GEN_60 = 2'h0 == uartState ? control_mode : _GEN_50; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 57:29]
+  wire  _GEN_64 = 2'h0 == uartState ? 1'h0 : _GEN_54; // @[\\src\\main\\scala\\SecondDriver.scala 79:23 72:36]
+  wire  _GEN_70 = rx_io_done ? _GEN_60 : control_mode; // @[\\src\\main\\scala\\SecondDriver.scala 78:21 57:29]
+  wire  reset_triggered = rx_io_done & _GEN_64; // @[\\src\\main\\scala\\SecondDriver.scala 78:21 72:36]
+  wire [36:0] _target_turns_T = $signed(target_position_cm) * 5'shf; // @[\\src\\main\\scala\\SecondDriver.scala 114:50]
+  reg [37:0] target_turns; // @[\\src\\main\\scala\\SecondDriver.scala 114:29]
+  wire [37:0] _at_position_T_2 = $signed(target_turns) - 38'sh5; // @[\\src\\main\\scala\\SecondDriver.scala 115:87]
+  wire [37:0] _GEN_106 = {{6{current_turns[31]}},current_turns}; // @[\\src\\main\\scala\\SecondDriver.scala 115:71]
+  wire [37:0] _at_position_T_6 = $signed(target_turns) + 38'sh5; // @[\\src\\main\\scala\\SecondDriver.scala 115:126]
+  wire  _at_position_T_9 = system_active ? $signed(_GEN_106) >= $signed(_at_position_T_2) & $signed(_GEN_106) <=
+    $signed(_at_position_T_6) : 1'h1; // @[\\src\\main\\scala\\SecondDriver.scala 115:40]
+  wire  at_position = control_mode & _at_position_T_9; // @[\\src\\main\\scala\\SecondDriver.scala 115:34]
+  wire [31:0] raw_pid_out = pid_io_controlOut; // @[\\src\\main\\scala\\SecondDriver.scala 127:39]
+  wire [26:0] _pid_offset_T_1 = raw_pid_out[31:5]; // @[\\src\\main\\scala\\SecondDriver.scala 128:64]
+  wire [26:0] _pid_offset_T_4 = $signed(_pid_offset_T_1) + 27'sh8c; // @[\\src\\main\\scala\\SecondDriver.scala 128:70]
+  wire [25:0] _pid_offset_T_5 = raw_pid_out[31:6]; // @[\\src\\main\\scala\\SecondDriver.scala 128:92]
+  reg [26:0] pid_offset; // @[\\src\\main\\scala\\SecondDriver.scala 128:27]
+  wire [26:0] pid_duty_raw = 27'sh200 + $signed(pid_offset); // @[\\src\\main\\scala\\SecondDriver.scala 130:28]
+  wire [26:0] _pid_duty_T_2 = 27'sh200 + $signed(pid_offset); // @[\\src\\main\\scala\\SecondDriver.scala 131:119]
+  wire [26:0] _pid_duty_T_3 = $signed(pid_duty_raw) < 27'sh0 ? 27'h0 : _pid_duty_T_2; // @[\\src\\main\\scala\\SecondDriver.scala 131:80]
+  wire [26:0] _pid_duty_T_4 = $signed(pid_duty_raw) > 27'sh3ff ? 27'h3ff : _pid_duty_T_3; // @[\\src\\main\\scala\\SecondDriver.scala 131:45]
+  wire [26:0] pid_duty = at_position ? 27'h200 : _pid_duty_T_4; // @[\\src\\main\\scala\\SecondDriver.scala 131:21]
+  wire [26:0] active_duty = control_mode ? pid_duty : {{17'd0}, manual_speed}; // @[\\src\\main\\scala\\SecondDriver.scala 133:24]
+  wire  is_moving_back = active_duty < 27'h200; // @[\\src\\main\\scala\\SecondDriver.scala 134:36]
+  wire  is_moving_fwd = active_duty > 27'h200; // @[\\src\\main\\scala\\SecondDriver.scala 135:35]
+  wire  _block_neg_T_3 = ~at_position; // @[\\src\\main\\scala\\SecondDriver.scala 137:96]
+  wire  block_neg = system_active & $signed(current_position_cm) <= 20'sh0 & is_moving_back & ~at_position; // @[\\src\\main\\scala\\SecondDriver.scala 137:93]
+  wire  block_pos = $signed(current_position_cm) >= 20'sh5a & is_moving_fwd & _block_neg_T_3; // @[\\src\\main\\scala\\SecondDriver.scala 138:66]
+  reg [26:0] pwm_signal_io_duty_cycle_REG; // @[\\src\\main\\scala\\SecondDriver.scala 140:38]
+  wire  motor_stopped = manual_brake | stuck_detector_io_motor_disable | _T_5 | at_position | block_neg | block_pos; // @[\\src\\main\\scala\\SecondDriver.scala 141:117]
+  reg [23:0] txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 152:24]
+  reg [1:0] txState; // @[\\src\\main\\scala\\SecondDriver.scala 154:24]
+  wire  _T_17 = ~tx_io_busy; // @[\\src\\main\\scala\\SecondDriver.scala 158:24]
+  wire [7:0] _GEN_79 = ~tx_io_busy ? 8'hff : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 155:14 158:{37,50}]
+  wire [7:0] _GEN_82 = _T_17 ? current_position_cm[15:8] : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 155:14 159:{37,50}]
+  wire [1:0] _GEN_84 = _T_17 ? 2'h2 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 159:119 154:24 159:37]
+  wire [23:0] _GEN_85 = _T_17 ? 24'h0 : txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 159:136 152:24 159:37]
+  wire [7:0] _GEN_86 = _T_17 ? current_position_cm[7:0] : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 155:14 160:{36,49}]
+  wire [1:0] _GEN_88 = _T_17 ? 2'h0 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 160:117 154:24 160:36]
+  wire [7:0] _GEN_90 = 2'h2 == txState ? _GEN_86 : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 155:14 157:21]
+  wire  _GEN_91 = 2'h2 == txState & _T_17; // @[\\src\\main\\scala\\SecondDriver.scala 157:21 155:34]
+  wire [1:0] _GEN_92 = 2'h2 == txState ? _GEN_88 : txState; // @[\\src\\main\\scala\\SecondDriver.scala 157:21 154:24]
+  wire [23:0] _GEN_93 = 2'h2 == txState ? _GEN_85 : txTimer; // @[\\src\\main\\scala\\SecondDriver.scala 157:21 152:24]
+  wire [7:0] _GEN_94 = 2'h1 == txState ? _GEN_82 : _GEN_90; // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+  wire  _GEN_95 = 2'h1 == txState ? _T_17 : _GEN_91; // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+  wire [7:0] _GEN_98 = 2'h0 == txState ? _GEN_79 : _GEN_94; // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+  wire  _GEN_99 = 2'h0 == txState ? _T_17 : _GEN_95; // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\SecondDriver.scala 162:36]
+  wire [43:0] _GEN_108 = {$signed(target_position_cm), 12'h0}; // @[\\src\\main\\scala\\SecondDriver.scala 118:19]
   UartRx rx ( // @[\\src\\main\\scala\\SecondDriver.scala 25:18]
     .clock(rx_clock),
     .reset(rx_reset),
@@ -1197,38 +1200,38 @@ module SecondDriver(
     .io_btn_in(error_clear_debounce_io_btn_in),
     .io_out(error_clear_debounce_io_out)
   );
-  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\SecondDriver.scala 159:14]
-  assign io_T1 = _T_5 ? 1'h0 : pwm_signal_io_T1; // @[\\src\\main\\scala\\SecondDriver.scala 141:25 142:11 144:11]
-  assign io_T2 = _T_5 | pwm_signal_io_T2; // @[\\src\\main\\scala\\SecondDriver.scala 141:25 142:29 144:38]
-  assign io_T3 = _T_5 ? 1'h0 : pwm_signal_io_T3; // @[\\src\\main\\scala\\SecondDriver.scala 141:25 142:46 144:65]
-  assign io_T4 = _T_5 | pwm_signal_io_T4; // @[\\src\\main\\scala\\SecondDriver.scala 141:25 142:64 144:92]
-  assign io_seg = display_io_seg; // @[\\src\\main\\scala\\SecondDriver.scala 162:34]
-  assign io_an = display_io_an; // @[\\src\\main\\scala\\SecondDriver.scala 162:9]
+  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\SecondDriver.scala 163:14]
+  assign io_T1 = _T_5 ? 1'h0 : pwm_signal_io_T1; // @[\\src\\main\\scala\\SecondDriver.scala 145:25 146:11 148:11]
+  assign io_T2 = _T_5 | pwm_signal_io_T2; // @[\\src\\main\\scala\\SecondDriver.scala 145:25 146:29 148:38]
+  assign io_T3 = _T_5 ? 1'h0 : pwm_signal_io_T3; // @[\\src\\main\\scala\\SecondDriver.scala 145:25 146:46 148:65]
+  assign io_T4 = _T_5 | pwm_signal_io_T4; // @[\\src\\main\\scala\\SecondDriver.scala 145:25 146:64 148:92]
+  assign io_seg = display_io_seg; // @[\\src\\main\\scala\\SecondDriver.scala 166:34]
+  assign io_an = display_io_an; // @[\\src\\main\\scala\\SecondDriver.scala 166:9]
   assign rx_clock = clock;
   assign rx_reset = reset;
   assign rx_io_rx = io_uart_rx; // @[\\src\\main\\scala\\SecondDriver.scala 43:12]
   assign tx_clock = clock;
   assign tx_reset = reset;
-  assign tx_io_data = txTimer >= 24'h2625a0 ? _GEN_101 : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 151:14 152:30]
-  assign tx_io_start = txTimer >= 24'h2625a0 & _GEN_102; // @[\\src\\main\\scala\\SecondDriver.scala 152:30 151:34]
+  assign tx_io_data = txTimer >= 24'h2625a0 ? _GEN_98 : 8'h0; // @[\\src\\main\\scala\\SecondDriver.scala 155:14 156:30]
+  assign tx_io_start = txTimer >= 24'h2625a0 & _GEN_99; // @[\\src\\main\\scala\\SecondDriver.scala 156:30 155:34]
   assign pwm_signal_clock = clock;
   assign pwm_signal_reset = reset;
-  assign pwm_signal_io_duty_cycle = pwm_signal_io_duty_cycle_REG[9:0]; // @[\\src\\main\\scala\\SecondDriver.scala 136:28]
+  assign pwm_signal_io_duty_cycle = pwm_signal_io_duty_cycle_REG[9:0]; // @[\\src\\main\\scala\\SecondDriver.scala 140:28]
   assign pwm_signal_io_brake = manual_brake | stuck_detector_io_motor_disable | _T_5 | at_position | block_neg |
-    block_pos; // @[\\src\\main\\scala\\SecondDriver.scala 137:117]
+    block_pos; // @[\\src\\main\\scala\\SecondDriver.scala 141:117]
   assign pid_clock = clock;
   assign pid_reset = reset;
-  assign pid_io_setPoint = _GEN_111[31:0]; // @[\\src\\main\\scala\\SecondDriver.scala 117:19]
-  assign pid_io_measuredVal = current_position_fixed_point; // @[\\src\\main\\scala\\SecondDriver.scala 116:22]
+  assign pid_io_setPoint = _GEN_108[31:0]; // @[\\src\\main\\scala\\SecondDriver.scala 118:19]
+  assign pid_io_measuredVal = current_position_fixed_point; // @[\\src\\main\\scala\\SecondDriver.scala 117:22]
   assign pid_io_tick = pid_timer == 17'h1869f; // @[\\src\\main\\scala\\SecondDriver.scala 51:29]
-  assign pid_io_resetBuffer = ~control_mode | manual_brake | _T_5 | at_position | target_updated; // @[\\src\\main\\scala\\SecondDriver.scala 119:88]
+  assign pid_io_resetBuffer = ~control_mode | manual_brake | _T_5 | at_position | target_updated; // @[\\src\\main\\scala\\SecondDriver.scala 120:88]
   assign stuck_detector_clock = clock;
   assign stuck_detector_reset = reset;
   assign stuck_detector_io_external_overcurrent_input = io_over_current_positive | io_over_current_negative; // @[\\src\\main\\scala\\SecondDriver.scala 47:77]
-  assign stuck_detector_io_clear_shutdown = error_clear_debounce_io_out | reset_triggered; // @[\\src\\main\\scala\\SecondDriver.scala 110:68]
+  assign stuck_detector_io_clear_shutdown = error_clear_debounce_io_out | reset_triggered; // @[\\src\\main\\scala\\SecondDriver.scala 111:68]
   assign display_clock = clock;
   assign display_reset = reset;
-  assign display_io_disp_content = motor_stopped ? 20'hdf2f8 : 20'h57797; // @[\\src\\main\\scala\\SecondDriver.scala 165:33]
+  assign display_io_disp_content = motor_stopped ? 20'hdf2f8 : 20'h57797; // @[\\src\\main\\scala\\SecondDriver.scala 169:33]
   assign rotations_clock = clock;
   assign rotations_reset = reset;
   assign rotations_io_signal_A = rotations_io_signal_A_out; // @[\\src\\main\\scala\\SecondDriver.scala 44:25]
@@ -1277,7 +1280,7 @@ module SecondDriver(
     end else if (rx_io_done) begin // @[\\src\\main\\scala\\SecondDriver.scala 78:21]
       if (!(2'h0 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         if (!(2'h1 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-          target_position_cm <= _GEN_40;
+          target_position_cm <= _GEN_37;
         end
       end
     end
@@ -1286,17 +1289,17 @@ module SecondDriver(
     end else if (rx_io_done) begin // @[\\src\\main\\scala\\SecondDriver.scala 78:21]
       if (!(2'h0 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         if (!(2'h1 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-          manual_speed <= _GEN_45;
+          manual_speed <= _GEN_42;
         end
       end
     end
-    control_mode <= reset | _GEN_73; // @[\\src\\main\\scala\\SecondDriver.scala 57:{29,29}]
+    control_mode <= reset | _GEN_70; // @[\\src\\main\\scala\\SecondDriver.scala 57:{29,29}]
     if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 58:29]
       manual_brake <= 1'h0; // @[\\src\\main\\scala\\SecondDriver.scala 58:29]
     end else if (rx_io_done) begin // @[\\src\\main\\scala\\SecondDriver.scala 78:21]
       if (!(2'h0 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         if (!(2'h1 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-          manual_brake <= _GEN_43;
+          manual_brake <= _GEN_40;
         end
       end
     end
@@ -1305,7 +1308,7 @@ module SecondDriver(
     end else if (rx_io_done) begin // @[\\src\\main\\scala\\SecondDriver.scala 78:21]
       if (!(2'h0 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         if (!(2'h1 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-          system_active <= _GEN_41;
+          system_active <= _GEN_38;
         end
       end
     end
@@ -1314,7 +1317,7 @@ module SecondDriver(
     end else if (rx_io_done) begin // @[\\src\\main\\scala\\SecondDriver.scala 78:21]
       if (!(2'h0 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         if (!(2'h1 == uartState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
-          initial_offset <= _GEN_39;
+          initial_offset <= _GEN_36;
         end
       end
     end
@@ -1329,7 +1332,7 @@ module SecondDriver(
       end else if (2'h1 == uartState) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         uartState <= 2'h2; // @[\\src\\main\\scala\\SecondDriver.scala 81:51]
       end else begin
-        uartState <= _GEN_47;
+        uartState <= _GEN_44;
       end
     end
     if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 71:24]
@@ -1349,50 +1352,54 @@ module SecondDriver(
       end else if (2'h1 == uartState) begin // @[\\src\\main\\scala\\SecondDriver.scala 79:23]
         target_updated <= _GEN_7;
       end else begin
-        target_updated <= _GEN_44;
+        target_updated <= _GEN_41;
       end
     end else begin
       target_updated <= _GEN_7;
     end
-    target_turns <= $signed(_target_turns_T) / 3'sh2; // @[\\src\\main\\scala\\SecondDriver.scala 113:58]
-    pid_offset <= _pid_offset_T[31:2]; // @[\\src\\main\\scala\\SecondDriver.scala 125:53]
-    if (block_neg | block_pos) begin // @[\\src\\main\\scala\\SecondDriver.scala 136:42]
-      pwm_signal_io_duty_cycle_REG <= 30'h200;
-    end else if (control_mode) begin // @[\\src\\main\\scala\\SecondDriver.scala 129:24]
-      if (at_position) begin // @[\\src\\main\\scala\\SecondDriver.scala 127:21]
-        pwm_signal_io_duty_cycle_REG <= 30'h200;
-      end else if ($signed(pid_duty_raw) > 30'sh3ff) begin // @[\\src\\main\\scala\\SecondDriver.scala 127:45]
-        pwm_signal_io_duty_cycle_REG <= 30'h3ff;
+    target_turns <= $signed(_target_turns_T) / 3'sh2; // @[\\src\\main\\scala\\SecondDriver.scala 114:58]
+    if ($signed(raw_pid_out) > 32'sh0) begin // @[\\src\\main\\scala\\SecondDriver.scala 128:31]
+      pid_offset <= _pid_offset_T_4;
+    end else begin
+      pid_offset <= {{1{_pid_offset_T_5[25]}},_pid_offset_T_5};
+    end
+    if (block_neg | block_pos) begin // @[\\src\\main\\scala\\SecondDriver.scala 140:42]
+      pwm_signal_io_duty_cycle_REG <= 27'h200;
+    end else if (control_mode) begin // @[\\src\\main\\scala\\SecondDriver.scala 133:24]
+      if (at_position) begin // @[\\src\\main\\scala\\SecondDriver.scala 131:21]
+        pwm_signal_io_duty_cycle_REG <= 27'h200;
+      end else if ($signed(pid_duty_raw) > 27'sh3ff) begin // @[\\src\\main\\scala\\SecondDriver.scala 131:45]
+        pwm_signal_io_duty_cycle_REG <= 27'h3ff;
       end else begin
         pwm_signal_io_duty_cycle_REG <= _pid_duty_T_3;
       end
     end else begin
-      pwm_signal_io_duty_cycle_REG <= {{20'd0}, manual_speed};
+      pwm_signal_io_duty_cycle_REG <= {{17'd0}, manual_speed};
     end
-    if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 148:24]
-      txTimer <= 24'h0; // @[\\src\\main\\scala\\SecondDriver.scala 148:24]
-    end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\SecondDriver.scala 152:30]
-      if (!(2'h0 == txState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-        if (2'h1 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-          txTimer <= _GEN_88;
+    if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 152:24]
+      txTimer <= 24'h0; // @[\\src\\main\\scala\\SecondDriver.scala 152:24]
+    end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\SecondDriver.scala 156:30]
+      if (!(2'h0 == txState)) begin // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+        if (2'h1 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+          txTimer <= _GEN_85;
         end else begin
-          txTimer <= _GEN_96;
+          txTimer <= _GEN_93;
         end
       end
     end else begin
-      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\SecondDriver.scala 158:25]
+      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\SecondDriver.scala 162:25]
     end
-    if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 150:24]
-      txState <= 2'h0; // @[\\src\\main\\scala\\SecondDriver.scala 150:24]
-    end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\SecondDriver.scala 152:30]
-      if (2'h0 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-        if (~tx_io_busy) begin // @[\\src\\main\\scala\\SecondDriver.scala 154:37]
-          txState <= 2'h1; // @[\\src\\main\\scala\\SecondDriver.scala 154:92]
+    if (reset) begin // @[\\src\\main\\scala\\SecondDriver.scala 154:24]
+      txState <= 2'h0; // @[\\src\\main\\scala\\SecondDriver.scala 154:24]
+    end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\SecondDriver.scala 156:30]
+      if (2'h0 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+        if (~tx_io_busy) begin // @[\\src\\main\\scala\\SecondDriver.scala 158:37]
+          txState <= 2'h1; // @[\\src\\main\\scala\\SecondDriver.scala 158:92]
         end
-      end else if (2'h1 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 153:21]
-        txState <= _GEN_87;
+      end else if (2'h1 == txState) begin // @[\\src\\main\\scala\\SecondDriver.scala 157:21]
+        txState <= _GEN_84;
       end else begin
-        txState <= _GEN_95;
+        txState <= _GEN_92;
       end
     end
   end
@@ -1465,9 +1472,9 @@ initial begin
   _RAND_15 = {2{`RANDOM}};
   target_turns = _RAND_15[37:0];
   _RAND_16 = {1{`RANDOM}};
-  pid_offset = _RAND_16[29:0];
+  pid_offset = _RAND_16[26:0];
   _RAND_17 = {1{`RANDOM}};
-  pwm_signal_io_duty_cycle_REG = _RAND_17[29:0];
+  pwm_signal_io_duty_cycle_REG = _RAND_17[26:0];
   _RAND_18 = {1{`RANDOM}};
   txTimer = _RAND_18[23:0];
   _RAND_19 = {1{`RANDOM}};
