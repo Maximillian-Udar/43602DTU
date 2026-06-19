@@ -92,12 +92,13 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
           is(0x02.U) { 
             control_mode := false.B
             manual_brake := false.B
+            system_active := true.B
             switch(rx.io.data) {
-              is(0.U) { manual_brake := true.B }
-              is(1.U) { manual_speed := 700.U; manual_brake := false.B }
-              is(2.U) { manual_speed := 800.U; manual_brake := false.B }
-              is(3.U) { manual_speed := 300.U; manual_brake := false.B }
-              is(4.U) { manual_speed := 200.U; manual_brake := false.B }
+              is(0.U) { manual_brake := true.B; system_active := false.B} // Brake
+              is(1.U) { manual_speed := 700.U; manual_brake := false.B; system_active := true.B } // sf
+              is(2.U) { manual_speed := 730.U; manual_brake := false.B; system_active := true.B } // ff
+              is(3.U) { manual_speed := 475.U; manual_brake := false.B; system_active := true.B } // sb
+              is(4.U) { manual_speed := 448.U; manual_brake := false.B; system_active := true.B } // fb
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -171,9 +172,9 @@ Gains to test:
 Kp: 50, Ki: 0, Kd: 5
 */
 object GenerateAllVerilog extends App {
-  val matlab_Kp = 80
+  val matlab_Kp = .3
   val matlab_Ki = 0
-  val matlab_Kd = 2
+  val matlab_Kd = 0.1
   val Ts = 0.001
   emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts), Array("-td", "Verilog"))
 }
