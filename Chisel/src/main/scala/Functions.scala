@@ -301,7 +301,6 @@ class PIDController(val w: Int = 32, val f: Int = 12) extends Module {
   val error_s2  = RegEnable(error, tick_s2) 
 
   val iClamped_s3 = Mux(iSum_s2 > limit_pos, limit_pos, Mux(iSum_s2 < limit_neg, limit_neg, iSum_s2))
-  val rawOutput_s3 = pTerm_s2 + iClamped_s3 + dTerm_s2
   
   val tick_s4 = RegNext(tick_s3)
   val sum_s3 = RegEnable(pTerm_s2 + iClamped_s3 + dTerm_s2, tick_s3)

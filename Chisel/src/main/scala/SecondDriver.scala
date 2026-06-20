@@ -40,24 +40,25 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
     out
   }
 
-  rx.io.rx := io.uart_rx
-  rotations.io.signal_A := filter(io.photo_sensor_A, 100)
-  rotations.io.signal_B := filter(io.photo_sensor_B, 100)
-  display.io.dots := 0.U
-  stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
+  rx.io.rx                       := io.uart_rx
+  rotations.io.signal_A          := filter(io.photo_sensor_A, 100)
+  rotations.io.signal_B          := filter(io.photo_sensor_B, 100)
+  display.io.dots                := 0.U
   error_clear_debounce.io.btn_in := io.error_cleared
+  stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
+  
   
   val pid_timer = RegInit(0.U(17.W))
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
 
   // Ramping manual speeds
-  val manual_speed  = RegInit(512.U(10.W))
-  val manual_ramped = RegInit(512.U(10.W))
+  val manual_speed       = RegInit(512.U(10.W))
+  val manual_ramped      = RegInit(512.U(10.W))
   val speed_increment_ms = manual_speed_step_ms
-  val cycles = speed_increment_ms * 100000
-  val ramp_timer = RegInit(0.U(log2Up(cycles).W))
-  val ramp_tick = ramp_timer === (cycles - 1).U
+  val cycles             = speed_increment_ms * 100000
+  val ramp_timer         = RegInit(0.U(log2Up(cycles).W))
+  val ramp_tick          = ramp_timer === (cycles - 1).U
 
   when(ramp_tick) {
     ramp_timer := 0.U
@@ -65,17 +66,18 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
       manual_ramped := manual_ramped + 1.U
     }.elsewhen(manual_ramped > manual_speed) { 
       manual_ramped := manual_ramped - 1.U 
-      } } .otherwise { ramp_timer := ramp_timer + 1.U }
+    } 
+  }.otherwise { ramp_timer := ramp_timer + 1.U }
   
   // Scaling and states
   val target_position_cm = RegInit(0.S(32.W))
-  val control_mode = RegInit(true.B)
-  val manual_brake = RegInit(false.B)
-  val system_active = RegInit(false.B)
-  val initial_offset = RegInit(0.S(32.W))
+  val control_mode       = RegInit(true.B)
+  val manual_brake       = RegInit(false.B)
+  val system_active      = RegInit(false.B)
+  val initial_offset     = RegInit(0.S(32.W))
 
   val current_turns = rotations.io.turns - initial_offset
-  val cm_per_pulse = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)
+  val cm_per_pulse  = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)
   
   val full_pos_calc = current_turns.asFixedPoint(0.BP) * cm_per_pulse
   val current_position_fixed_point = RegNext(full_pos_calc(31, 0).asFixedPoint(pidDP.BP))
@@ -96,7 +98,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
       is(sCMD) { CMDByte := rx.io.data; uartState := sValue}
       is(sValue) {
         switch(CMDByte) {
-          is(0x01.U) { 
+          is(0x01.U) { // Auto mode
             when(!system_active) { initial_offset := rotations.io.turns }
             target_position_cm := (rx.io.data).asSInt
             system_active := true.B
@@ -104,7 +106,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
             manual_brake := false.B
             target_updated := true.B
           }
-          is(0x02.U) { 
+          is(0x02.U) { // Manual mode
             when(!system_active) { initial_offset := rotations.io.turns }
             system_active := true.B
             control_mode := false.B
@@ -154,28 +156,52 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
   val is_moving_fwd = active_duty > 512.U
 
   val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back && !at_position
-  val block_pos = (current_position_cm >= 90.S) && is_moving_fwd && !at_position
+  val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd && !at_position
 
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty))
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
   pwm_signal.io.brake := motor_stopped
 
   when (!system_active) { // Brake
-    io.T1 := false.B; io.T2 := true.B; io.T3 := false.B; io.T4 := true.B
-  } .otherwise {
-    io.T1 := pwm_signal.io.T1; io.T2 := pwm_signal.io.T2; io.T3 := pwm_signal.io.T3; io.T4 := pwm_signal.io.T4 // Drive
+    io.T1 := false.B
+    io.T2 := true.B
+    io.T3 := false.B
+    io.T4 := true.B
+  } .otherwise { // Drive H-bridge
+    io.T1 := pwm_signal.io.T1
+    io.T2 := pwm_signal.io.T2
+    io.T3 := pwm_signal.io.T3
+    io.T4 := pwm_signal.io.T4 
   }
 
   // Transmit
   val txTimer = RegInit(0.U(24.W))
   val sSync :: sHigh :: sLow :: Nil = Enum(3)
   val txState = RegInit(sSync)
-  tx.io.data := 0.U; tx.io.start := false.B
+  tx.io.data := 0.U
+  tx.io.start := false.B
   when(txTimer >= 2500000.U) {
     switch(txState) {
-      is(sSync) { when(!tx.io.busy) { tx.io.data := 0xFF.U; tx.io.start := true.B; txState := sHigh }}
-      is(sHigh) { when(!tx.io.busy) { tx.io.data := current_position_cm(15, 8).asUInt; tx.io.start := true.B; txState := sLow; txTimer := 0.U }}
-      is(sLow) { when(!tx.io.busy) { tx.io.data := current_position_cm(7, 0).asUInt; tx.io.start := true.B; txState := sSync; txTimer := 0.U }}
+      is(sSync) { 
+        when(!tx.io.busy) { 
+          tx.io.data := 0xFF.U
+          tx.io.start := true.B
+          txState := sHigh 
+        }}
+      is(sHigh) { 
+        when(!tx.io.busy) { 
+          tx.io.data := current_position_cm(15, 8).asUInt
+          tx.io.start := true.B
+          txState := sLow
+          txTimer := 0.U 
+        }}
+      is(sLow) { 
+        when(!tx.io.busy) { 
+          tx.io.data := current_position_cm(7, 0).asUInt
+          tx.io.start := true.B
+          txState := sSync
+          txTimer := 0.U 
+        }}
     }
   }.otherwise { txTimer := txTimer + 1.U }
   io.uart_tx := tx.io.tx
@@ -185,7 +211,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
   val letters_AUTO = Cat(SegSymbol.A.asUInt, SegSymbol.U.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt)
   val letters_MAN  = Cat(SegSymbol.M.asUInt, SegSymbol.A.asUInt, SegSymbol.N.asUInt, SegSymbol.Blank.asUInt)
   val letters_STOP = Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
-  display.io.disp_content := Mux(motor_stopped, letters_STOP, letters_AUTO)
+  display.io.disp_content := Mux(motor_stopped, letters_STOP, Mux(control_mode, letters_AUTO, letters_MAN))
 }
 
 object GenerateAllVerilog extends App {
