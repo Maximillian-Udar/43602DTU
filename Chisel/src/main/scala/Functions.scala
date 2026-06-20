@@ -42,16 +42,12 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
 
   val threshold = (io.duty_cycle * periodCycles) >> 10
   val pwmSignal = pwmCounter < threshold
-
   val conduct_T1 = Wire(Bool())
   val conduct_T2 = Wire(Bool())
   val conduct_T3 = Wire(Bool())
   val conduct_T4 = Wire(Bool())
 
   when(io.brake) {
-    // FIXED: Set all to false.B. 
-    // This results in T1=0, T3=0 and (due to inversion) T2=1, T4=1.
-    // This matches the safe !system_active state and prevents short circuits.
     conduct_T1 := false.B
     conduct_T2 := false.B 
     conduct_T3 := false.B
@@ -115,7 +111,7 @@ class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
   }
 }
 
-class StuckDetector(val OverCurrentAllowance_ms : Int = 150) extends Module {
+class StuckDetector(val OverCurrentAllowance_ms : Int = 3) extends Module {
   val io = IO(new Bundle {
       val external_overcurrent_input = Input(Bool())      
       val clear_shutdown            = Input(Bool()) 
@@ -160,7 +156,7 @@ class DisplayMultiplexer(refresh_limit: Int = 100000) extends Module {
   }
 
   val decoder = Module(new SevenSegDec)
-  decoder.io.in := SegSymbol(currentRaw)
+  decoder.io.in := SegSymbol.safe(currentRaw)._1
   
   val sevSeg = decoder.io.out
   val currentDot = io.dots(digit)
@@ -272,7 +268,7 @@ class RisingFsm extends Module {
   }
 }
 
-class PIDController(val w: Int, val f: Int) extends Module {
+class PIDController(val w: Int = 32, val f: Int = 12) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
     val measuredVal = Input(FixedPoint(w.W, f.BP))

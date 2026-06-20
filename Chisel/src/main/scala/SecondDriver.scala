@@ -2,7 +2,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
+class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 25000, manual_speed_step_ms : Int = 2) extends Module {
   val io = IO(new Bundle {
     val uart_rx               = Input(Bool())
     val photo_sensor_A        = Input(Bool())
@@ -22,27 +22,27 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val pidWidth = 32
   val pidDP = 12
 
-  val rx = Module(new UartRx)
-  val tx = Module(new UartTx)
-  val pwm_signal = Module(new DCMotorPwm(22000))
-  val pid = Module(new PIDController(pidWidth, pidDP))
-  val stuck_detector = Module(new StuckDetector)
-  val display = Module(new DisplayMultiplexer)
-  val rotations = Module(new RotationCounter)
+  val rx                   = Module(new UartRx)
+  val tx                   = Module(new UartTx)
+  val pwm_signal           = Module(new DCMotorPwm(PWM_frequency))
+  val pid                  = Module(new PIDController(pidWidth, pidDP))
+  val stuck_detector       = Module(new StuckDetector)
+  val display              = Module(new DisplayMultiplexer)
+  val rotations            = Module(new RotationCounter)
   val error_clear_debounce = Module(new Debouncer)
 
-  def filter(in: Bool): Bool = {
+  def filter(in: Bool, how_fine: Int = 1000): Bool = {
     val sync = in
     val cnt  = RegInit(0.U(14.W))
     val out  = RegInit(false.B)
     when(sync === out) { cnt := 0.U }
-    .otherwise { cnt := cnt + 1.U; when(cnt === 100.U) { out := sync } }
+    .otherwise { cnt := cnt + 1.U; when(cnt === how_fine.U) { out := sync } }
     out
   }
 
   rx.io.rx := io.uart_rx
-  rotations.io.signal_A := filter(io.photo_sensor_A)
-  rotations.io.signal_B := filter(io.photo_sensor_B)
+  rotations.io.signal_A := filter(io.photo_sensor_A, 100)
+  rotations.io.signal_B := filter(io.photo_sensor_B, 100)
   display.io.dots := 0.U
   stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
   error_clear_debounce.io.btn_in := io.error_cleared
@@ -51,17 +51,21 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
 
-  // --- Manual Ramping Logic ---
+  // Ramping manual speeds
   val manual_speed  = RegInit(512.U(10.W))
   val manual_ramped = RegInit(512.U(10.W))
-  val ramp_timer    = RegInit(0.U(17.W))
-  val ramp_tick     = ramp_timer === 99999.U // 1ms increment tick
+  val speed_increment_ms = manual_speed_step_ms
+  val cycles = speed_increment_ms * 100000
+  val ramp_timer = RegInit(0.U(log2Up(cycles).W))
+  val ramp_tick = ramp_timer === (cycles - 1).U
 
   when(ramp_tick) {
     ramp_timer := 0.U
-    when(manual_ramped < manual_speed) { manual_ramped := manual_ramped + 1.U }
-    .elsewhen(manual_ramped > manual_speed) { manual_ramped := manual_ramped - 1.U }
-  } .otherwise { ramp_timer := ramp_timer + 1.U }
+    when(manual_ramped < manual_speed) {
+      manual_ramped := manual_ramped + 1.U
+    }.elsewhen(manual_ramped > manual_speed) { 
+      manual_ramped := manual_ramped - 1.U 
+      } } .otherwise { ramp_timer := ramp_timer + 1.U }
   
   // Scaling and states
   val target_position_cm = RegInit(0.S(32.W))
@@ -106,11 +110,11 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
             control_mode := false.B
             manual_brake := false.B
             switch(rx.io.data) {
-              is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Reset target so it ramps up when released
-              is(1.U) { manual_speed := 700.U; manual_brake := false.B }
-              is(2.U) { manual_speed := 730.U; manual_brake := false.B }
-              is(3.U) { manual_speed := 475.U; manual_brake := false.B }
-              is(4.U) { manual_speed := 448.U; manual_brake := false.B }
+              is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
+              is(1.U) { manual_speed := 700.U; manual_brake := false.B } // sf
+              is(2.U) { manual_speed := 730.U; manual_brake := false.B } // ff
+              is(3.U) { manual_speed := 475.U; manual_brake := false.B } // sb
+              is(4.U) { manual_speed := 448.U; manual_brake := false.B } // fb
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -123,8 +127,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
 
   // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  // 
-  val tolerance = 5.S
+  val tolerance = 3.S
   val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - tolerance && current_turns <= target_turns + tolerance), true.B)
   
   pid.io.measuredVal := current_position_fixed_point
@@ -137,8 +140,10 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)
   
   val raw_pid_out = pid.io.controlOut.asSInt
-  // Adjust how agressive the PID is
-  // 115 is forward, 35 is backwards
+  /* 
+  Adjust how agressive the PID is
+  115 is forward, 35 is backwards, 5 and 8 are the bitshifts
+  */
   val pid_offset = RegNext(Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S))
 
   val pid_duty_raw = 512.S + pid_offset
@@ -155,11 +160,10 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
   pwm_signal.io.brake := motor_stopped
 
-  // Brake
-  when (!system_active) {
+  when (!system_active) { // Brake
     io.T1 := false.B; io.T2 := true.B; io.T3 := false.B; io.T4 := true.B
   } .otherwise {
-    io.T1 := pwm_signal.io.T1; io.T2 := pwm_signal.io.T2; io.T3 := pwm_signal.io.T3; io.T4 := pwm_signal.io.T4
+    io.T1 := pwm_signal.io.T1; io.T2 := pwm_signal.io.T2; io.T3 := pwm_signal.io.T3; io.T4 := pwm_signal.io.T4 // Drive
   }
 
   // Transmit
@@ -179,6 +183,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double) extends Module {
   // Display
   io.an := display.io.an; io.seg := display.io.seg
   val letters_AUTO = Cat(SegSymbol.A.asUInt, SegSymbol.U.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt)
+  val letters_MAN  = Cat(SegSymbol.M.asUInt, SegSymbol.A.asUInt, SegSymbol.N.asUInt, SegSymbol.Blank.asUInt)
   val letters_STOP = Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
   display.io.disp_content := Mux(motor_stopped, letters_STOP, letters_AUTO)
 }
@@ -188,5 +193,5 @@ object GenerateAllVerilog extends App {
   val matlab_Ki = 0
   val matlab_Kd = 0.1
   val Ts = 0.001
-  emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts), Array("-td", "Verilog"))
+  emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 8), Array("-td", "Verilog"))
 }

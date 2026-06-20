@@ -1,20 +1,23 @@
-[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = /home/udar/43602DTU/Chisel/target/scala-2.13/classes.bak[0m
 [0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog.class[0m
 [0m[[0m[0mdebug[0m] [0m[0mRegistering generated classes:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$$anon$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SecondDriver$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	SecondDriver.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenerateAllVerilog.class[0m
-[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: C:\Users\maxim\43602DTU\Chisel\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: /home/udar/43602DTU/Chisel/target/scala-2.13/classes.bak[0m
