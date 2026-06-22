@@ -183,7 +183,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 
   // Transmit
   val txTimer = RegInit(0.U(24.W))
-  val sSync :: sHigh :: sLow :: Nil = Enum(3)
+  val sSync :: sHigh :: sLow :: sT3 :: sT2 :: sT1 :: sT0 :: Nil = Enum(7)
   val txState = RegInit(sSync)
   tx.io.data := 0.U
   tx.io.start := false.B
@@ -205,6 +205,34 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
       is(sLow) { 
         when(!tx.io.busy) { 
           tx.io.data := current_position_cm(7, 0).asUInt
+          tx.io.start := true.B
+          txState := sT3
+          txTimer := 0.U 
+        }}
+      is(sT3) {
+        when(!tx.io.busy) {
+          tx.io.data := rotations.io.total_rotations(31, 24)
+          tx.io.start := true.B
+          txState := sT2
+          txTimer := 0.U
+        }}
+      is(sT2) { 
+        when(!tx.io.busy) { 
+          tx.io.data := rotations.io.total_rotations(23, 16)
+          tx.io.start := true.B
+          txState := sT1
+          txTimer := 0.U 
+        }}
+      is(sT1) { 
+        when(!tx.io.busy) { 
+          tx.io.data := rotations.io.total_rotations(15, 8)
+          tx.io.start := true.B
+          txState := sT0
+          txTimer := 0.U 
+        }}
+      is(sT0) { 
+        when(!tx.io.busy) { 
+          tx.io.data := rotations.io.total_rotations(7, 0)
           tx.io.start := true.B
           txState := sSync
           txTimer := 0.U 

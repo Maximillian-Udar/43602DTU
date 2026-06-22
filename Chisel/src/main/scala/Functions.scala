@@ -4,20 +4,24 @@ import chisel3.experimental.FixedPoint
 
 class RotationCounter extends Module {
   val io = IO(new Bundle {
-    val signal_A = Input(Bool())
-    val signal_B = Input(Bool())
-    val turns    = Output(SInt(32.W))
+    val signal_A         = Input(Bool())
+    val signal_B         = Input(Bool())
+    val turns            = Output(SInt(32.W)
+    val total_rotations  = Output(UInt(32.W)))
   })
   val aSync = RegNext(RegNext(io.signal_A))
   val bSync = RegNext(RegNext(io.signal_B))
   val aReg  = RegNext(aSync)
   val rise_A = aSync && !aReg
   val turns = RegInit(0.S(32.W))
+  val total_rotations = RegInit(0.U(32.W))
   when(rise_A) {
+    total_rotations := total_rotations + 1.U
     when(!bSync) { turns := turns + 1.S }
       .otherwise { turns := turns - 1.S }
   }
   io.turns := turns
+  io.total_turns := total_rotations
 }
 
 class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
