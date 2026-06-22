@@ -117,6 +117,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
             system_active := true.B
             control_mode := false.B
             manual_brake := false.B
+            //manual_ramped := 512.U
             switch(rx.io.data) {
               is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
               is(1.U) { manual_speed := 720.U; manual_brake := false.B } // sf
@@ -152,7 +153,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   Adjust how agressive the PID is
   115 is forward, 35 is backwards, 5 and 8 are the bitshifts
   */
-  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 3) + 150.S, (raw_pid_out >> 8) - 25.S)))
+  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 4) + 80.S, (raw_pid_out >> 9) - 10.S)))
 
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
@@ -164,7 +165,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back
   val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd
 
-  pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty))
+  pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty), 512.U)
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
   pwm_signal.io.brake := motor_stopped
 
@@ -225,5 +226,5 @@ object GenerateAllVerilog extends App {
   val matlab_Ki = 0.15
   val matlab_Kd = 0.2
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 6), Array("-td", "Verilog"))
+  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 2), Array("-td", "Verilog"))
 }

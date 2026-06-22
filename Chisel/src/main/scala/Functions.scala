@@ -49,9 +49,9 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val conduct_T4 = Wire(Bool())
 
   when(io.brake) {
-    conduct_T1 := false.B
+    conduct_T1 := true.B
     conduct_T2 := false.B 
-    conduct_T3 := false.B
+    conduct_T3 := true.B
     conduct_T4 := false.B
   } .otherwise {
     conduct_T2 := pwmSignal

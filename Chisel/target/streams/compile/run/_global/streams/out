@@ -1,12 +1,36 @@
-[0m[[0m[31merror[0m] [0m[0mjava.lang.NullPointerException: Cannot invoke "chisel3.Bool.do_unary_$bang(chisel3.experimental.SourceInfo, chisel3.CompileOptions)" because the return value of "Driver.system_active()" is null[0m
-[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
-[0m[[0m[31merror[0m] [0m[0m	at Driver.$anonfun$new$23(Driver.scala:72)[0m
-[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.$anonfun$new$1(When.scala:131)[0m
-[0m[[0m[31merror[0m] [0m[0m	at scala.Option.foreach(Option.scala:437)[0m
-[0m[[0m[31merror[0m] [0m[0m	at chisel3.WhenContext.<init>(When.scala:131)[0m
-[0m[[0m[31merror[0m] [0m[0m	at chisel3.when$.apply(When.scala:38)[0m
-[0m[[0m[31merror[0m] [0m[0m	at Driver.<init>(Driver.scala:72)[0m
-[0m[[0m[31merror[0m] [0m[0m	at GenerateAllVerilog$.$anonfun$new$125(Driver.scala:227)[0m
-[0m[[0m[31merror[0m] [0m[0m	at ... ()[0m
-[0m[[0m[31merror[0m] [0m[0m	at ... (Stack trace trimmed to user code only. Rerun with --full-stacktrace to see the full stack trace)[0m
-[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) java.lang.NullPointerException: Cannot invoke "chisel3.Bool.do_unary_$bang(chisel3.experimental.SourceInfo, chisel3.CompileOptions)" because the return value of "Driver.system_active()" is null[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassExceptions: [0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T4 <= mux(io.brake, VOID, _io_T4_T)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 49:24] : [module DCMotorPwm]  Reference conduct_T4 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T4 <= mux(io.brake, UInt<1>("h0"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 48:24] : [module DCMotorPwm]  Reference conduct_T3 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T3 <= mux(io.brake, UInt<1>("h1"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 47:24] : [module DCMotorPwm]  Reference conduct_T2 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T2 <= mux(io.brake, UInt<1>("h0"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 46:24] : [module DCMotorPwm]  Reference conduct_T1 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T1 <= mux(io.brake, UInt<1>("h1"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T2 <= mux(io.brake, VOID, _io_T2_T)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T3 <= mux(io.brake, VOID, pwmSignal)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T1 <= mux(io.brake, VOID, pwmSignal)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassException: 8 errors detected![0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) firrtl.passes.PassExceptions: [0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T4 <= mux(io.brake, VOID, _io_T4_T)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 49:24] : [module DCMotorPwm]  Reference conduct_T4 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T4 <= mux(io.brake, UInt<1>("h0"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 48:24] : [module DCMotorPwm]  Reference conduct_T3 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T3 <= mux(io.brake, UInt<1>("h1"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 47:24] : [module DCMotorPwm]  Reference conduct_T2 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T2 <= mux(io.brake, UInt<1>("h0"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 46:24] : [module DCMotorPwm]  Reference conduct_T1 is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : conduct_T1 <= mux(io.brake, UInt<1>("h1"), VOID)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T2 <= mux(io.brake, VOID, _io_T2_T)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T3 <= mux(io.brake, VOID, pwmSignal)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.CheckInitialization$RefNotInitializedException:  @[\\src\\main\\scala\\Functions.scala 24:14] : [module DCMotorPwm]  Reference io is not fully initialized.[0m
+[0m[[0m[31merror[0m] [0m[0m   : io.T1 <= mux(io.brake, VOID, pwmSignal)[0m
+[0m[[0m[31merror[0m] [0m[0mfirrtl.passes.PassException: 8 errors detected![0m
