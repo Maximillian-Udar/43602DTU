@@ -117,7 +117,6 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
             system_active := true.B
             control_mode := false.B
             manual_brake := false.B
-            //manual_ramped := 512.U
             switch(rx.io.data) {
               is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
               is(1.U) { manual_speed := 720.U; manual_brake := false.B } // sf

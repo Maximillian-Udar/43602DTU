@@ -1,9 +1,9 @@
 module UartRx(
   input        clock,
   input        reset,
-  input        io_rx, // @[\\src\\main\\scala\\Functions.scala 71:14]
-  output       io_done, // @[\\src\\main\\scala\\Functions.scala 71:14]
-  output [7:0] io_data // @[\\src\\main\\scala\\Functions.scala 71:14]
+  input        io_rx, // @[\\src\\main\\scala\\Functions.scala 75:14]
+  output       io_done, // @[\\src\\main\\scala\\Functions.scala 75:14]
+  output [7:0] io_data // @[\\src\\main\\scala\\Functions.scala 75:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
@@ -13,83 +13,83 @@ module UartRx(
   reg [31:0] _RAND_4;
   reg [31:0] _RAND_5;
 `endif // RANDOMIZE_REG_INIT
-  reg  rxReg_REG; // @[\\src\\main\\scala\\Functions.scala 78:33]
-  reg  rxReg; // @[\\src\\main\\scala\\Functions.scala 78:25]
-  reg [7:0] shiftReg; // @[\\src\\main\\scala\\Functions.scala 79:25]
-  reg [31:0] cntReg; // @[\\src\\main\\scala\\Functions.scala 80:25]
-  reg [3:0] bitsReg; // @[\\src\\main\\scala\\Functions.scala 81:25]
-  reg [1:0] stateReg; // @[\\src\\main\\scala\\Functions.scala 83:25]
-  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 88:127]
-  wire [9:0] _T_6 = 10'h364 - 10'h1; // @[\\src\\main\\scala\\Functions.scala 89:41]
-  wire [31:0] _GEN_32 = {{22'd0}, _T_6}; // @[\\src\\main\\scala\\Functions.scala 89:29]
-  wire  _T_7 = cntReg == _GEN_32; // @[\\src\\main\\scala\\Functions.scala 89:29]
-  wire [7:0] _shiftReg_T_1 = {rxReg,shiftReg[7:1]}; // @[\\src\\main\\scala\\Functions.scala 89:80]
-  wire [3:0] _bitsReg_T_1 = bitsReg + 4'h1; // @[\\src\\main\\scala\\Functions.scala 89:180]
-  wire [1:0] _GEN_5 = bitsReg == 4'h7 ? 2'h3 : stateReg; // @[\\src\\main\\scala\\Functions.scala 89:{127,138} 83:25]
-  wire [3:0] _GEN_6 = bitsReg == 4'h7 ? bitsReg : _bitsReg_T_1; // @[\\src\\main\\scala\\Functions.scala 89:127 81:25 89:169]
-  wire [31:0] _GEN_7 = cntReg == _GEN_32 ? 32'h0 : _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 89:{209,48,57}]
-  wire [7:0] _GEN_8 = cntReg == _GEN_32 ? _shiftReg_T_1 : shiftReg; // @[\\src\\main\\scala\\Functions.scala 79:25 89:{48,74}]
-  wire [1:0] _GEN_9 = cntReg == _GEN_32 ? _GEN_5 : stateReg; // @[\\src\\main\\scala\\Functions.scala 83:25 89:48]
-  wire [3:0] _GEN_10 = cntReg == _GEN_32 ? _GEN_6 : bitsReg; // @[\\src\\main\\scala\\Functions.scala 81:25 89:48]
-  wire [1:0] _GEN_11 = _T_7 ? 2'h0 : stateReg; // @[\\src\\main\\scala\\Functions.scala 83:25 90:{48,59}]
-  wire [31:0] _GEN_13 = _T_7 ? cntReg : _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 80:25 90:{108,48}]
-  wire [1:0] _GEN_14 = 2'h3 == stateReg ? _GEN_11 : stateReg; // @[\\src\\main\\scala\\Functions.scala 86:20 83:25]
-  wire [31:0] _GEN_16 = 2'h3 == stateReg ? _GEN_13 : cntReg; // @[\\src\\main\\scala\\Functions.scala 86:20 80:25]
-  wire  _GEN_21 = 2'h2 == stateReg ? 1'h0 : 2'h3 == stateReg & _T_7; // @[\\src\\main\\scala\\Functions.scala 84:11 86:20]
-  wire  _GEN_26 = 2'h1 == stateReg ? 1'h0 : _GEN_21; // @[\\src\\main\\scala\\Functions.scala 84:11 86:20]
-  assign io_done = 2'h0 == stateReg ? 1'h0 : _GEN_26; // @[\\src\\main\\scala\\Functions.scala 84:11 86:20]
-  assign io_data = shiftReg; // @[\\src\\main\\scala\\Functions.scala 85:11]
+  reg  rxReg_REG; // @[\\src\\main\\scala\\Functions.scala 82:33]
+  reg  rxReg; // @[\\src\\main\\scala\\Functions.scala 82:25]
+  reg [7:0] shiftReg; // @[\\src\\main\\scala\\Functions.scala 83:25]
+  reg [31:0] cntReg; // @[\\src\\main\\scala\\Functions.scala 84:25]
+  reg [3:0] bitsReg; // @[\\src\\main\\scala\\Functions.scala 85:25]
+  reg [1:0] stateReg; // @[\\src\\main\\scala\\Functions.scala 87:25]
+  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 92:127]
+  wire [9:0] _T_6 = 10'h364 - 10'h1; // @[\\src\\main\\scala\\Functions.scala 93:41]
+  wire [31:0] _GEN_32 = {{22'd0}, _T_6}; // @[\\src\\main\\scala\\Functions.scala 93:29]
+  wire  _T_7 = cntReg == _GEN_32; // @[\\src\\main\\scala\\Functions.scala 93:29]
+  wire [7:0] _shiftReg_T_1 = {rxReg,shiftReg[7:1]}; // @[\\src\\main\\scala\\Functions.scala 93:80]
+  wire [3:0] _bitsReg_T_1 = bitsReg + 4'h1; // @[\\src\\main\\scala\\Functions.scala 93:180]
+  wire [1:0] _GEN_5 = bitsReg == 4'h7 ? 2'h3 : stateReg; // @[\\src\\main\\scala\\Functions.scala 93:{127,138} 87:25]
+  wire [3:0] _GEN_6 = bitsReg == 4'h7 ? bitsReg : _bitsReg_T_1; // @[\\src\\main\\scala\\Functions.scala 93:127 85:25 93:169]
+  wire [31:0] _GEN_7 = cntReg == _GEN_32 ? 32'h0 : _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 93:{209,48,57}]
+  wire [7:0] _GEN_8 = cntReg == _GEN_32 ? _shiftReg_T_1 : shiftReg; // @[\\src\\main\\scala\\Functions.scala 83:25 93:{48,74}]
+  wire [1:0] _GEN_9 = cntReg == _GEN_32 ? _GEN_5 : stateReg; // @[\\src\\main\\scala\\Functions.scala 87:25 93:48]
+  wire [3:0] _GEN_10 = cntReg == _GEN_32 ? _GEN_6 : bitsReg; // @[\\src\\main\\scala\\Functions.scala 85:25 93:48]
+  wire [1:0] _GEN_11 = _T_7 ? 2'h0 : stateReg; // @[\\src\\main\\scala\\Functions.scala 87:25 94:{48,59}]
+  wire [31:0] _GEN_13 = _T_7 ? cntReg : _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 84:25 94:{108,48}]
+  wire [1:0] _GEN_14 = 2'h3 == stateReg ? _GEN_11 : stateReg; // @[\\src\\main\\scala\\Functions.scala 90:20 87:25]
+  wire [31:0] _GEN_16 = 2'h3 == stateReg ? _GEN_13 : cntReg; // @[\\src\\main\\scala\\Functions.scala 90:20 84:25]
+  wire  _GEN_21 = 2'h2 == stateReg ? 1'h0 : 2'h3 == stateReg & _T_7; // @[\\src\\main\\scala\\Functions.scala 88:11 90:20]
+  wire  _GEN_26 = 2'h1 == stateReg ? 1'h0 : _GEN_21; // @[\\src\\main\\scala\\Functions.scala 88:11 90:20]
+  assign io_done = 2'h0 == stateReg ? 1'h0 : _GEN_26; // @[\\src\\main\\scala\\Functions.scala 88:11 90:20]
+  assign io_data = shiftReg; // @[\\src\\main\\scala\\Functions.scala 89:11]
   always @(posedge clock) begin
-    rxReg_REG <= io_rx; // @[\\src\\main\\scala\\Functions.scala 78:33]
-    rxReg <= rxReg_REG; // @[\\src\\main\\scala\\Functions.scala 78:25]
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 79:25]
-      shiftReg <= 8'h0; // @[\\src\\main\\scala\\Functions.scala 79:25]
-    end else if (!(2'h0 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (!(2'h1 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-        if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
+    rxReg_REG <= io_rx; // @[\\src\\main\\scala\\Functions.scala 82:33]
+    rxReg <= rxReg_REG; // @[\\src\\main\\scala\\Functions.scala 82:25]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 83:25]
+      shiftReg <= 8'h0; // @[\\src\\main\\scala\\Functions.scala 83:25]
+    end else if (!(2'h0 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (!(2'h1 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+        if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
           shiftReg <= _GEN_8;
         end
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 80:25]
-      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 80:25]
-    end else if (2'h0 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (~rxReg) begin // @[\\src\\main\\scala\\Functions.scala 87:30]
-        cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 87:59]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 84:25]
+      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 84:25]
+    end else if (2'h0 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (~rxReg) begin // @[\\src\\main\\scala\\Functions.scala 91:30]
+        cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 91:59]
       end
-    end else if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 88:45]
-        cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 88:73]
+    end else if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 92:45]
+        cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 92:73]
       end else begin
-        cntReg <= _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 88:117]
+        cntReg <= _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 92:117]
       end
-    end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
+    end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
       cntReg <= _GEN_7;
     end else begin
       cntReg <= _GEN_16;
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 81:25]
-      bitsReg <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 81:25]
-    end else if (!(2'h0 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-        if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 88:45]
-          bitsReg <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 88:89]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 85:25]
+      bitsReg <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 85:25]
+    end else if (!(2'h0 == stateReg)) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+        if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 92:45]
+          bitsReg <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 92:89]
         end
-      end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
+      end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
         bitsReg <= _GEN_10;
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 83:25]
-      stateReg <= 2'h0; // @[\\src\\main\\scala\\Functions.scala 83:25]
-    end else if (2'h0 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (~rxReg) begin // @[\\src\\main\\scala\\Functions.scala 87:30]
-        stateReg <= 2'h1; // @[\\src\\main\\scala\\Functions.scala 87:41]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 87:25]
+      stateReg <= 2'h0; // @[\\src\\main\\scala\\Functions.scala 87:25]
+    end else if (2'h0 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (~rxReg) begin // @[\\src\\main\\scala\\Functions.scala 91:30]
+        stateReg <= 2'h1; // @[\\src\\main\\scala\\Functions.scala 91:41]
       end
-    end else if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
-      if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 88:45]
-        stateReg <= 2'h2; // @[\\src\\main\\scala\\Functions.scala 88:56]
+    end else if (2'h1 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
+      if (cntReg == 32'h1b2) begin // @[\\src\\main\\scala\\Functions.scala 92:45]
+        stateReg <= 2'h2; // @[\\src\\main\\scala\\Functions.scala 92:56]
       end
-    end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 86:20]
+    end else if (2'h2 == stateReg) begin // @[\\src\\main\\scala\\Functions.scala 90:20]
       stateReg <= _GEN_9;
     end else begin
       stateReg <= _GEN_14;
@@ -154,10 +154,10 @@ endmodule
 module UartTx(
   input        clock,
   input        reset,
-  input  [7:0] io_data, // @[\\src\\main\\scala\\Functions.scala 95:14]
-  input        io_start, // @[\\src\\main\\scala\\Functions.scala 95:14]
-  output       io_tx, // @[\\src\\main\\scala\\Functions.scala 95:14]
-  output       io_busy // @[\\src\\main\\scala\\Functions.scala 95:14]
+  input  [7:0] io_data, // @[\\src\\main\\scala\\Functions.scala 99:14]
+  input        io_start, // @[\\src\\main\\scala\\Functions.scala 99:14]
+  output       io_tx, // @[\\src\\main\\scala\\Functions.scala 99:14]
+  output       io_busy // @[\\src\\main\\scala\\Functions.scala 99:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
@@ -165,63 +165,63 @@ module UartTx(
   reg [31:0] _RAND_2;
   reg [31:0] _RAND_3;
 `endif // RANDOMIZE_REG_INIT
-  reg [9:0] reg_; // @[\\src\\main\\scala\\Functions.scala 102:20]
-  reg [31:0] cnt; // @[\\src\\main\\scala\\Functions.scala 103:20]
-  reg [3:0] bits; // @[\\src\\main\\scala\\Functions.scala 104:21]
-  reg  state; // @[\\src\\main\\scala\\Functions.scala 106:22]
-  wire [9:0] _reg_T = {1'h1,io_data,1'h0}; // @[\\src\\main\\scala\\Functions.scala 110:44]
-  wire  _GEN_3 = io_start | state; // @[\\src\\main\\scala\\Functions.scala 106:22 110:{32,96}]
-  wire [9:0] _T_3 = 10'h364 - 10'h1; // @[\\src\\main\\scala\\Functions.scala 111:38]
-  wire [31:0] _GEN_18 = {{22'd0}, _T_3}; // @[\\src\\main\\scala\\Functions.scala 111:26]
-  wire [9:0] _reg_T_2 = {1'h1,reg_[9:1]}; // @[\\src\\main\\scala\\Functions.scala 111:69]
-  wire [3:0] _bits_T_1 = bits + 4'h1; // @[\\src\\main\\scala\\Functions.scala 111:150]
-  wire  _GEN_4 = bits == 4'h9 ? 1'h0 : state; // @[\\src\\main\\scala\\Functions.scala 111:{106,114} 106:22]
-  wire [3:0] _GEN_5 = bits == 4'h9 ? bits : _bits_T_1; // @[\\src\\main\\scala\\Functions.scala 111:106 104:21 111:142]
-  wire [31:0] _cnt_T_1 = cnt + 32'h1; // @[\\src\\main\\scala\\Functions.scala 111:183]
-  assign io_tx = reg_[0]; // @[\\src\\main\\scala\\Functions.scala 107:15]
-  assign io_busy = state; // @[\\src\\main\\scala\\Functions.scala 108:20]
+  reg [9:0] reg_; // @[\\src\\main\\scala\\Functions.scala 106:20]
+  reg [31:0] cnt; // @[\\src\\main\\scala\\Functions.scala 107:20]
+  reg [3:0] bits; // @[\\src\\main\\scala\\Functions.scala 108:21]
+  reg  state; // @[\\src\\main\\scala\\Functions.scala 110:22]
+  wire [9:0] _reg_T = {1'h1,io_data,1'h0}; // @[\\src\\main\\scala\\Functions.scala 114:44]
+  wire  _GEN_3 = io_start | state; // @[\\src\\main\\scala\\Functions.scala 110:22 114:{32,96}]
+  wire [9:0] _T_3 = 10'h364 - 10'h1; // @[\\src\\main\\scala\\Functions.scala 115:38]
+  wire [31:0] _GEN_18 = {{22'd0}, _T_3}; // @[\\src\\main\\scala\\Functions.scala 115:26]
+  wire [9:0] _reg_T_2 = {1'h1,reg_[9:1]}; // @[\\src\\main\\scala\\Functions.scala 115:69]
+  wire [3:0] _bits_T_1 = bits + 4'h1; // @[\\src\\main\\scala\\Functions.scala 115:150]
+  wire  _GEN_4 = bits == 4'h9 ? 1'h0 : state; // @[\\src\\main\\scala\\Functions.scala 115:{106,114} 110:22]
+  wire [3:0] _GEN_5 = bits == 4'h9 ? bits : _bits_T_1; // @[\\src\\main\\scala\\Functions.scala 115:106 108:21 115:142]
+  wire [31:0] _cnt_T_1 = cnt + 32'h1; // @[\\src\\main\\scala\\Functions.scala 115:183]
+  assign io_tx = reg_[0]; // @[\\src\\main\\scala\\Functions.scala 111:15]
+  assign io_busy = state; // @[\\src\\main\\scala\\Functions.scala 112:20]
   always @(posedge clock) begin
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 102:20]
-      reg_ <= 10'h1; // @[\\src\\main\\scala\\Functions.scala 102:20]
-    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 110:32]
-        reg_ <= _reg_T; // @[\\src\\main\\scala\\Functions.scala 110:38]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 106:20]
+      reg_ <= 10'h1; // @[\\src\\main\\scala\\Functions.scala 106:20]
+    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 114:32]
+        reg_ <= _reg_T; // @[\\src\\main\\scala\\Functions.scala 114:38]
       end
-    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 111:45]
-        reg_ <= _reg_T_2; // @[\\src\\main\\scala\\Functions.scala 111:63]
+    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 115:45]
+        reg_ <= _reg_T_2; // @[\\src\\main\\scala\\Functions.scala 115:63]
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 103:20]
-      cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 103:20]
-    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 110:32]
-        cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 110:82]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 107:20]
+      cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 107:20]
+    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 114:32]
+        cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 114:82]
       end
-    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 111:45]
-        cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 111:51]
+    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 115:45]
+        cnt <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 115:51]
       end else begin
-        cnt <= _cnt_T_1; // @[\\src\\main\\scala\\Functions.scala 111:176]
+        cnt <= _cnt_T_1; // @[\\src\\main\\scala\\Functions.scala 115:176]
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 104:21]
-      bits <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 104:21]
-    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 110:32]
-        bits <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 110:70]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 108:21]
+      bits <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 108:21]
+    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (io_start) begin // @[\\src\\main\\scala\\Functions.scala 114:32]
+        bits <= 4'h0; // @[\\src\\main\\scala\\Functions.scala 114:70]
       end
-    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 111:45]
+    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 115:45]
         bits <= _GEN_5;
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 106:22]
-      state <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 106:22]
-    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 110:22]
+      state <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 110:22]
+    end else if (~state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
       state <= _GEN_3;
-    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 109:17]
-      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 111:45]
+    end else if (state) begin // @[\\src\\main\\scala\\Functions.scala 113:17]
+      if (cnt == _GEN_18) begin // @[\\src\\main\\scala\\Functions.scala 115:45]
         state <= _GEN_4;
       end
     end
@@ -281,38 +281,38 @@ endmodule
 module DCMotorPwm(
   input        clock,
   input        reset,
-  input  [9:0] io_duty_cycle, // @[\\src\\main\\scala\\Functions.scala 24:14]
-  input        io_brake, // @[\\src\\main\\scala\\Functions.scala 24:14]
-  output       io_T1, // @[\\src\\main\\scala\\Functions.scala 24:14]
-  output       io_T2, // @[\\src\\main\\scala\\Functions.scala 24:14]
-  output       io_T3, // @[\\src\\main\\scala\\Functions.scala 24:14]
-  output       io_T4 // @[\\src\\main\\scala\\Functions.scala 24:14]
+  input  [9:0] io_duty_cycle, // @[\\src\\main\\scala\\Functions.scala 28:14]
+  input        io_brake, // @[\\src\\main\\scala\\Functions.scala 28:14]
+  output       io_T1, // @[\\src\\main\\scala\\Functions.scala 28:14]
+  output       io_T2, // @[\\src\\main\\scala\\Functions.scala 28:14]
+  output       io_T3, // @[\\src\\main\\scala\\Functions.scala 28:14]
+  output       io_T4 // @[\\src\\main\\scala\\Functions.scala 28:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
 `endif // RANDOMIZE_REG_INIT
-  reg [31:0] pwmCounter; // @[\\src\\main\\scala\\Functions.scala 35:29]
-  wire [11:0] _T_1 = 12'hd05 - 12'h1; // @[\\src\\main\\scala\\Functions.scala 37:35]
-  wire [31:0] _GEN_5 = {{20'd0}, _T_1}; // @[\\src\\main\\scala\\Functions.scala 37:19]
-  wire [31:0] _pwmCounter_T_1 = pwmCounter + 32'h1; // @[\\src\\main\\scala\\Functions.scala 40:30]
-  wire [21:0] _threshold_T = io_duty_cycle * 12'hd05; // @[\\src\\main\\scala\\Functions.scala 43:34]
-  wire [11:0] threshold = _threshold_T[21:10]; // @[\\src\\main\\scala\\Functions.scala 43:50]
-  wire [31:0] _GEN_6 = {{20'd0}, threshold}; // @[\\src\\main\\scala\\Functions.scala 44:30]
-  wire  pwmSignal = pwmCounter < _GEN_6; // @[\\src\\main\\scala\\Functions.scala 44:30]
-  wire  _conduct_T4_T = ~pwmSignal; // @[\\src\\main\\scala\\Functions.scala 59:19]
-  wire  conduct_T2 = io_brake ? 1'h0 : pwmSignal; // @[\\src\\main\\scala\\Functions.scala 51:18 53:16 57:16]
-  wire  conduct_T4 = io_brake ? 1'h0 : ~pwmSignal; // @[\\src\\main\\scala\\Functions.scala 51:18 55:16 59:16]
-  assign io_T1 = io_brake | _conduct_T4_T; // @[\\src\\main\\scala\\Functions.scala 51:18 52:16 60:16]
-  assign io_T2 = ~conduct_T2; // @[\\src\\main\\scala\\Functions.scala 65:12]
-  assign io_T3 = io_brake | pwmSignal; // @[\\src\\main\\scala\\Functions.scala 51:18 54:16 58:16]
-  assign io_T4 = ~conduct_T4; // @[\\src\\main\\scala\\Functions.scala 66:12]
+  reg [31:0] pwmCounter; // @[\\src\\main\\scala\\Functions.scala 39:29]
+  wire [11:0] _T_1 = 12'hd05 - 12'h1; // @[\\src\\main\\scala\\Functions.scala 41:35]
+  wire [31:0] _GEN_5 = {{20'd0}, _T_1}; // @[\\src\\main\\scala\\Functions.scala 41:19]
+  wire [31:0] _pwmCounter_T_1 = pwmCounter + 32'h1; // @[\\src\\main\\scala\\Functions.scala 44:30]
+  wire [21:0] _threshold_T = io_duty_cycle * 12'hd05; // @[\\src\\main\\scala\\Functions.scala 47:34]
+  wire [11:0] threshold = _threshold_T[21:10]; // @[\\src\\main\\scala\\Functions.scala 47:50]
+  wire [31:0] _GEN_6 = {{20'd0}, threshold}; // @[\\src\\main\\scala\\Functions.scala 48:30]
+  wire  pwmSignal = pwmCounter < _GEN_6; // @[\\src\\main\\scala\\Functions.scala 48:30]
+  wire  _conduct_T4_T = ~pwmSignal; // @[\\src\\main\\scala\\Functions.scala 63:19]
+  wire  conduct_T2 = io_brake ? 1'h0 : pwmSignal; // @[\\src\\main\\scala\\Functions.scala 55:18 57:16 61:16]
+  wire  conduct_T4 = io_brake ? 1'h0 : ~pwmSignal; // @[\\src\\main\\scala\\Functions.scala 55:18 59:16 63:16]
+  assign io_T1 = io_brake | _conduct_T4_T; // @[\\src\\main\\scala\\Functions.scala 55:18 56:16 64:16]
+  assign io_T2 = ~conduct_T2; // @[\\src\\main\\scala\\Functions.scala 69:12]
+  assign io_T3 = io_brake | pwmSignal; // @[\\src\\main\\scala\\Functions.scala 55:18 58:16 62:16]
+  assign io_T4 = ~conduct_T4; // @[\\src\\main\\scala\\Functions.scala 70:12]
   always @(posedge clock) begin
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 35:29]
-      pwmCounter <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 35:29]
-    end else if (pwmCounter >= _GEN_5) begin // @[\\src\\main\\scala\\Functions.scala 37:42]
-      pwmCounter <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 38:16]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 39:29]
+      pwmCounter <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 39:29]
+    end else if (pwmCounter >= _GEN_5) begin // @[\\src\\main\\scala\\Functions.scala 41:42]
+      pwmCounter <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 42:16]
     end else begin
-      pwmCounter <= _pwmCounter_T_1; // @[\\src\\main\\scala\\Functions.scala 40:16]
+      pwmCounter <= _pwmCounter_T_1; // @[\\src\\main\\scala\\Functions.scala 44:16]
     end
   end
 // Register and memory initialization
@@ -364,11 +364,11 @@ endmodule
 module PIDController(
   input         clock,
   input         reset,
-  input  [31:0] io_setPoint, // @[\\src\\main\\scala\\Functions.scala 273:14]
-  input  [31:0] io_measuredVal, // @[\\src\\main\\scala\\Functions.scala 273:14]
-  input         io_tick, // @[\\src\\main\\scala\\Functions.scala 273:14]
-  input         io_resetBuffer, // @[\\src\\main\\scala\\Functions.scala 273:14]
-  output [31:0] io_controlOut // @[\\src\\main\\scala\\Functions.scala 273:14]
+  input  [31:0] io_setPoint, // @[\\src\\main\\scala\\Functions.scala 277:14]
+  input  [31:0] io_measuredVal, // @[\\src\\main\\scala\\Functions.scala 277:14]
+  input         io_tick, // @[\\src\\main\\scala\\Functions.scala 277:14]
+  input         io_resetBuffer, // @[\\src\\main\\scala\\Functions.scala 277:14]
+  output [31:0] io_controlOut // @[\\src\\main\\scala\\Functions.scala 277:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
@@ -386,79 +386,79 @@ module PIDController(
   reg [31:0] _RAND_12;
   reg [63:0] _RAND_13;
 `endif // RANDOMIZE_REG_INIT
-  reg [31:0] integralReg; // @[\\src\\main\\scala\\Functions.scala 284:29]
-  reg [31:0] prevErrorReg; // @[\\src\\main\\scala\\Functions.scala 285:29]
-  reg [31:0] outputReg; // @[\\src\\main\\scala\\Functions.scala 286:29]
-  reg  tick_s2; // @[\\src\\main\\scala\\Functions.scala 291:24]
-  reg  tick_s3; // @[\\src\\main\\scala\\Functions.scala 292:24]
-  wire [31:0] error = $signed(io_setPoint) - $signed(io_measuredVal); // @[\\src\\main\\scala\\Functions.scala 294:27]
-  wire [63:0] _pTerm_s1_T = 32'sh99a * $signed(error); // @[\\src\\main\\scala\\Functions.scala 295:34]
-  reg [63:0] pTerm_s1; // @[\\src\\main\\scala\\Functions.scala 295:27]
-  wire [63:0] _iInc_s1_T = 32'sh1 * $signed(error); // @[\\src\\main\\scala\\Functions.scala 296:34]
-  reg [63:0] iInc_s1; // @[\\src\\main\\scala\\Functions.scala 296:27]
-  wire [31:0] _dDiff_s1_T_2 = $signed(error) - $signed(prevErrorReg); // @[\\src\\main\\scala\\Functions.scala 297:34]
-  reg [31:0] dDiff_s1; // @[\\src\\main\\scala\\Functions.scala 297:27]
-  wire [43:0] _GEN_15 = {$signed(integralReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 299:41]
-  wire [63:0] _GEN_16 = {{20{_GEN_15[43]}},_GEN_15}; // @[\\src\\main\\scala\\Functions.scala 299:41]
-  wire [63:0] _iSum_s2_T_2 = $signed(_GEN_16) + $signed(iInc_s1); // @[\\src\\main\\scala\\Functions.scala 299:41]
-  reg [63:0] iSum_s2; // @[\\src\\main\\scala\\Functions.scala 299:28]
-  reg [63:0] pTerm_s2; // @[\\src\\main\\scala\\Functions.scala 300:28]
-  wire [63:0] _dTerm_s2_T = 32'shc8000 * $signed(dDiff_s1); // @[\\src\\main\\scala\\Functions.scala 301:35]
-  reg [63:0] dTerm_s2; // @[\\src\\main\\scala\\Functions.scala 301:28]
-  reg [31:0] error_s2; // @[\\src\\main\\scala\\Functions.scala 302:28]
-  wire [63:0] _iClamped_s3_T_2 = $signed(iSum_s2) < -64'sh800000 ? $signed(-64'sh800000) : $signed(iSum_s2); // @[\\src\\main\\scala\\Functions.scala 304:60]
-  wire [63:0] iClamped_s3 = $signed(iSum_s2) > 64'sh800000 ? $signed(64'sh800000) : $signed(_iClamped_s3_T_2); // @[\\src\\main\\scala\\Functions.scala 304:24]
-  wire [63:0] _rawOutput_s3_T_2 = $signed(pTerm_s2) + $signed(iClamped_s3); // @[\\src\\main\\scala\\Functions.scala 305:31]
-  wire [63:0] rawOutput_s3 = $signed(_rawOutput_s3_T_2) + $signed(dTerm_s2); // @[\\src\\main\\scala\\Functions.scala 305:45]
-  reg  tick_s4; // @[\\src\\main\\scala\\Functions.scala 307:24]
-  reg [63:0] sum_s3; // @[\\src\\main\\scala\\Functions.scala 308:25]
-  wire [63:0] _outputReg_T_2 = $signed(sum_s3) < -64'sh800000 ? $signed(-64'sh800000) : $signed(sum_s3); // @[\\src\\main\\scala\\Functions.scala 318:59]
-  wire [63:0] _outputReg_T_3 = $signed(sum_s3) > 64'sh800000 ? $signed(64'sh800000) : $signed(_outputReg_T_2); // @[\\src\\main\\scala\\Functions.scala 318:24]
-  wire [43:0] _GEN_17 = {$signed(outputReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 317:24 318:18 286:29]
-  wire [63:0] _GEN_8 = tick_s4 ? $signed(_outputReg_T_3) : $signed({{20{_GEN_17[43]}},_GEN_17}); // @[\\src\\main\\scala\\Functions.scala 317:24 318:18 286:29]
-  wire [63:0] _GEN_9 = tick_s3 ? $signed(iClamped_s3) : $signed({{20{_GEN_15[43]}},_GEN_15}); // @[\\src\\main\\scala\\Functions.scala 314:24 315:18 284:29]
-  wire [63:0] _GEN_11 = tick_s3 ? $signed({{20{_GEN_17[43]}},_GEN_17}) : $signed(_GEN_8); // @[\\src\\main\\scala\\Functions.scala 314:24 286:29]
-  wire [63:0] _GEN_12 = io_resetBuffer ? $signed(64'sh0) : $signed(_GEN_9); // @[\\src\\main\\scala\\Functions.scala 310:24 311:18]
-  wire [63:0] _GEN_14 = io_resetBuffer ? $signed(64'sh0) : $signed(_GEN_11); // @[\\src\\main\\scala\\Functions.scala 310:24 313:18]
-  wire [51:0] _GEN_20 = reset ? $signed(52'sh0) : $signed(_GEN_12[63:12]); // @[\\src\\main\\scala\\Functions.scala 284:{29,29}]
-  wire [51:0] _GEN_22 = reset ? $signed(52'sh0) : $signed(_GEN_14[63:12]); // @[\\src\\main\\scala\\Functions.scala 286:{29,29}]
-  assign io_controlOut = outputReg; // @[\\src\\main\\scala\\Functions.scala 320:17]
+  reg [31:0] integralReg; // @[\\src\\main\\scala\\Functions.scala 288:29]
+  reg [31:0] prevErrorReg; // @[\\src\\main\\scala\\Functions.scala 289:29]
+  reg [31:0] outputReg; // @[\\src\\main\\scala\\Functions.scala 290:29]
+  reg  tick_s2; // @[\\src\\main\\scala\\Functions.scala 295:24]
+  reg  tick_s3; // @[\\src\\main\\scala\\Functions.scala 296:24]
+  wire [31:0] error = $signed(io_setPoint) - $signed(io_measuredVal); // @[\\src\\main\\scala\\Functions.scala 298:27]
+  wire [63:0] _pTerm_s1_T = 32'sh99a * $signed(error); // @[\\src\\main\\scala\\Functions.scala 299:34]
+  reg [63:0] pTerm_s1; // @[\\src\\main\\scala\\Functions.scala 299:27]
+  wire [63:0] _iInc_s1_T = 32'sh1 * $signed(error); // @[\\src\\main\\scala\\Functions.scala 300:34]
+  reg [63:0] iInc_s1; // @[\\src\\main\\scala\\Functions.scala 300:27]
+  wire [31:0] _dDiff_s1_T_2 = $signed(error) - $signed(prevErrorReg); // @[\\src\\main\\scala\\Functions.scala 301:34]
+  reg [31:0] dDiff_s1; // @[\\src\\main\\scala\\Functions.scala 301:27]
+  wire [43:0] _GEN_15 = {$signed(integralReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 303:41]
+  wire [63:0] _GEN_16 = {{20{_GEN_15[43]}},_GEN_15}; // @[\\src\\main\\scala\\Functions.scala 303:41]
+  wire [63:0] _iSum_s2_T_2 = $signed(_GEN_16) + $signed(iInc_s1); // @[\\src\\main\\scala\\Functions.scala 303:41]
+  reg [63:0] iSum_s2; // @[\\src\\main\\scala\\Functions.scala 303:28]
+  reg [63:0] pTerm_s2; // @[\\src\\main\\scala\\Functions.scala 304:28]
+  wire [63:0] _dTerm_s2_T = 32'shc8000 * $signed(dDiff_s1); // @[\\src\\main\\scala\\Functions.scala 305:35]
+  reg [63:0] dTerm_s2; // @[\\src\\main\\scala\\Functions.scala 305:28]
+  reg [31:0] error_s2; // @[\\src\\main\\scala\\Functions.scala 306:28]
+  wire [63:0] _iClamped_s3_T_2 = $signed(iSum_s2) < -64'sh800000 ? $signed(-64'sh800000) : $signed(iSum_s2); // @[\\src\\main\\scala\\Functions.scala 308:60]
+  wire [63:0] iClamped_s3 = $signed(iSum_s2) > 64'sh800000 ? $signed(64'sh800000) : $signed(_iClamped_s3_T_2); // @[\\src\\main\\scala\\Functions.scala 308:24]
+  wire [63:0] _rawOutput_s3_T_2 = $signed(pTerm_s2) + $signed(iClamped_s3); // @[\\src\\main\\scala\\Functions.scala 309:31]
+  wire [63:0] rawOutput_s3 = $signed(_rawOutput_s3_T_2) + $signed(dTerm_s2); // @[\\src\\main\\scala\\Functions.scala 309:45]
+  reg  tick_s4; // @[\\src\\main\\scala\\Functions.scala 311:24]
+  reg [63:0] sum_s3; // @[\\src\\main\\scala\\Functions.scala 312:25]
+  wire [63:0] _outputReg_T_2 = $signed(sum_s3) < -64'sh800000 ? $signed(-64'sh800000) : $signed(sum_s3); // @[\\src\\main\\scala\\Functions.scala 322:59]
+  wire [63:0] _outputReg_T_3 = $signed(sum_s3) > 64'sh800000 ? $signed(64'sh800000) : $signed(_outputReg_T_2); // @[\\src\\main\\scala\\Functions.scala 322:24]
+  wire [43:0] _GEN_17 = {$signed(outputReg), 12'h0}; // @[\\src\\main\\scala\\Functions.scala 321:24 322:18 290:29]
+  wire [63:0] _GEN_8 = tick_s4 ? $signed(_outputReg_T_3) : $signed({{20{_GEN_17[43]}},_GEN_17}); // @[\\src\\main\\scala\\Functions.scala 321:24 322:18 290:29]
+  wire [63:0] _GEN_9 = tick_s3 ? $signed(iClamped_s3) : $signed({{20{_GEN_15[43]}},_GEN_15}); // @[\\src\\main\\scala\\Functions.scala 318:24 319:18 288:29]
+  wire [63:0] _GEN_11 = tick_s3 ? $signed({{20{_GEN_17[43]}},_GEN_17}) : $signed(_GEN_8); // @[\\src\\main\\scala\\Functions.scala 318:24 290:29]
+  wire [63:0] _GEN_12 = io_resetBuffer ? $signed(64'sh0) : $signed(_GEN_9); // @[\\src\\main\\scala\\Functions.scala 314:24 315:18]
+  wire [63:0] _GEN_14 = io_resetBuffer ? $signed(64'sh0) : $signed(_GEN_11); // @[\\src\\main\\scala\\Functions.scala 314:24 317:18]
+  wire [51:0] _GEN_20 = reset ? $signed(52'sh0) : $signed(_GEN_12[63:12]); // @[\\src\\main\\scala\\Functions.scala 288:{29,29}]
+  wire [51:0] _GEN_22 = reset ? $signed(52'sh0) : $signed(_GEN_14[63:12]); // @[\\src\\main\\scala\\Functions.scala 290:{29,29}]
+  assign io_controlOut = outputReg; // @[\\src\\main\\scala\\Functions.scala 324:17]
   always @(posedge clock) begin
-    integralReg <= _GEN_20[31:0]; // @[\\src\\main\\scala\\Functions.scala 284:{29,29}]
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 285:29]
-      prevErrorReg <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 285:29]
-    end else if (io_resetBuffer) begin // @[\\src\\main\\scala\\Functions.scala 310:24]
-      prevErrorReg <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 312:18]
-    end else if (tick_s3) begin // @[\\src\\main\\scala\\Functions.scala 314:24]
-      prevErrorReg <= error_s2; // @[\\src\\main\\scala\\Functions.scala 316:18]
+    integralReg <= _GEN_20[31:0]; // @[\\src\\main\\scala\\Functions.scala 288:{29,29}]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 289:29]
+      prevErrorReg <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 289:29]
+    end else if (io_resetBuffer) begin // @[\\src\\main\\scala\\Functions.scala 314:24]
+      prevErrorReg <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 316:18]
+    end else if (tick_s3) begin // @[\\src\\main\\scala\\Functions.scala 318:24]
+      prevErrorReg <= error_s2; // @[\\src\\main\\scala\\Functions.scala 320:18]
     end
-    outputReg <= _GEN_22[31:0]; // @[\\src\\main\\scala\\Functions.scala 286:{29,29}]
-    tick_s2 <= io_tick; // @[\\src\\main\\scala\\Functions.scala 291:24]
-    tick_s3 <= tick_s2; // @[\\src\\main\\scala\\Functions.scala 292:24]
-    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 295:27]
-      pTerm_s1 <= _pTerm_s1_T; // @[\\src\\main\\scala\\Functions.scala 295:27]
+    outputReg <= _GEN_22[31:0]; // @[\\src\\main\\scala\\Functions.scala 290:{29,29}]
+    tick_s2 <= io_tick; // @[\\src\\main\\scala\\Functions.scala 295:24]
+    tick_s3 <= tick_s2; // @[\\src\\main\\scala\\Functions.scala 296:24]
+    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 299:27]
+      pTerm_s1 <= _pTerm_s1_T; // @[\\src\\main\\scala\\Functions.scala 299:27]
     end
-    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 296:27]
-      iInc_s1 <= _iInc_s1_T; // @[\\src\\main\\scala\\Functions.scala 296:27]
+    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 300:27]
+      iInc_s1 <= _iInc_s1_T; // @[\\src\\main\\scala\\Functions.scala 300:27]
     end
-    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 297:27]
-      dDiff_s1 <= _dDiff_s1_T_2; // @[\\src\\main\\scala\\Functions.scala 297:27]
+    if (io_tick) begin // @[\\src\\main\\scala\\Functions.scala 301:27]
+      dDiff_s1 <= _dDiff_s1_T_2; // @[\\src\\main\\scala\\Functions.scala 301:27]
     end
-    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 299:28]
-      iSum_s2 <= _iSum_s2_T_2; // @[\\src\\main\\scala\\Functions.scala 299:28]
+    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 303:28]
+      iSum_s2 <= _iSum_s2_T_2; // @[\\src\\main\\scala\\Functions.scala 303:28]
     end
-    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 300:28]
-      pTerm_s2 <= pTerm_s1; // @[\\src\\main\\scala\\Functions.scala 300:28]
+    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 304:28]
+      pTerm_s2 <= pTerm_s1; // @[\\src\\main\\scala\\Functions.scala 304:28]
     end
-    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 301:28]
-      dTerm_s2 <= _dTerm_s2_T; // @[\\src\\main\\scala\\Functions.scala 301:28]
+    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 305:28]
+      dTerm_s2 <= _dTerm_s2_T; // @[\\src\\main\\scala\\Functions.scala 305:28]
     end
-    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 302:28]
-      error_s2 <= error; // @[\\src\\main\\scala\\Functions.scala 302:28]
+    if (tick_s2) begin // @[\\src\\main\\scala\\Functions.scala 306:28]
+      error_s2 <= error; // @[\\src\\main\\scala\\Functions.scala 306:28]
     end
-    tick_s4 <= tick_s3; // @[\\src\\main\\scala\\Functions.scala 307:24]
-    if (tick_s3) begin // @[\\src\\main\\scala\\Functions.scala 308:25]
-      sum_s3 <= rawOutput_s3; // @[\\src\\main\\scala\\Functions.scala 308:25]
+    tick_s4 <= tick_s3; // @[\\src\\main\\scala\\Functions.scala 311:24]
+    if (tick_s3) begin // @[\\src\\main\\scala\\Functions.scala 312:25]
+      sum_s3 <= rawOutput_s3; // @[\\src\\main\\scala\\Functions.scala 312:25]
     end
   end
 // Register and memory initialization
@@ -536,40 +536,40 @@ endmodule
 module StuckDetector(
   input   clock,
   input   reset,
-  input   io_external_overcurrent_input, // @[\\src\\main\\scala\\Functions.scala 116:14]
-  input   io_clear_shutdown, // @[\\src\\main\\scala\\Functions.scala 116:14]
-  output  io_motor_disable // @[\\src\\main\\scala\\Functions.scala 116:14]
+  input   io_external_overcurrent_input, // @[\\src\\main\\scala\\Functions.scala 120:14]
+  input   io_clear_shutdown, // @[\\src\\main\\scala\\Functions.scala 120:14]
+  output  io_motor_disable // @[\\src\\main\\scala\\Functions.scala 120:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
 `endif // RANDOMIZE_REG_INIT
-  wire [22:0] maxCycles = 17'h186a0 * 6'h32; // @[\\src\\main\\scala\\Functions.scala 122:44]
-  reg [31:0] durationReg; // @[\\src\\main\\scala\\Functions.scala 123:28]
-  reg  isStuckReg; // @[\\src\\main\\scala\\Functions.scala 124:28]
-  wire [31:0] _GEN_8 = {{9'd0}, maxCycles}; // @[\\src\\main\\scala\\Functions.scala 128:26]
-  wire [31:0] _durationReg_T_1 = durationReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 128:104]
-  wire  _GEN_0 = durationReg >= _GEN_8 | isStuckReg; // @[\\src\\main\\scala\\Functions.scala 124:28 128:{40,53}]
-  wire [31:0] _GEN_1 = durationReg >= _GEN_8 ? durationReg : _durationReg_T_1; // @[\\src\\main\\scala\\Functions.scala 123:28 128:{40,89}]
-  assign io_motor_disable = isStuckReg; // @[\\src\\main\\scala\\Functions.scala 132:20]
+  wire [22:0] maxCycles = 17'h186a0 * 6'h32; // @[\\src\\main\\scala\\Functions.scala 126:44]
+  reg [31:0] durationReg; // @[\\src\\main\\scala\\Functions.scala 127:28]
+  reg  isStuckReg; // @[\\src\\main\\scala\\Functions.scala 128:28]
+  wire [31:0] _GEN_8 = {{9'd0}, maxCycles}; // @[\\src\\main\\scala\\Functions.scala 132:26]
+  wire [31:0] _durationReg_T_1 = durationReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 132:104]
+  wire  _GEN_0 = durationReg >= _GEN_8 | isStuckReg; // @[\\src\\main\\scala\\Functions.scala 128:28 132:{40,53}]
+  wire [31:0] _GEN_1 = durationReg >= _GEN_8 ? durationReg : _durationReg_T_1; // @[\\src\\main\\scala\\Functions.scala 127:28 132:{40,89}]
+  assign io_motor_disable = isStuckReg; // @[\\src\\main\\scala\\Functions.scala 136:20]
   always @(posedge clock) begin
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 123:28]
-      durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 123:28]
-    end else if (io_clear_shutdown) begin // @[\\src\\main\\scala\\Functions.scala 125:27]
-      durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 125:64]
-    end else if (~isStuckReg) begin // @[\\src\\main\\scala\\Functions.scala 126:23]
-      if (io_external_overcurrent_input) begin // @[\\src\\main\\scala\\Functions.scala 127:43]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 127:28]
+      durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 127:28]
+    end else if (io_clear_shutdown) begin // @[\\src\\main\\scala\\Functions.scala 129:27]
+      durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 129:64]
+    end else if (~isStuckReg) begin // @[\\src\\main\\scala\\Functions.scala 130:23]
+      if (io_external_overcurrent_input) begin // @[\\src\\main\\scala\\Functions.scala 131:43]
         durationReg <= _GEN_1;
       end else begin
-        durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 129:33]
+        durationReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 133:33]
       end
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 124:28]
-      isStuckReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 124:28]
-    end else if (io_clear_shutdown) begin // @[\\src\\main\\scala\\Functions.scala 125:27]
-      isStuckReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 125:40]
-    end else if (~isStuckReg) begin // @[\\src\\main\\scala\\Functions.scala 126:23]
-      if (io_external_overcurrent_input) begin // @[\\src\\main\\scala\\Functions.scala 127:43]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 128:28]
+      isStuckReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 128:28]
+    end else if (io_clear_shutdown) begin // @[\\src\\main\\scala\\Functions.scala 129:27]
+      isStuckReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 129:40]
+    end else if (~isStuckReg) begin // @[\\src\\main\\scala\\Functions.scala 130:23]
+      if (io_external_overcurrent_input) begin // @[\\src\\main\\scala\\Functions.scala 131:43]
         isStuckReg <= _GEN_0;
       end
     end
@@ -623,92 +623,92 @@ end // initial
 `endif // SYNTHESIS
 endmodule
 module SevenSegDec(
-  input  [4:0] io_in, // @[\\src\\main\\scala\\Functions.scala 184:14]
-  output [6:0] io_out // @[\\src\\main\\scala\\Functions.scala 184:14]
+  input  [4:0] io_in, // @[\\src\\main\\scala\\Functions.scala 188:14]
+  output [6:0] io_out // @[\\src\\main\\scala\\Functions.scala 188:14]
 );
-  wire [6:0] _io_out_T_33 = 5'h0 == io_in ? 7'h3f : 7'h0; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_35 = 5'h1 == io_in ? 7'h6 : _io_out_T_33; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_37 = 5'h2 == io_in ? 7'h5b : _io_out_T_35; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_39 = 5'h3 == io_in ? 7'h4f : _io_out_T_37; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_41 = 5'h4 == io_in ? 7'h66 : _io_out_T_39; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_43 = 5'h5 == io_in ? 7'h6d : _io_out_T_41; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_45 = 5'h6 == io_in ? 7'h7d : _io_out_T_43; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_47 = 5'h7 == io_in ? 7'h7 : _io_out_T_45; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_49 = 5'h8 == io_in ? 7'h7f : _io_out_T_47; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_51 = 5'h9 == io_in ? 7'h6f : _io_out_T_49; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_53 = 5'ha == io_in ? 7'h77 : _io_out_T_51; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_55 = 5'hb == io_in ? 7'h7c : _io_out_T_53; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_57 = 5'hc == io_in ? 7'h39 : _io_out_T_55; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_59 = 5'hd == io_in ? 7'h5e : _io_out_T_57; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_61 = 5'he == io_in ? 7'h79 : _io_out_T_59; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_63 = 5'hf == io_in ? 7'h71 : _io_out_T_61; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_65 = 5'h10 == io_in ? 7'h3c : _io_out_T_63; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_67 = 5'h11 == io_in ? 7'h76 : _io_out_T_65; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_69 = 5'h12 == io_in ? 7'h6 : _io_out_T_67; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_71 = 5'h13 == io_in ? 7'hf : _io_out_T_69; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_73 = 5'h14 == io_in ? 7'h38 : _io_out_T_71; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_75 = 5'h15 == io_in ? 7'h38 : _io_out_T_73; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_77 = 5'h16 == io_in ? 7'h70 : _io_out_T_75; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_79 = 5'h17 == io_in ? 7'h3f : _io_out_T_77; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_81 = 5'h18 == io_in ? 7'h73 : _io_out_T_79; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_83 = 5'h19 == io_in ? 7'h67 : _io_out_T_81; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_85 = 5'h1a == io_in ? 7'h31 : _io_out_T_83; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_87 = 5'h1b == io_in ? 7'h6d : _io_out_T_85; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_89 = 5'h1c == io_in ? 7'h78 : _io_out_T_87; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  wire [6:0] _io_out_T_91 = 5'h1d == io_in ? 7'h3e : _io_out_T_89; // @[\\src\\main\\scala\\Functions.scala 189:46]
-  assign io_out = 5'h1e == io_in ? 7'h0 : _io_out_T_91; // @[\\src\\main\\scala\\Functions.scala 189:46]
+  wire [6:0] _io_out_T_33 = 5'h0 == io_in ? 7'h3f : 7'h0; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_35 = 5'h1 == io_in ? 7'h6 : _io_out_T_33; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_37 = 5'h2 == io_in ? 7'h5b : _io_out_T_35; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_39 = 5'h3 == io_in ? 7'h4f : _io_out_T_37; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_41 = 5'h4 == io_in ? 7'h66 : _io_out_T_39; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_43 = 5'h5 == io_in ? 7'h6d : _io_out_T_41; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_45 = 5'h6 == io_in ? 7'h7d : _io_out_T_43; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_47 = 5'h7 == io_in ? 7'h7 : _io_out_T_45; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_49 = 5'h8 == io_in ? 7'h7f : _io_out_T_47; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_51 = 5'h9 == io_in ? 7'h6f : _io_out_T_49; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_53 = 5'ha == io_in ? 7'h77 : _io_out_T_51; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_55 = 5'hb == io_in ? 7'h7c : _io_out_T_53; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_57 = 5'hc == io_in ? 7'h39 : _io_out_T_55; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_59 = 5'hd == io_in ? 7'h5e : _io_out_T_57; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_61 = 5'he == io_in ? 7'h79 : _io_out_T_59; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_63 = 5'hf == io_in ? 7'h71 : _io_out_T_61; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_65 = 5'h10 == io_in ? 7'h3c : _io_out_T_63; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_67 = 5'h11 == io_in ? 7'h76 : _io_out_T_65; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_69 = 5'h12 == io_in ? 7'h6 : _io_out_T_67; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_71 = 5'h13 == io_in ? 7'hf : _io_out_T_69; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_73 = 5'h14 == io_in ? 7'h38 : _io_out_T_71; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_75 = 5'h15 == io_in ? 7'h38 : _io_out_T_73; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_77 = 5'h16 == io_in ? 7'h70 : _io_out_T_75; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_79 = 5'h17 == io_in ? 7'h3f : _io_out_T_77; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_81 = 5'h18 == io_in ? 7'h73 : _io_out_T_79; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_83 = 5'h19 == io_in ? 7'h67 : _io_out_T_81; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_85 = 5'h1a == io_in ? 7'h31 : _io_out_T_83; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_87 = 5'h1b == io_in ? 7'h6d : _io_out_T_85; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_89 = 5'h1c == io_in ? 7'h78 : _io_out_T_87; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  wire [6:0] _io_out_T_91 = 5'h1d == io_in ? 7'h3e : _io_out_T_89; // @[\\src\\main\\scala\\Functions.scala 193:46]
+  assign io_out = 5'h1e == io_in ? 7'h0 : _io_out_T_91; // @[\\src\\main\\scala\\Functions.scala 193:46]
 endmodule
 module DisplayMultiplexer(
   input         clock,
   input         reset,
-  input  [19:0] io_disp_content, // @[\\src\\main\\scala\\Functions.scala 136:14]
-  output [7:0]  io_seg, // @[\\src\\main\\scala\\Functions.scala 136:14]
-  output [3:0]  io_an // @[\\src\\main\\scala\\Functions.scala 136:14]
+  input  [19:0] io_disp_content, // @[\\src\\main\\scala\\Functions.scala 140:14]
+  output [7:0]  io_seg, // @[\\src\\main\\scala\\Functions.scala 140:14]
+  output [3:0]  io_an // @[\\src\\main\\scala\\Functions.scala 140:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
   reg [31:0] _RAND_1;
 `endif // RANDOMIZE_REG_INIT
-  wire [4:0] decoder_io_in; // @[\\src\\main\\scala\\Functions.scala 159:23]
-  wire [6:0] decoder_io_out; // @[\\src\\main\\scala\\Functions.scala 159:23]
-  reg [16:0] cnt; // @[\\src\\main\\scala\\Functions.scala 143:20]
-  wire  _cnt_T = cnt == 17'h1869f; // @[\\src\\main\\scala\\Functions.scala 144:18]
-  wire [16:0] _cnt_T_2 = cnt + 17'h1; // @[\\src\\main\\scala\\Functions.scala 144:54]
-  reg [1:0] digit; // @[\\src\\main\\scala\\Functions.scala 147:22]
-  wire [1:0] _digit_T_1 = digit + 2'h1; // @[\\src\\main\\scala\\Functions.scala 148:31]
-  wire  _T = 2'h0 == digit; // @[\\src\\main\\scala\\Functions.scala 152:17]
-  wire  _T_1 = 2'h1 == digit; // @[\\src\\main\\scala\\Functions.scala 152:17]
-  wire  _T_2 = 2'h2 == digit; // @[\\src\\main\\scala\\Functions.scala 152:17]
-  wire  _T_3 = 2'h3 == digit; // @[\\src\\main\\scala\\Functions.scala 152:17]
-  wire [4:0] _GEN_1 = 2'h3 == digit ? io_disp_content[19:15] : 5'h0; // @[\\src\\main\\scala\\Functions.scala 151:14 152:17 156:26]
-  wire [4:0] _GEN_2 = 2'h2 == digit ? io_disp_content[14:10] : _GEN_1; // @[\\src\\main\\scala\\Functions.scala 152:17 155:26]
-  wire [4:0] _GEN_3 = 2'h1 == digit ? io_disp_content[9:5] : _GEN_2; // @[\\src\\main\\scala\\Functions.scala 152:17 154:26]
-  wire [3:0] _currentDot_T = 4'h0 >> digit; // @[\\src\\main\\scala\\Functions.scala 163:27]
-  wire  currentDot = _currentDot_T[0]; // @[\\src\\main\\scala\\Functions.scala 163:27]
-  wire [7:0] fullSeg = {currentDot,decoder_io_out}; // @[\\src\\main\\scala\\Functions.scala 164:28]
-  wire [3:0] _GEN_5 = _T_3 ? 4'h8 : 4'h1; // @[\\src\\main\\scala\\Functions.scala 167:17 171:22 166:27]
-  wire [3:0] _GEN_6 = _T_2 ? 4'h4 : _GEN_5; // @[\\src\\main\\scala\\Functions.scala 167:17 170:22]
-  wire [3:0] _GEN_7 = _T_1 ? 4'h2 : _GEN_6; // @[\\src\\main\\scala\\Functions.scala 167:17 169:22]
-  wire [3:0] select = _T ? 4'h1 : _GEN_7; // @[\\src\\main\\scala\\Functions.scala 167:17 168:22]
-  SevenSegDec decoder ( // @[\\src\\main\\scala\\Functions.scala 159:23]
+  wire [4:0] decoder_io_in; // @[\\src\\main\\scala\\Functions.scala 163:23]
+  wire [6:0] decoder_io_out; // @[\\src\\main\\scala\\Functions.scala 163:23]
+  reg [16:0] cnt; // @[\\src\\main\\scala\\Functions.scala 147:20]
+  wire  _cnt_T = cnt == 17'h1869f; // @[\\src\\main\\scala\\Functions.scala 148:18]
+  wire [16:0] _cnt_T_2 = cnt + 17'h1; // @[\\src\\main\\scala\\Functions.scala 148:54]
+  reg [1:0] digit; // @[\\src\\main\\scala\\Functions.scala 151:22]
+  wire [1:0] _digit_T_1 = digit + 2'h1; // @[\\src\\main\\scala\\Functions.scala 152:31]
+  wire  _T = 2'h0 == digit; // @[\\src\\main\\scala\\Functions.scala 156:17]
+  wire  _T_1 = 2'h1 == digit; // @[\\src\\main\\scala\\Functions.scala 156:17]
+  wire  _T_2 = 2'h2 == digit; // @[\\src\\main\\scala\\Functions.scala 156:17]
+  wire  _T_3 = 2'h3 == digit; // @[\\src\\main\\scala\\Functions.scala 156:17]
+  wire [4:0] _GEN_1 = 2'h3 == digit ? io_disp_content[19:15] : 5'h0; // @[\\src\\main\\scala\\Functions.scala 155:14 156:17 160:26]
+  wire [4:0] _GEN_2 = 2'h2 == digit ? io_disp_content[14:10] : _GEN_1; // @[\\src\\main\\scala\\Functions.scala 156:17 159:26]
+  wire [4:0] _GEN_3 = 2'h1 == digit ? io_disp_content[9:5] : _GEN_2; // @[\\src\\main\\scala\\Functions.scala 156:17 158:26]
+  wire [3:0] _currentDot_T = 4'h0 >> digit; // @[\\src\\main\\scala\\Functions.scala 167:27]
+  wire  currentDot = _currentDot_T[0]; // @[\\src\\main\\scala\\Functions.scala 167:27]
+  wire [7:0] fullSeg = {currentDot,decoder_io_out}; // @[\\src\\main\\scala\\Functions.scala 168:28]
+  wire [3:0] _GEN_5 = _T_3 ? 4'h8 : 4'h1; // @[\\src\\main\\scala\\Functions.scala 171:17 175:22 170:27]
+  wire [3:0] _GEN_6 = _T_2 ? 4'h4 : _GEN_5; // @[\\src\\main\\scala\\Functions.scala 171:17 174:22]
+  wire [3:0] _GEN_7 = _T_1 ? 4'h2 : _GEN_6; // @[\\src\\main\\scala\\Functions.scala 171:17 173:22]
+  wire [3:0] select = _T ? 4'h1 : _GEN_7; // @[\\src\\main\\scala\\Functions.scala 171:17 172:22]
+  SevenSegDec decoder ( // @[\\src\\main\\scala\\Functions.scala 163:23]
     .io_in(decoder_io_in),
     .io_out(decoder_io_out)
   );
-  assign io_seg = ~fullSeg; // @[\\src\\main\\scala\\Functions.scala 174:13]
-  assign io_an = ~select; // @[\\src\\main\\scala\\Functions.scala 175:13]
-  assign decoder_io_in = 2'h0 == digit ? io_disp_content[4:0] : _GEN_3; // @[\\src\\main\\scala\\Functions.scala 152:17 153:26]
+  assign io_seg = ~fullSeg; // @[\\src\\main\\scala\\Functions.scala 178:13]
+  assign io_an = ~select; // @[\\src\\main\\scala\\Functions.scala 179:13]
+  assign decoder_io_in = 2'h0 == digit ? io_disp_content[4:0] : _GEN_3; // @[\\src\\main\\scala\\Functions.scala 156:17 157:26]
   always @(posedge clock) begin
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 143:20]
-      cnt <= 17'h0; // @[\\src\\main\\scala\\Functions.scala 143:20]
-    end else if (cnt == 17'h1869f) begin // @[\\src\\main\\scala\\Functions.scala 144:13]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 147:20]
+      cnt <= 17'h0; // @[\\src\\main\\scala\\Functions.scala 147:20]
+    end else if (cnt == 17'h1869f) begin // @[\\src\\main\\scala\\Functions.scala 148:13]
       cnt <= 17'h0;
     end else begin
       cnt <= _cnt_T_2;
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 147:22]
-      digit <= 2'h0; // @[\\src\\main\\scala\\Functions.scala 147:22]
-    end else if (_cnt_T) begin // @[\\src\\main\\scala\\Functions.scala 148:14]
-      digit <= _digit_T_1; // @[\\src\\main\\scala\\Functions.scala 148:22]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 151:22]
+      digit <= 2'h0; // @[\\src\\main\\scala\\Functions.scala 151:22]
+    end else if (_cnt_T) begin // @[\\src\\main\\scala\\Functions.scala 152:14]
+      digit <= _digit_T_1; // @[\\src\\main\\scala\\Functions.scala 152:22]
     end
   end
 // Register and memory initialization
@@ -764,7 +764,8 @@ module RotationCounter(
   input         reset,
   input         io_signal_A, // @[\\src\\main\\scala\\Functions.scala 6:14]
   input         io_signal_B, // @[\\src\\main\\scala\\Functions.scala 6:14]
-  output [31:0] io_turns // @[\\src\\main\\scala\\Functions.scala 6:14]
+  output [31:0] io_turns, // @[\\src\\main\\scala\\Functions.scala 6:14]
+  output [31:0] io_total_rotations // @[\\src\\main\\scala\\Functions.scala 6:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
@@ -773,31 +774,40 @@ module RotationCounter(
   reg [31:0] _RAND_3;
   reg [31:0] _RAND_4;
   reg [31:0] _RAND_5;
+  reg [31:0] _RAND_6;
 `endif // RANDOMIZE_REG_INIT
-  reg  aSync_REG; // @[\\src\\main\\scala\\Functions.scala 11:30]
-  reg  aSync; // @[\\src\\main\\scala\\Functions.scala 11:22]
-  reg  bSync_REG; // @[\\src\\main\\scala\\Functions.scala 12:30]
-  reg  bSync; // @[\\src\\main\\scala\\Functions.scala 12:22]
-  reg  aReg; // @[\\src\\main\\scala\\Functions.scala 13:22]
-  wire  rise_A = aSync & ~aReg; // @[\\src\\main\\scala\\Functions.scala 14:22]
-  reg [31:0] turns; // @[\\src\\main\\scala\\Functions.scala 15:22]
-  wire [31:0] _turns_T_2 = $signed(turns) + 32'sh1; // @[\\src\\main\\scala\\Functions.scala 17:35]
-  wire [31:0] _turns_T_5 = $signed(turns) - 32'sh1; // @[\\src\\main\\scala\\Functions.scala 18:35]
-  assign io_turns = turns; // @[\\src\\main\\scala\\Functions.scala 20:12]
+  reg  aSync_REG; // @[\\src\\main\\scala\\Functions.scala 12:30]
+  reg  aSync; // @[\\src\\main\\scala\\Functions.scala 12:22]
+  reg  bSync_REG; // @[\\src\\main\\scala\\Functions.scala 13:30]
+  reg  bSync; // @[\\src\\main\\scala\\Functions.scala 13:22]
+  reg  aReg; // @[\\src\\main\\scala\\Functions.scala 14:22]
+  wire  rise_A = aSync & ~aReg; // @[\\src\\main\\scala\\Functions.scala 15:22]
+  reg [31:0] turns; // @[\\src\\main\\scala\\Functions.scala 16:22]
+  reg [31:0] total_rotations; // @[\\src\\main\\scala\\Functions.scala 17:32]
+  wire [31:0] _total_rotations_T_1 = total_rotations + 32'h1; // @[\\src\\main\\scala\\Functions.scala 19:40]
+  wire [31:0] _turns_T_2 = $signed(turns) + 32'sh1; // @[\\src\\main\\scala\\Functions.scala 20:35]
+  wire [31:0] _turns_T_5 = $signed(turns) - 32'sh1; // @[\\src\\main\\scala\\Functions.scala 21:35]
+  assign io_turns = turns; // @[\\src\\main\\scala\\Functions.scala 23:12]
+  assign io_total_rotations = total_rotations; // @[\\src\\main\\scala\\Functions.scala 24:22]
   always @(posedge clock) begin
-    aSync_REG <= io_signal_A; // @[\\src\\main\\scala\\Functions.scala 11:30]
-    aSync <= aSync_REG; // @[\\src\\main\\scala\\Functions.scala 11:22]
-    bSync_REG <= io_signal_B; // @[\\src\\main\\scala\\Functions.scala 12:30]
-    bSync <= bSync_REG; // @[\\src\\main\\scala\\Functions.scala 12:22]
-    aReg <= aSync; // @[\\src\\main\\scala\\Functions.scala 13:22]
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 15:22]
-      turns <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 15:22]
-    end else if (rise_A) begin // @[\\src\\main\\scala\\Functions.scala 16:16]
-      if (~bSync) begin // @[\\src\\main\\scala\\Functions.scala 17:18]
-        turns <= _turns_T_2; // @[\\src\\main\\scala\\Functions.scala 17:26]
+    aSync_REG <= io_signal_A; // @[\\src\\main\\scala\\Functions.scala 12:30]
+    aSync <= aSync_REG; // @[\\src\\main\\scala\\Functions.scala 12:22]
+    bSync_REG <= io_signal_B; // @[\\src\\main\\scala\\Functions.scala 13:30]
+    bSync <= bSync_REG; // @[\\src\\main\\scala\\Functions.scala 13:22]
+    aReg <= aSync; // @[\\src\\main\\scala\\Functions.scala 14:22]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 16:22]
+      turns <= 32'sh0; // @[\\src\\main\\scala\\Functions.scala 16:22]
+    end else if (rise_A) begin // @[\\src\\main\\scala\\Functions.scala 18:16]
+      if (~bSync) begin // @[\\src\\main\\scala\\Functions.scala 20:18]
+        turns <= _turns_T_2; // @[\\src\\main\\scala\\Functions.scala 20:26]
       end else begin
-        turns <= _turns_T_5; // @[\\src\\main\\scala\\Functions.scala 18:26]
+        turns <= _turns_T_5; // @[\\src\\main\\scala\\Functions.scala 21:26]
       end
+    end
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 17:32]
+      total_rotations <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 17:32]
+    end else if (rise_A) begin // @[\\src\\main\\scala\\Functions.scala 18:16]
+      total_rotations <= _total_rotations_T_1; // @[\\src\\main\\scala\\Functions.scala 19:21]
     end
   end
 // Register and memory initialization
@@ -848,6 +858,8 @@ initial begin
   aReg = _RAND_4[0:0];
   _RAND_5 = {1{`RANDOM}};
   turns = _RAND_5[31:0];
+  _RAND_6 = {1{`RANDOM}};
+  total_rotations = _RAND_6[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -859,8 +871,8 @@ endmodule
 module Debouncer(
   input   clock,
   input   reset,
-  input   io_btn_in, // @[\\src\\main\\scala\\Functions.scala 225:14]
-  output  io_out // @[\\src\\main\\scala\\Functions.scala 225:14]
+  input   io_btn_in, // @[\\src\\main\\scala\\Functions.scala 229:14]
+  output  io_out // @[\\src\\main\\scala\\Functions.scala 229:14]
 );
 `ifdef RANDOMIZE_REG_INIT
   reg [31:0] _RAND_0;
@@ -869,30 +881,30 @@ module Debouncer(
   reg [31:0] _RAND_3;
   reg [31:0] _RAND_4;
 `endif // RANDOMIZE_REG_INIT
-  reg  btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 230:33]
-  reg  btn_sync; // @[\\src\\main\\scala\\Functions.scala 230:25]
-  reg  btnDebReg; // @[\\src\\main\\scala\\Functions.scala 231:26]
-  reg [31:0] cntReg; // @[\\src\\main\\scala\\Functions.scala 232:23]
-  wire  tick = cntReg == 32'h1869f; // @[\\src\\main\\scala\\Functions.scala 233:21]
-  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 235:20]
-  reg  btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 241:29]
-  assign io_out = btnDebReg & ~btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 242:23]
+  reg  btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 234:33]
+  reg  btn_sync; // @[\\src\\main\\scala\\Functions.scala 234:25]
+  reg  btnDebReg; // @[\\src\\main\\scala\\Functions.scala 235:26]
+  reg [31:0] cntReg; // @[\\src\\main\\scala\\Functions.scala 236:23]
+  wire  tick = cntReg == 32'h1869f; // @[\\src\\main\\scala\\Functions.scala 237:21]
+  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[\\src\\main\\scala\\Functions.scala 239:20]
+  reg  btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 245:29]
+  assign io_out = btnDebReg & ~btnCleanPrev; // @[\\src\\main\\scala\\Functions.scala 246:23]
   always @(posedge clock) begin
-    btn_sync_REG <= io_btn_in; // @[\\src\\main\\scala\\Functions.scala 230:33]
-    btn_sync <= btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 230:25]
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 231:26]
-      btnDebReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 231:26]
-    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 236:15]
-      btnDebReg <= btn_sync; // @[\\src\\main\\scala\\Functions.scala 238:15]
+    btn_sync_REG <= io_btn_in; // @[\\src\\main\\scala\\Functions.scala 234:33]
+    btn_sync <= btn_sync_REG; // @[\\src\\main\\scala\\Functions.scala 234:25]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 235:26]
+      btnDebReg <= 1'h0; // @[\\src\\main\\scala\\Functions.scala 235:26]
+    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 240:15]
+      btnDebReg <= btn_sync; // @[\\src\\main\\scala\\Functions.scala 242:15]
     end
-    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 232:23]
-      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 232:23]
-    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 236:15]
-      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 237:12]
+    if (reset) begin // @[\\src\\main\\scala\\Functions.scala 236:23]
+      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 236:23]
+    end else if (tick) begin // @[\\src\\main\\scala\\Functions.scala 240:15]
+      cntReg <= 32'h0; // @[\\src\\main\\scala\\Functions.scala 241:12]
     end else begin
-      cntReg <= _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 235:10]
+      cntReg <= _cntReg_T_1; // @[\\src\\main\\scala\\Functions.scala 239:10]
     end
-    btnCleanPrev <= btnDebReg; // @[\\src\\main\\scala\\Functions.scala 241:29]
+    btnCleanPrev <= btnDebReg; // @[\\src\\main\\scala\\Functions.scala 245:29]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -1029,6 +1041,7 @@ module Driver(
   wire  rotations_io_signal_A; // @[\\src\\main\\scala\\Driver.scala 31:36]
   wire  rotations_io_signal_B; // @[\\src\\main\\scala\\Driver.scala 31:36]
   wire [31:0] rotations_io_turns; // @[\\src\\main\\scala\\Driver.scala 31:36]
+  wire [31:0] rotations_io_total_rotations; // @[\\src\\main\\scala\\Driver.scala 31:36]
   wire  error_clear_debounce_clock; // @[\\src\\main\\scala\\Driver.scala 32:36]
   wire  error_clear_debounce_reset; // @[\\src\\main\\scala\\Driver.scala 32:36]
   wire  error_clear_debounce_io_btn_in; // @[\\src\\main\\scala\\Driver.scala 32:36]
@@ -1102,9 +1115,9 @@ module Driver(
   wire [36:0] _target_turns_T = $signed(target_position_cm) * 5'shf; // @[\\src\\main\\scala\\Driver.scala 138:50]
   reg [37:0] target_turns; // @[\\src\\main\\scala\\Driver.scala 138:29]
   wire [37:0] _at_position_T_2 = $signed(target_turns) - 38'sh2; // @[\\src\\main\\scala\\Driver.scala 140:87]
-  wire [37:0] _GEN_112 = {{6{current_turns[31]}},current_turns}; // @[\\src\\main\\scala\\Driver.scala 140:71]
+  wire [37:0] _GEN_144 = {{6{current_turns[31]}},current_turns}; // @[\\src\\main\\scala\\Driver.scala 140:71]
   wire [37:0] _at_position_T_6 = $signed(target_turns) + 38'sh2; // @[\\src\\main\\scala\\Driver.scala 140:132]
-  wire  _at_position_T_9 = system_active ? $signed(_GEN_112) >= $signed(_at_position_T_2) & $signed(_GEN_112) <=
+  wire  _at_position_T_9 = system_active ? $signed(_GEN_144) >= $signed(_at_position_T_2) & $signed(_GEN_144) <=
     $signed(_at_position_T_6) : 1'h1; // @[\\src\\main\\scala\\Driver.scala 140:40]
   wire  at_position = control_mode & _at_position_T_9; // @[\\src\\main\\scala\\Driver.scala 140:34]
   wire [31:0] raw_pid_out = pid_io_controlOut; // @[\\src\\main\\scala\\Driver.scala 151:39]
@@ -1126,25 +1139,49 @@ module Driver(
   reg [27:0] pwm_signal_io_duty_cycle_REG; // @[\\src\\main\\scala\\Driver.scala 168:38]
   wire  motor_stopped = manual_brake | stuck_detector_io_motor_disable | _T_2 | at_position | block_neg | block_pos; // @[\\src\\main\\scala\\Driver.scala 169:117]
   reg [23:0] txTimer; // @[\\src\\main\\scala\\Driver.scala 185:24]
-  reg [1:0] txState; // @[\\src\\main\\scala\\Driver.scala 187:24]
+  reg [2:0] txState; // @[\\src\\main\\scala\\Driver.scala 187:24]
   wire  _T_20 = ~tx_io_busy; // @[\\src\\main\\scala\\Driver.scala 193:14]
   wire [7:0] _GEN_85 = ~tx_io_busy ? 8'hff : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 193:27 194:22]
   wire [7:0] _GEN_88 = _T_20 ? current_position_cm[15:8] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 199:27 200:22]
-  wire [1:0] _GEN_90 = _T_20 ? 2'h2 : txState; // @[\\src\\main\\scala\\Driver.scala 199:27 202:19 187:24]
+  wire [2:0] _GEN_90 = _T_20 ? 3'h2 : txState; // @[\\src\\main\\scala\\Driver.scala 199:27 202:19 187:24]
   wire [23:0] _GEN_91 = _T_20 ? 24'h0 : txTimer; // @[\\src\\main\\scala\\Driver.scala 199:27 203:19 185:24]
   wire [7:0] _GEN_92 = _T_20 ? current_position_cm[7:0] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 206:27 207:22]
-  wire [1:0] _GEN_94 = _T_20 ? 2'h0 : txState; // @[\\src\\main\\scala\\Driver.scala 206:27 209:19 187:24]
-  wire [7:0] _GEN_96 = 2'h2 == txState ? _GEN_92 : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 191:21]
-  wire  _GEN_97 = 2'h2 == txState & _T_20; // @[\\src\\main\\scala\\Driver.scala 189:15 191:21]
-  wire [1:0] _GEN_98 = 2'h2 == txState ? _GEN_94 : txState; // @[\\src\\main\\scala\\Driver.scala 191:21 187:24]
-  wire [23:0] _GEN_99 = 2'h2 == txState ? _GEN_91 : txTimer; // @[\\src\\main\\scala\\Driver.scala 191:21 185:24]
-  wire [7:0] _GEN_100 = 2'h1 == txState ? _GEN_88 : _GEN_96; // @[\\src\\main\\scala\\Driver.scala 191:21]
-  wire  _GEN_101 = 2'h1 == txState ? _T_20 : _GEN_97; // @[\\src\\main\\scala\\Driver.scala 191:21]
-  wire [7:0] _GEN_104 = 2'h0 == txState ? _GEN_85 : _GEN_100; // @[\\src\\main\\scala\\Driver.scala 191:21]
-  wire  _GEN_105 = 2'h0 == txState ? _T_20 : _GEN_101; // @[\\src\\main\\scala\\Driver.scala 191:21]
-  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\Driver.scala 213:36]
-  wire [18:0] _display_io_disp_content_T = control_mode ? 19'h57797 : 19'h56ade; // @[\\src\\main\\scala\\Driver.scala 221:66]
-  wire [43:0] _GEN_114 = {$signed(target_position_cm), 12'h0}; // @[\\src\\main\\scala\\Driver.scala 143:19]
+  wire [2:0] _GEN_94 = _T_20 ? 3'h3 : txState; // @[\\src\\main\\scala\\Driver.scala 206:27 209:19 187:24]
+  wire [7:0] _GEN_96 = _T_20 ? rotations_io_total_rotations[31:24] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 213:27 214:22]
+  wire [2:0] _GEN_98 = _T_20 ? 3'h4 : txState; // @[\\src\\main\\scala\\Driver.scala 213:27 216:19 187:24]
+  wire [7:0] _GEN_100 = _T_20 ? rotations_io_total_rotations[23:16] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 220:27 221:22]
+  wire [2:0] _GEN_102 = _T_20 ? 3'h5 : txState; // @[\\src\\main\\scala\\Driver.scala 220:27 223:19 187:24]
+  wire [7:0] _GEN_104 = _T_20 ? rotations_io_total_rotations[15:8] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 227:27 228:22]
+  wire [2:0] _GEN_106 = _T_20 ? 3'h6 : txState; // @[\\src\\main\\scala\\Driver.scala 227:27 230:19 187:24]
+  wire [7:0] _GEN_108 = _T_20 ? rotations_io_total_rotations[7:0] : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 234:27 235:22]
+  wire [2:0] _GEN_110 = _T_20 ? 3'h0 : txState; // @[\\src\\main\\scala\\Driver.scala 234:27 237:19 187:24]
+  wire [7:0] _GEN_112 = 3'h6 == txState ? _GEN_108 : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 191:21]
+  wire  _GEN_113 = 3'h6 == txState & _T_20; // @[\\src\\main\\scala\\Driver.scala 189:15 191:21]
+  wire [2:0] _GEN_114 = 3'h6 == txState ? _GEN_110 : txState; // @[\\src\\main\\scala\\Driver.scala 191:21 187:24]
+  wire [23:0] _GEN_115 = 3'h6 == txState ? _GEN_91 : txTimer; // @[\\src\\main\\scala\\Driver.scala 191:21 185:24]
+  wire [7:0] _GEN_116 = 3'h5 == txState ? _GEN_104 : _GEN_112; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_117 = 3'h5 == txState ? _T_20 : _GEN_113; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [2:0] _GEN_118 = 3'h5 == txState ? _GEN_106 : _GEN_114; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [23:0] _GEN_119 = 3'h5 == txState ? _GEN_91 : _GEN_115; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [7:0] _GEN_120 = 3'h4 == txState ? _GEN_100 : _GEN_116; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_121 = 3'h4 == txState ? _T_20 : _GEN_117; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [2:0] _GEN_122 = 3'h4 == txState ? _GEN_102 : _GEN_118; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [23:0] _GEN_123 = 3'h4 == txState ? _GEN_91 : _GEN_119; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [7:0] _GEN_124 = 3'h3 == txState ? _GEN_96 : _GEN_120; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_125 = 3'h3 == txState ? _T_20 : _GEN_121; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [2:0] _GEN_126 = 3'h3 == txState ? _GEN_98 : _GEN_122; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [23:0] _GEN_127 = 3'h3 == txState ? _GEN_91 : _GEN_123; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [7:0] _GEN_128 = 3'h2 == txState ? _GEN_92 : _GEN_124; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_129 = 3'h2 == txState ? _T_20 : _GEN_125; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [2:0] _GEN_130 = 3'h2 == txState ? _GEN_94 : _GEN_126; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [23:0] _GEN_131 = 3'h2 == txState ? _GEN_91 : _GEN_127; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [7:0] _GEN_132 = 3'h1 == txState ? _GEN_88 : _GEN_128; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_133 = 3'h1 == txState ? _T_20 : _GEN_129; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [7:0] _GEN_136 = 3'h0 == txState ? _GEN_85 : _GEN_132; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire  _GEN_137 = 3'h0 == txState ? _T_20 : _GEN_133; // @[\\src\\main\\scala\\Driver.scala 191:21]
+  wire [23:0] _txTimer_T_1 = txTimer + 24'h1; // @[\\src\\main\\scala\\Driver.scala 241:36]
+  wire [18:0] _display_io_disp_content_T = control_mode ? 19'h57797 : 19'h56ade; // @[\\src\\main\\scala\\Driver.scala 249:66]
+  wire [43:0] _GEN_146 = {$signed(target_position_cm), 12'h0}; // @[\\src\\main\\scala\\Driver.scala 143:19]
   UartRx rx ( // @[\\src\\main\\scala\\Driver.scala 25:36]
     .clock(rx_clock),
     .reset(rx_reset),
@@ -1198,7 +1235,8 @@ module Driver(
     .reset(rotations_reset),
     .io_signal_A(rotations_io_signal_A),
     .io_signal_B(rotations_io_signal_B),
-    .io_turns(rotations_io_turns)
+    .io_turns(rotations_io_turns),
+    .io_total_rotations(rotations_io_total_rotations)
   );
   Debouncer error_clear_debounce ( // @[\\src\\main\\scala\\Driver.scala 32:36]
     .clock(error_clear_debounce_clock),
@@ -1206,20 +1244,20 @@ module Driver(
     .io_btn_in(error_clear_debounce_io_btn_in),
     .io_out(error_clear_debounce_io_out)
   );
-  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\Driver.scala 214:14]
+  assign io_uart_tx = tx_io_tx; // @[\\src\\main\\scala\\Driver.scala 242:14]
   assign io_T1 = _T_2 ? 1'h0 : pwm_signal_io_T1; // @[\\src\\main\\scala\\Driver.scala 172:25 173:11 178:11]
   assign io_T2 = _T_2 | pwm_signal_io_T2; // @[\\src\\main\\scala\\Driver.scala 172:25 174:11 179:11]
   assign io_T3 = _T_2 ? 1'h0 : pwm_signal_io_T3; // @[\\src\\main\\scala\\Driver.scala 172:25 175:11 180:11]
   assign io_T4 = _T_2 | pwm_signal_io_T4; // @[\\src\\main\\scala\\Driver.scala 172:25 176:11 181:11]
-  assign io_seg = display_io_seg; // @[\\src\\main\\scala\\Driver.scala 217:34]
-  assign io_an = display_io_an; // @[\\src\\main\\scala\\Driver.scala 217:9]
+  assign io_seg = display_io_seg; // @[\\src\\main\\scala\\Driver.scala 245:34]
+  assign io_an = display_io_an; // @[\\src\\main\\scala\\Driver.scala 245:9]
   assign rx_clock = clock;
   assign rx_reset = reset;
   assign rx_io_rx = io_uart_rx; // @[\\src\\main\\scala\\Driver.scala 43:34]
   assign tx_clock = clock;
   assign tx_reset = reset;
-  assign tx_io_data = txTimer >= 24'h2625a0 ? _GEN_104 : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 190:30]
-  assign tx_io_start = txTimer >= 24'h2625a0 & _GEN_105; // @[\\src\\main\\scala\\Driver.scala 189:15 190:30]
+  assign tx_io_data = txTimer >= 24'h2625a0 ? _GEN_136 : 8'h0; // @[\\src\\main\\scala\\Driver.scala 188:14 190:30]
+  assign tx_io_start = txTimer >= 24'h2625a0 & _GEN_137; // @[\\src\\main\\scala\\Driver.scala 189:15 190:30]
   assign pwm_signal_clock = clock;
   assign pwm_signal_reset = reset;
   assign pwm_signal_io_duty_cycle = pwm_signal_io_duty_cycle_REG[9:0]; // @[\\src\\main\\scala\\Driver.scala 168:28]
@@ -1227,7 +1265,7 @@ module Driver(
     block_pos; // @[\\src\\main\\scala\\Driver.scala 169:117]
   assign pid_clock = clock;
   assign pid_reset = reset;
-  assign pid_io_setPoint = _GEN_114[31:0]; // @[\\src\\main\\scala\\Driver.scala 143:19]
+  assign pid_io_setPoint = _GEN_146[31:0]; // @[\\src\\main\\scala\\Driver.scala 143:19]
   assign pid_io_measuredVal = current_position_fixed_point; // @[\\src\\main\\scala\\Driver.scala 142:22]
   assign pid_io_tick = pid_timer == 17'h1869f; // @[\\src\\main\\scala\\Driver.scala 52:29]
   assign pid_io_resetBuffer = ~control_mode | manual_brake | _T_2 | at_position; // @[\\src\\main\\scala\\Driver.scala 145:73]
@@ -1237,7 +1275,7 @@ module Driver(
   assign stuck_detector_io_clear_shutdown = error_clear_debounce_io_out | reset_triggered; // @[\\src\\main\\scala\\Driver.scala 135:68]
   assign display_clock = clock;
   assign display_reset = reset;
-  assign display_io_disp_content = motor_stopped ? 20'hdf2f8 : {{1'd0}, _display_io_disp_content_T}; // @[\\src\\main\\scala\\Driver.scala 221:33]
+  assign display_io_disp_content = motor_stopped ? 20'hdf2f8 : {{1'd0}, _display_io_disp_content_T}; // @[\\src\\main\\scala\\Driver.scala 249:33]
   assign rotations_clock = clock;
   assign rotations_reset = reset;
   assign rotations_io_signal_A = rotations_io_signal_A_out; // @[\\src\\main\\scala\\Driver.scala 44:34]
@@ -1396,27 +1434,27 @@ module Driver(
     if (reset) begin // @[\\src\\main\\scala\\Driver.scala 185:24]
       txTimer <= 24'h0; // @[\\src\\main\\scala\\Driver.scala 185:24]
     end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\Driver.scala 190:30]
-      if (!(2'h0 == txState)) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
-        if (2'h1 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
+      if (!(3'h0 == txState)) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
+        if (3'h1 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
           txTimer <= _GEN_91;
         end else begin
-          txTimer <= _GEN_99;
+          txTimer <= _GEN_131;
         end
       end
     end else begin
-      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\Driver.scala 213:25]
+      txTimer <= _txTimer_T_1; // @[\\src\\main\\scala\\Driver.scala 241:25]
     end
     if (reset) begin // @[\\src\\main\\scala\\Driver.scala 187:24]
-      txState <= 2'h0; // @[\\src\\main\\scala\\Driver.scala 187:24]
+      txState <= 3'h0; // @[\\src\\main\\scala\\Driver.scala 187:24]
     end else if (txTimer >= 24'h2625a0) begin // @[\\src\\main\\scala\\Driver.scala 190:30]
-      if (2'h0 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
+      if (3'h0 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
         if (~tx_io_busy) begin // @[\\src\\main\\scala\\Driver.scala 193:27]
-          txState <= 2'h1; // @[\\src\\main\\scala\\Driver.scala 196:19]
+          txState <= 3'h1; // @[\\src\\main\\scala\\Driver.scala 196:19]
         end
-      end else if (2'h1 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
+      end else if (3'h1 == txState) begin // @[\\src\\main\\scala\\Driver.scala 191:21]
         txState <= _GEN_90;
       end else begin
-        txState <= _GEN_98;
+        txState <= _GEN_130;
       end
     end
   end
@@ -1497,7 +1535,7 @@ initial begin
   _RAND_19 = {1{`RANDOM}};
   txTimer = _RAND_19[23:0];
   _RAND_20 = {1{`RANDOM}};
-  txState = _RAND_20[1:0];
+  txState = _RAND_20[2:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
