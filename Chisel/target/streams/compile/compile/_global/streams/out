@@ -1,79 +1,16 @@
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:273:29: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val setPoint    = Input(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:274:29: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val measuredVal = Input(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:275:29: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val kp          = Input(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:276:29: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val ki          = Input(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:277:29: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val kd          = Input(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:280:30: method apply in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    val controlOut  = Output(FixedPoint(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                             ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:283:32: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val integralReg  = RegInit(0.F(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                               ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:284:32: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val prevErrorReg = RegInit(0.F(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                               ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:285:32: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val outputReg    = RegInit(0.F(w.W, f.BP))[0m
-[0m[[0m[33mwarn[0m] [0m[0m                               ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:286:30: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                             ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:286:19: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val limit_pos = FixedPoint.fromDouble(0.5, w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:287:30: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                             ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:287:19: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val limit_neg = FixedPoint.fromDouble(-0.5, w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:309:23: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    integralReg  := 0.F(w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:310:23: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    prevErrorReg := 0.F(w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/Functions.scala:311:23: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    outputReg    := 0.F(w.W, f.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala:104:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  pid.io.kp := KP.F(pidWidth.W, pidBP.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala:105:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  pid.io.ki := KI.F(pidWidth.W, pidBP.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala:106:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  pid.io.kd := KD.F(pidWidth.W, pidBP.BP)[0m
-[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala:108:31: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val half_const = FixedPoint.fromDouble(0.5, pidWidth.W, pidBP.BP)  [0m
-[0m[[0m[33mwarn[0m] [0m[0m                              ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/MotorDriver.scala:108:20: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
-[0m[[0m[33mwarn[0m] [0m[0m  val half_const = FixedPoint.fromDouble(0.5, pidWidth.W, pidBP.BP)  [0m
-[0m[[0m[33mwarn[0m] [0m[0m                   ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/SecondDriver.scala:80:34: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\SecondDriver.scala:80:34: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  val cm_per_pulse  = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                 ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/SecondDriver.scala:80:23: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\SecondDriver.scala:80:23: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  val cm_per_pulse  = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/SecondDriver.scala:140:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\SecondDriver.scala:140:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.kp := Kp.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/SecondDriver.scala:141:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\SecondDriver.scala:141:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/home/udar/43602DTU/Chisel/src/main/scala/SecondDriver.scala:142:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\SecondDriver.scala:142:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m26 warnings found[0m
+[0m[[0m[33mwarn[0m] [0m[0m5 warnings found[0m

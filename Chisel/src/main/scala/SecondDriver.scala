@@ -2,7 +2,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 25000, manual_speed_step_ms : Int = 2) extends Module {
+class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms : Int = 2) extends Module {
   val io = IO(new Bundle {
     val uart_rx               = Input(Bool())
     val photo_sensor_A        = Input(Bool())
@@ -115,8 +115,8 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
               is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
               is(1.U) { manual_speed := 700.U; manual_brake := false.B } // sf
               is(2.U) { manual_speed := 730.U; manual_brake := false.B } // ff
-              is(3.U) { manual_speed := 475.U; manual_brake := false.B } // sb
-              is(4.U) { manual_speed := 448.U; manual_brake := false.B } // fb
+              is(3.U) { manual_speed := 485.U; manual_brake := false.B } // sb
+              is(4.U) { manual_speed := 458.U; manual_brake := false.B } // fb
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -129,7 +129,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
 
   // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  val tolerance = 3.S
+  val tolerance = 2.S
   val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - tolerance && current_turns <= target_turns + tolerance), true.B)
   
   pid.io.measuredVal := current_position_fixed_point
@@ -146,7 +146,7 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
   Adjust how agressive the PID is
   115 is forward, 35 is backwards, 5 and 8 are the bitshifts
   */
-  val pid_offset = RegNext(Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S))
+  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S)))
 
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
@@ -215,9 +215,9 @@ class SecondDriver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 2500
 }
 
 object GenerateAllVerilog extends App {
-  val matlab_Kp = .3
-  val matlab_Ki = 0
+  val matlab_Kp = .4
+  val matlab_Ki = 0.1
   val matlab_Kd = 0.1
   val Ts = 0.001
-  emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 8), Array("-td", "Verilog"))
+  emitVerilog(new SecondDriver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 4), Array("-td", "Verilog"))
 }
