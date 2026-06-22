@@ -31,18 +31,18 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val rotations            = Module(new RotationCounter)
   val error_clear_debounce = Module(new Debouncer)
 
-  def filter(in: Bool, how_fine: Int = 1000): Bool = {
+  def filter(in: Bool): Bool = {
     val sync = in
     val cnt  = RegInit(0.U(14.W))
     val out  = RegInit(false.B)
     when(sync === out) { cnt := 0.U }
-    .otherwise { cnt := cnt + 1.U; when(cnt === how_fine.U) { out := sync } }
+    .otherwise { cnt := cnt + 1.U; when(cnt === 1000.U) { out := sync } }
     out
   }
 
   rx.io.rx                       := io.uart_rx
-  rotations.io.signal_A          := filter(io.photo_sensor_A, 100)
-  rotations.io.signal_B          := filter(io.photo_sensor_B, 100)
+  rotations.io.signal_A          := filter(io.photo_sensor_A)
+  rotations.io.signal_B          := filter(io.photo_sensor_B)
   display.io.dots                := 0.U
   error_clear_debounce.io.btn_in := io.error_cleared
   stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
@@ -135,7 +135,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
   pid.io.tick := pid_tick
-  pid.io.resetBuffer := !control_mode || manual_brake || !system_active || at_position || target_updated
+  pid.io.resetBuffer := !control_mode || manual_brake || !system_active || at_position
   
   pid.io.kp := Kp.F(pidWidth.W, pidDP.BP)
   pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)
@@ -146,7 +146,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   Adjust how agressive the PID is
   115 is forward, 35 is backwards, 5 and 8 are the bitshifts
   */
-  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S)))
+  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 145.S, (raw_pid_out >> 8) - 25.S)))
 
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
@@ -155,8 +155,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val is_moving_back = active_duty < 512.U
   val is_moving_fwd = active_duty > 512.U
 
-  val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back && !at_position
-  val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd && !at_position
+  val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back// && !at_position
+  val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd// && !at_position
 
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty))
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
@@ -215,9 +215,9 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 }
 
 object GenerateAllVerilog extends App {
-  val matlab_Kp = 0.4
-  val matlab_Ki = 0.03
-  val matlab_Kd = 0.1
+  val matlab_Kp = .6
+  val matlab_Ki = 0.1
+  val matlab_Kd = 0.15
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 2), Array("-td", "Verilog"))
+  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 6), Array("-td", "Verilog"))
 }

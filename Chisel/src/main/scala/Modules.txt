@@ -42,6 +42,7 @@ class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
 
   val threshold = (io.duty_cycle * periodCycles) >> 10
   val pwmSignal = pwmCounter < threshold
+
   val conduct_T1 = Wire(Bool())
   val conduct_T2 = Wire(Bool())
   val conduct_T3 = Wire(Bool())
@@ -111,7 +112,7 @@ class UartTx(frequency: Int = 100000000, baudRate: Int = 115200) extends Module 
   }
 }
 
-class StuckDetector(val OverCurrentAllowance_ms : Int = 3) extends Module {
+class StuckDetector(val OverCurrentAllowance_ms : Int = 50) extends Module {
   val io = IO(new Bundle {
       val external_overcurrent_input = Input(Bool())      
       val clear_shutdown            = Input(Bool()) 
@@ -268,7 +269,7 @@ class RisingFsm extends Module {
   }
 }
 
-class PIDController(val w: Int = 32, val f: Int = 12) extends Module {
+class PIDController(val w: Int, val f: Int) extends Module {
   val io = IO(new Bundle {
     val setPoint    = Input(FixedPoint(w.W, f.BP))
     val measuredVal = Input(FixedPoint(w.W, f.BP))
@@ -301,6 +302,7 @@ class PIDController(val w: Int = 32, val f: Int = 12) extends Module {
   val error_s2  = RegEnable(error, tick_s2) 
 
   val iClamped_s3 = Mux(iSum_s2 > limit_pos, limit_pos, Mux(iSum_s2 < limit_neg, limit_neg, iSum_s2))
+  val rawOutput_s3 = pTerm_s2 + iClamped_s3 + dTerm_s2
   
   val tick_s4 = RegNext(tick_s3)
   val sum_s3 = RegEnable(pTerm_s2 + iClamped_s3 + dTerm_s2, tick_s3)

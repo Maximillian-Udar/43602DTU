@@ -2,7 +2,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms : Int = 2) extends Module {
+class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms: Int = 2) extends Module {
   val io = IO(new Bundle {
     val uart_rx               = Input(Bool())
     val photo_sensor_A        = Input(Bool())
@@ -36,7 +36,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
     val cnt  = RegInit(0.U(14.W))
     val out  = RegInit(false.B)
     when(sync === out) { cnt := 0.U }
-    .otherwise { cnt := cnt + 1.U; when(cnt === 100.U) { out := sync } }
+    .otherwise { cnt := cnt + 1.U; when(cnt === 1000.U) { out := sync } }
     out
   }
 
@@ -52,23 +52,6 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
 
-  // Ramping manual speeds
-  val manual_speed       = RegInit(512.U(10.W))
-  val manual_ramped      = RegInit(512.U(10.W))
-  val speed_increment_ms = manual_speed_step_ms
-  val cycles             = speed_increment_ms * 100000
-  val ramp_timer         = RegInit(0.U(log2Up(cycles).W))
-  val ramp_tick          = ramp_timer === (cycles - 1).U
-
-  when(ramp_tick) {
-    ramp_timer := 0.U
-    when(manual_ramped < manual_speed) {
-      manual_ramped := manual_ramped + 1.U
-    }.elsewhen(manual_ramped > manual_speed) { 
-      manual_ramped := manual_ramped - 1.U 
-    } 
-  }.otherwise { ramp_timer := ramp_timer + 1.U }
-  
   // Scaling and states
   val target_position_cm = RegInit(0.S(32.W))
   val control_mode       = RegInit(true.B)
@@ -90,6 +73,29 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   
   val target_updated = RegInit(false.B)
   when(pid_tick) { target_updated := false.B }
+
+
+  // Ramping manual speeds
+  val manual_speed       = RegInit(512.U(10.W))
+  val manual_ramped      = RegInit(512.U(10.W))
+  val speed_increment_ms = manual_speed_step_ms
+  val cycles             = speed_increment_ms * 100000
+  val ramp_timer         = RegInit(0.U(log2Up(cycles).W))
+  val ramp_tick          = ramp_timer === (cycles - 1).U
+
+  when(ramp_tick) {
+    ramp_timer := 0.U
+    when(manual_ramped < manual_speed) {
+      manual_ramped := manual_ramped + 1.U
+    }.elsewhen(manual_ramped > manual_speed) { 
+      manual_ramped := manual_ramped - 1.U 
+    } 
+  }.otherwise { ramp_timer := ramp_timer + 1.U }
+
+  when(!system_active) {
+    manual_ramped := 512.U
+    manual_speed  := 512.U
+}
   
   // Recieve data
   when (rx.io.done) {
@@ -113,10 +119,10 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
             manual_brake := false.B
             switch(rx.io.data) {
               is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
-              is(1.U) { manual_speed := 700.U; manual_brake := false.B } // sf
-              is(2.U) { manual_speed := 730.U; manual_brake := false.B } // ff
+              is(1.U) { manual_speed := 720.U; manual_brake := false.B } // sf
+              is(2.U) { manual_speed := 750.U; manual_brake := false.B } // ff
               is(3.U) { manual_speed := 485.U; manual_brake := false.B } // sb
-              is(4.U) { manual_speed := 458.U; manual_brake := false.B } // fb
+              is(4.U) { manual_speed := 455.U; manual_brake := false.B } // fb
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -135,7 +141,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
   pid.io.tick := pid_tick
-  pid.io.resetBuffer := !control_mode || manual_brake || !system_active || at_position || target_updated
+  pid.io.resetBuffer := !control_mode || manual_brake || !system_active || at_position
   
   pid.io.kp := Kp.F(pidWidth.W, pidDP.BP)
   pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)
@@ -146,7 +152,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   Adjust how agressive the PID is
   115 is forward, 35 is backwards, 5 and 8 are the bitshifts
   */
-  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 5) + 115.S, (raw_pid_out >> 8) - 25.S)))
+  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 3) + 150.S, (raw_pid_out >> 8) - 25.S)))
 
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
@@ -155,8 +161,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val is_moving_back = active_duty < 512.U
   val is_moving_fwd = active_duty > 512.U
 
-  val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back && !at_position
-  val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd && !at_position
+  val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back
+  val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd
 
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty))
   val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
@@ -215,9 +221,9 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 }
 
 object GenerateAllVerilog extends App {
-  val matlab_Kp = .4
-  val matlab_Ki = 0.08
-  val matlab_Kd = 0.13
+  val matlab_Kp = .6
+  val matlab_Ki = 0.15
+  val matlab_Kd = 0.2
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 2), Array("-td", "Verilog"))
+  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 6), Array("-td", "Verilog"))
 }

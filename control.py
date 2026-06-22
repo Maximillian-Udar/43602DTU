@@ -40,7 +40,11 @@ if __name__ == "__main__":
             l = input("\n> ").lower().split()
             if not l: continue
             c = l[0]
-            if c == 'p':  ctrl.send(0x01, int(l[1]))
+            if c == 'p':  
+                if int(l[1]) < 0:
+                    pass
+                else:
+                    ctrl.send(0x01, int(l[1]))
             elif c == 's': ctrl.send(0x02, 0)
             elif c == 'sf': ctrl.send(0x02, 1)
             elif c == 'ff': ctrl.send(0x02, 2)
