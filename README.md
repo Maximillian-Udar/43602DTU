@@ -4,8 +4,8 @@
 
     Bank JA
 
-    - Pin J1 (Right-most, top row): Photo diode A
-    - Pin L2 (Second from right, top row): Photo diode B
+    - Pin J1 (Right-most, top row): Photo sensor A
+    - Pin L2 (Second from right, top row): Photo sensor B
     - Pin J2 (Third from right, top row): Overcurrent Positive
     - Pin G2 (Fourth from right, top row- closest to ground): Overcurrent Negative
     *** Note: This bank requires a Ground (GND) to process the above input signals. Can be to either top or bottom ground port
