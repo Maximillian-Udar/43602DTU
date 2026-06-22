@@ -28,7 +28,7 @@ N = length(time);
 target_pos = 9;   % Target position (meters)
 curr_pos = 0;
 Kp = .5;         % Proportional Gain
-Ki = 0.1;          % Integral Gain
+Ki = 0.01;          % Integral Gain
 Kd = 0.1;       % Derivative Gain
 t_s = 0.001;
 fprintf('Chisel Gains: Kp=%.2f, Ki=%.2f, Kd=%.2f\n', Kp, Ki*t_s, Kd/t_s);
