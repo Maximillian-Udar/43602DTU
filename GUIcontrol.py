@@ -1,204 +1,226 @@
-import sys
 import serial
 import threading
 import time
-import numpy as np
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                             QHBoxLayout, QGridLayout, QLabel, QPushButton, 
-                             QSlider, QLineEdit, QFrame)
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject
-from PyQt6.QtGui import QFont, QColor
-import pyqtgraph as pg
+import tkinter as tk
+from tkinter import messagebox
 
-# --- UART PROTOCOL SETTINGS ---
-BAUD_RATE = 115200
-COM_PORT = 'COM3'  # Change to your port
+# Color Palette
+BG_COLOR = "#0b0e14"
+CARD_BG = "#161b22"
+ACCENT_BLUE = "#3b82f6"
+ACCENT_GREEN = "#22c55e"
+ACCENT_RED = "#ef4444"
+ACCENT_ORANGE = "#f59e0b"
+TEXT_PRIMARY = "#ffffff"
+TEXT_SECONDARY = "#8b949e"
 
-class TelemetryData(QObject):
-    """Container for data shared between Serial Thread and GUI"""
-    pos_updated = pyqtSignal(int)
-    
-    def __init__(self):
-        super().__init__()
-        self.target_pos = 0
-        self.current_pos = 0
-        self.motor_current = 0.0
-        self.system_state = "Idle"
-        self.is_stuck = False
+class MotorControllerGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("American Shooting System")
+        self.root.configure(bg=BG_COLOR)
+        
+        # Fullscreen Setup
+        self.root.attributes("-fullscreen", True)
+        self.root.bind("<Escape>", lambda e: self.on_close())
 
-class MotorSerialThread(threading.Thread):
-    def __init__(self, data_obj):
-        super().__init__()
-        self.data = data_obj
+        # Serial Logic
+        self.port = "COM4"
+        self.baud = 115200
         self.running = True
+        
+        # Telemetry Variables
+        self.current_pos = tk.StringVar(value="0")
+        self.total_rots = tk.StringVar(value="0")
+        
+        # Odometer & Service Logic
+        self.odometer = 0.0 
+        self.last_pos = 0
+        self.last_milestone = 0 
+        self.service_due = False
+        self.odometer_str = tk.StringVar(value="0.00 cm")
+
         try:
-            self.ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=0.1)
-        except:
-            print(f"CRITICAL: Could not open {COM_PORT}")
-            self.ser = None
+            self.ser = serial.Serial(self.port, self.baud, timeout=0.01)
+            self.ser.reset_input_buffer()
+            self.hw_status_text = tk.StringVar(value="HARDWARE ONLINE")
+            self.hw_status_color = ACCENT_GREEN
+        except Exception:
+            self.hw_status_text = tk.StringVar(value="HARDWARE OFFLINE")
+            self.hw_status_color = ACCENT_RED
 
-    def run(self):
-        while self.running and self.ser:
-            if self.ser.in_waiting > 0:
-                # Assuming FPGA sends 1 byte for position (0-90m)
-                raw_byte = self.ser.read(1)
-                val = int.from_bytes(raw_byte, byteorder='big')
-                self.data.current_pos = val
-                self.data.pos_updated.emit(val)
-
-    def send_cmd(self, cmd, val):
-        if self.ser:
-            self.ser.write(bytearray([cmd, val]))
-
-class InfoCard(QFrame):
-    """Custom widget for the dashboard cards"""
-    def __init__(self, title, unit=""):
-        super().__init__()
-        self.setFrameShape(QFrame.Shape.StyledPanel)
-        self.setStyleSheet("""
-            QFrame {
-                background-color: #0b141d;
-                border: 1px solid #1e2d3d;
-                border-radius: 8px;
-            }
-            QLabel { color: #8fa0b3; border: none; }
-        """)
-        layout = QVBoxLayout()
-        self.title_label = QLabel(title.upper())
-        self.title_label.setFont(QFont("Arial", 8, QFont.Weight.Bold))
+        self.setup_ui()
         
-        self.value_label = QLabel(f"0.00 {unit}")
-        self.value_label.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        self.value_label.setStyleSheet("color: white;")
+        self.thread = threading.Thread(target=self._worker, daemon=True)
+        self.thread.start()
+
+    def setup_ui(self):
+        # --- HEADER BAR ---
+        self.header = tk.Frame(self.root, bg="#0d1117", height=70)
+        self.header.pack(fill="x", padx=0, pady=0)
+        self.header.pack_propagate(False)
+
+        tk.Label(self.header, text="(A)merican (S)hooting (S)ystem", fg=TEXT_PRIMARY, bg="#0d1117", 
+                 font=("Arial", 16, "bold")).pack(side="left", padx=30)
         
-        layout.addWidget(self.title_label)
-        layout.addWidget(self.value_label)
-        self.setLayout(layout)
+        self.status_badge = tk.Label(self.header, textvariable=self.hw_status_text, fg=BG_COLOR, 
+                                     bg=self.hw_status_color, font=("Arial", 10, "bold"), padx=15, pady=5)
+        self.status_badge.pack(side="right", padx=30)
 
-    def update_value(self, val, color="white"):
-        self.value_label.setText(str(val))
-        self.value_label.setStyleSheet(f"color: {color};")
+        # Main Container
+        main_frame = tk.Frame(self.root, bg=BG_COLOR)
+        main_frame.pack(fill="both", expand=True, padx=30, pady=30)
 
-class TargetDashboard(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Target Retrieval System - Control Console")
-        self.resize(1100, 900)
-        self.setStyleSheet("background-color: #050a0e; color: white;")
+        # --- LEFT COLUMN (CONTROLS) ---
+        left_col = tk.Frame(main_frame, bg=BG_COLOR, width=450)
+        left_col.pack(side="left", fill="y", padx=(0, 30))
+        left_col.pack_propagate(False)
+
+        # Big Retrieve Button
+        tk.Button(left_col, text="RETRIEVE TARGET (0 CM)", bg=ACCENT_BLUE, fg=TEXT_PRIMARY,
+                                 font=("Arial", 14, "bold"), relief="flat", height=2,
+                                 command=lambda: self.send(0x01, 0)).pack(fill="x", pady=(0, 20))
+
+        # --- ENLARGED PID SECTION ---
+        pid_frame = tk.Frame(left_col, bg=CARD_BG, padx=25, pady=30)
+        pid_frame.pack(fill="x", pady=(0, 20))
         
-        self.data = TelemetryData()
-        self.serial_thread = MotorSerialThread(self.data)
-        self.serial_thread.start()
+        tk.Label(pid_frame, text="AUTOMATIC POSITIONING (PID)", fg=ACCENT_BLUE, bg=CARD_BG, font=("Arial", 10, "bold")).pack(anchor="w")
+        tk.Label(pid_frame, text="SET TARGET DISTANCE", fg=TEXT_PRIMARY, bg=CARD_BG, font=("Arial", 14, "bold")).pack(anchor="w", pady=(20, 5))
         
-        self.init_ui()
+        # Massive Entry
+        self.pos_entry = tk.Entry(pid_frame, bg="#0d1117", fg=TEXT_PRIMARY, insertbackground="white", 
+                                  relief="flat", font=("Arial", 72, "bold"), justify="center")
+        self.pos_entry.pack(fill="x", pady=15, ipady=20)
+        self.pos_entry.insert(0, "0")
+
+        # Huge Action Button
+        tk.Button(pid_frame, text="SET DISTANCE", bg=ACCENT_BLUE, fg=TEXT_PRIMARY, relief="flat",
+                  command=self.cmd_go_to_pos, font=("Arial", 18, "bold"), height=2).pack(fill="x", pady=(10, 0))
+
+        # Manual Overdrive
+        manual_frame = tk.Frame(left_col, bg=CARD_BG, padx=15, pady=15)
+        manual_frame.pack(fill="x")
+        tk.Label(manual_frame, text="MANUAL OVERDRIVE", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 9, "bold")).pack(anchor="w", pady=(0, 10))
         
-        # UI Update Timer
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.refresh_ui)
-        self.timer.start(100) # 10Hz Refresh
+        grid_frame = tk.Frame(manual_frame, bg=CARD_BG)
+        grid_frame.pack(fill="x")
+        btn_configs = [
+            ("FWD FAST", ACCENT_GREEN, 0x02, 2, 0, 0), ("REV FAST", ACCENT_RED, 0x02, 4, 0, 1),
+            ("FWD SLOW", ACCENT_GREEN, 0x02, 1, 1, 0), ("REV SLOW", ACCENT_ORANGE, 0x02, 3, 1, 1)
+        ]
+        for text, color, cmd, val, r, c in btn_configs:
+            tk.Button(grid_frame, text=text, bg=color, fg=TEXT_PRIMARY, relief="flat", font=("Arial", 9, "bold"),
+                      height=2, command=lambda cmd=cmd, val=val: self.send(cmd, val)).grid(row=r, column=c, padx=2, pady=2, sticky="nsew")
+        grid_frame.columnconfigure(0, weight=1); grid_frame.columnconfigure(1, weight=1)
 
-        # Plot Data Buffers
-        self.pos_history = np.zeros(100)
-        self.time_steps = np.arange(100)
+        tk.Button(manual_frame, text="STOP / BRAKE", bg="#374151", fg=TEXT_PRIMARY, relief="flat",
+                  font=("Arial", 10, "bold"), pady=12, command=lambda: self.send(0x02, 0)).pack(fill="x", pady=(10, 0))
 
-    def init_ui(self):
-        main_layout = QVBoxLayout()
+        # --- RIGHT COLUMN (STATS & LIVE) ---
+        right_col = tk.Frame(main_frame, bg=BG_COLOR)
+        right_col.pack(side="left", fill="both", expand=True)
+
+        stats_frame = tk.Frame(right_col, bg=CARD_BG, padx=25, pady=25)
+        stats_frame.pack(fill="x", pady=(0, 20))
         
-        # --- HEADER ---
-        header = QFrame()
-        header.setStyleSheet("background-color: #102e33; border-bottom: 2px solid #00ffcc;")
-        header_layout = QHBoxLayout(header)
-        title = QLabel("TARGET RETRIEVAL SYSTEM")
-        title.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        status = QLabel("● SIMULATOR ONLINE")
-        status.setStyleSheet("color: #00ffcc;")
-        header_layout.addWidget(title)
-        header_layout.addStretch()
-        header_layout.addWidget(status)
-        main_layout.addWidget(header)
-
-        # --- TOP CONTROLS ---
-        ctrl_section = QGridLayout()
-        self.dist_slider = QSlider(Qt.Orientation.Horizontal)
-        self.dist_slider.setRange(0, 90)
-        self.dist_slider.valueChanged.connect(self.on_slider_change)
+        tk.Label(stats_frame, text="CURRENT POSITION", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).grid(row=0, column=0, sticky="w")
+        tk.Label(stats_frame, textvariable=self.current_pos, fg=TEXT_PRIMARY, bg=CARD_BG, font=("Arial", 28, "bold")).grid(row=1, column=0, sticky="w")
         
-        self.btn_start = QPushButton("START")
-        self.btn_start.setStyleSheet("background-color: #28a745; color: white; padding: 15px; font-weight: bold;")
-        self.btn_start.clicked.connect(lambda: self.serial_thread.send_cmd(0x02, 1))
+        tk.Label(stats_frame, text="TOTAL TRAVEL (ODOMETER)", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).grid(row=0, column=1, sticky="w", padx=60)
+        tk.Label(stats_frame, textvariable=self.odometer_str, fg=ACCENT_ORANGE, bg=CARD_BG, font=("Arial", 28, "bold")).grid(row=1, column=1, sticky="w", padx=60)
+
+        # SPLIT MIDDLE PANEL
+        split_frame = tk.Frame(right_col, bg=BG_COLOR)
+        split_frame.pack(fill="both", expand=True)
+
+        # LARGE LEFT: Live Measured Position
+        live_frame = tk.Frame(split_frame, bg=CARD_BG, highlightbackground=ACCENT_BLUE, highlightthickness=1)
+        live_frame.pack(side="left", fill="both", expand=True, padx=(0, 15))
         
-        self.btn_stop = QPushButton("STOP")
-        self.btn_stop.setStyleSheet("background-color: #5a6268; color: white; padding: 15px; font-weight: bold;")
-        self.btn_stop.clicked.connect(lambda: self.serial_thread.send_cmd(0x02, 0))
+        tk.Label(live_frame, text="LIVE MEASURED POSITION", fg=ACCENT_BLUE, bg=CARD_BG, font=("Arial", 12, "bold")).pack(pady=(60, 0))
+        inner_live = tk.Frame(live_frame, bg=CARD_BG)
+        inner_live.pack(expand=True)
+        tk.Label(inner_live, textvariable=self.current_pos, fg=ACCENT_BLUE, bg=CARD_BG, font=("Arial", 140, "bold")).pack(side="left")
+        tk.Label(inner_live, text="cm", fg=ACCENT_BLUE, bg=CARD_BG, font=("Arial", 50, "bold")).pack(side="left", padx=15, pady=(45, 0))
 
-        self.btn_estop = QPushButton("EMERGENCY STOP")
-        self.btn_estop.setStyleSheet("background-color: #dc3545; color: white; padding: 15px; font-weight: bold;")
-        self.btn_estop.clicked.connect(lambda: self.serial_thread.send_cmd(0x02, 5))
+        # SMALL RIGHT: Position Selector
+        select_frame = tk.Frame(split_frame, bg=CARD_BG, width=220, padx=15, pady=20)
+        select_frame.pack(side="right", fill="y")
+        select_frame.pack_propagate(False)
 
-        ctrl_section.addWidget(QLabel("TARGET DISTANCE (m)"), 0, 0)
-        ctrl_section.addWidget(self.dist_slider, 1, 0, 1, 2)
-        ctrl_section.addWidget(self.btn_start, 2, 0)
-        ctrl_section.addWidget(self.btn_stop, 2, 1)
-        ctrl_section.addWidget(self.btn_estop, 1, 2, 2, 1)
-        main_layout.addLayout(ctrl_section)
-
-        # --- INFO CARDS ---
-        card_layout = QGridLayout()
-        self.card_pos = InfoCard("Current Position", "m")
-        self.card_target = InfoCard("Target Position", "m")
-        self.card_current = InfoCard("Motor Current", "A")
-        self.card_state = InfoCard("System State")
+        tk.Label(select_frame, text="QUICK PRESETS", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).pack(pady=(0, 15))
         
-        card_layout.addWidget(self.card_pos, 0, 0)
-        card_layout.addWidget(self.card_target, 0, 1)
-        card_layout.addWidget(self.card_current, 0, 2)
-        card_layout.addWidget(self.card_state, 0, 3)
-        main_layout.addLayout(card_layout)
+        presets = [("0 cm (HOME)", 0), ("10 cm", 10), ("25 cm", 25), ("50 cm", 50), ("75 cm", 75), ("90 cm", 90)]
+        for label, val in presets:
+            tk.Button(select_frame, text=label, bg="#2d333b", fg=TEXT_PRIMARY, relief="flat",
+                      font=("Arial", 10, "bold"), height=2, command=lambda v=val: self.send(0x01, v)).pack(fill="x", pady=4)
 
-        # --- CHARTS ---
-        chart_layout = QHBoxLayout()
-        self.pos_plot = pg.PlotWidget(title="Position vs Time")
-        self.pos_plot.setBackground('#0b141d')
-        self.pos_curve = self.pos_plot.plot(pen=pg.mkPen(color='#00ffcc', width=2))
-        
-        chart_layout.addWidget(self.pos_plot)
-        main_layout.addLayout(chart_layout)
+        # Footer Actions
+        bottom_btns = tk.Frame(right_col, bg=BG_COLOR)
+        bottom_btns.pack(fill="x", pady=(20, 0))
 
-        # --- GAINS ---
-        gain_layout = QHBoxLayout()
-        self.kp_input = QLineEdit("10.0")
-        self.ki_input = QLineEdit("0.35")
-        gain_layout.addWidget(QLabel("Kp:"))
-        gain_layout.addWidget(self.kp_input)
-        gain_layout.addWidget(QLabel("Ki:"))
-        gain_layout.addWidget(self.ki_input)
-        main_layout.addLayout(gain_layout)
+        tk.Button(bottom_btns, text="RESET STUCK SENSOR", bg=BG_COLOR, fg=ACCENT_BLUE, relief="flat",
+                  highlightbackground=ACCENT_BLUE, highlightthickness=1, font=("Arial", 10, "bold"),
+                  command=lambda: self.send(0xFF, 0x00)).pack(side="left", fill="x", expand=True, padx=(0, 5))
 
-        central_widget = QWidget()
-        central_widget.setLayout(main_layout)
-        self.setCentralWidget(central_widget)
+        self.service_btn = tk.Button(bottom_btns, text="ACKNOWLEDGE SERVICE", bg=BG_COLOR, fg=ACCENT_ORANGE, relief="flat",
+                  highlightbackground=ACCENT_ORANGE, highlightthickness=1, font=("Arial", 10, "bold"),
+                  command=self.reset_service_alert)
 
-    def on_slider_change(self):
-        val = self.dist_slider.value()
-        self.data.target_pos = val
-        self.serial_thread.send_cmd(0x01, val)
+    def _worker(self):
+        while self.running:
+            try:
+                if hasattr(self, 'ser') and self.ser.in_waiting >= 7:
+                    if self.ser.read(1) == b'\xff':
+                        data = self.ser.read(6)
+                        if len(data) == 6:
+                            pos = int.from_bytes(data[:2], byteorder='big', signed=True)
+                            rots = int.from_bytes(data[2:], byteorder='big', signed=False)
+                            self.current_pos.set(str(pos))
+                            self.total_rots.set(str(rots))
+                            delta = abs(pos - self.last_pos)
+                            if delta < 50: self.odometer += delta
+                            self.last_pos = pos
+                            self.odometer_str.set(f"{self.odometer:.0f} cm")
+                            milestone = int(self.odometer // 100)
+                            if milestone > self.last_milestone:
+                                self.last_milestone = milestone
+                                self.trigger_service_alert()
+            except: pass
+            time.sleep(0.01)
 
-    def refresh_ui(self):
-        self.card_pos.update_value(f"{self.data.current_pos}.00 m")
-        self.card_target.update_value(f"{self.data.target_pos}.00 m")
-        
-        # Update Plot
-        self.pos_history = np.roll(self.pos_history, -1)
-        self.pos_history[-1] = self.data.current_pos
-        self.pos_curve.setData(self.time_steps, self.pos_history)
+    def trigger_service_alert(self):
+        self.service_due = True
+        self.hw_status_text.set("SERVICE DUE (100CM+)")
+        self.status_badge.config(bg=ACCENT_ORANGE)
+        self.service_btn.pack(side="right", fill="x", expand=True, padx=(5, 0))
+        threading.Thread(target=lambda: messagebox.showinfo("Service", "Routine service required (100cm traveled).")).start()
 
-    def closeEvent(self, event):
-        self.serial_thread.running = False
-        self.serial_thread.join()
-        event.accept()
+    def reset_service_alert(self):
+        self.service_due = False
+        self.hw_status_text.set("HARDWARE ONLINE")
+        self.status_badge.config(bg=ACCENT_GREEN)
+        self.service_btn.pack_forget()
+
+    def send(self, cmd, val):
+        if hasattr(self, 'ser'):
+            try: self.ser.write(bytearray([0xAA, cmd, val]))
+            except: pass
+
+    def cmd_go_to_pos(self):
+        try:
+            val = int(self.pos_entry.get())
+            self.send(0x01, val)
+        except ValueError:
+            messagebox.showwarning("Input Error", "Enter valid distance")
+
+    def on_close(self):
+        self.running = False
+        if hasattr(self, 'ser'): self.ser.close()
+        self.root.destroy()
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = TargetDashboard()
-    window.show()
-    sys.exit(app.exec())
+    root = tk.Tk()
+    app = MotorControllerGUI(root)
+    root.mainloop()

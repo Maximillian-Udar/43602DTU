@@ -45,8 +45,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   rotations.io.signal_B          := filter(io.photo_sensor_B)
   display.io.dots                := 0.U
   error_clear_debounce.io.btn_in := io.error_cleared
-  stuck_detector.io.external_overcurrent_input := (!io.over_current_positive || !io.over_current_negative)
-  
+
+  stuck_detector.io.external_overcurrent_input := (io.over_current_positive || io.over_current_negative)
   
   val pid_timer = RegInit(0.U(17.W))
   val pid_tick  = pid_timer === 99999.U
@@ -122,7 +122,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
               is(1.U) { manual_speed := 720.U; manual_brake := false.B } // sf
               is(2.U) { manual_speed := 750.U; manual_brake := false.B } // ff
               is(3.U) { manual_speed := 485.U; manual_brake := false.B } // sb
-              is(4.U) { manual_speed := 455.U; manual_brake := false.B } // fb
+              is(4.U) { manual_speed := 465.U; manual_brake := false.B } // fb
             }
           }
           is(0xFF.U) { reset_triggered := true.B }
@@ -242,10 +242,15 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 
   // Display
   io.an := display.io.an; io.seg := display.io.seg
+  
   val letters_AUTO = Cat(SegSymbol.A.asUInt, SegSymbol.U.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt)
   val letters_MAN  = Cat(SegSymbol.M.asUInt, SegSymbol.A.asUInt, SegSymbol.N.asUInt, SegSymbol.Blank.asUInt)
   val letters_STOP = Cat(SegSymbol.S.asUInt, SegSymbol.T.asUInt, SegSymbol.O.asUInt, SegSymbol.P.asUInt)
-  display.io.disp_content := Mux(motor_stopped, letters_STOP, Mux(control_mode, letters_AUTO, letters_MAN))
+  val letters_OC   = Cat(SegSymbol.Blank.asUInt, SegSymbol.O.asUInt, SegSymbol.C.asUInt, SegSymbol.Blank.asUInt)
+
+  display.io.disp_content := Mux(stuck_detector.io.motor_disable, letters_OC, 
+                             Mux(motor_stopped, letters_STOP, 
+                             Mux(control_mode, letters_AUTO, letters_MAN)))
 }
 
 object GenerateAllVerilog extends App {
@@ -253,5 +258,5 @@ object GenerateAllVerilog extends App {
   val matlab_Ki = 0.15
   val matlab_Kd = 0.2
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 30000, 2), Array("-td", "Verilog"))
+  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 1), Array("-td", "Verilog"))
 }
