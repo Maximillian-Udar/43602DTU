@@ -48,5 +48,40 @@
   {
     "class":"firrtl.transforms.BlackBoxTargetDirAnno",
     "targetDir":"Verilog"
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_T2",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_seg",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_T3",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_T4",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_T1",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
   }
 ]

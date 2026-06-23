@@ -1,16 +1,16 @@
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:63:34: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:65:34: method fromDouble in object FixedPoint is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  val cm_per_pulse  = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                 ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:63:23: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:65:23: object FixedPoint in package experimental is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  val cm_per_pulse  = FixedPoint.fromDouble(1.0 / 7.5, pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:146:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:180:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.kp := Kp.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:147:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:181:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.ki := Ki.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:148:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
+[0m[[0m[33mwarn[0m] [0m[0mC:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala:182:19: method F in class fromDoubleToLiteral is deprecated (since Chisel 3.6): this feature will not be supported as part of the migration to the MLIR-based FIRRTL Compiler (MFC). For more information about this migration, please see the Chisel ROADMAP.md.[0m
 [0m[[0m[33mwarn[0m] [0m[0m  pid.io.kd := Kd.F(pidWidth.W, pidDP.BP)[0m
 [0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
 [0m[[0m[33mwarn[0m] [0m[0m5 warnings found[0m

@@ -8,6 +8,7 @@ class RotationCounter extends Module {
     val signal_B         = Input(Bool())
     val turns            = Output(SInt(32.W))
     val total_rotations  = Output(UInt(32.W))
+    val pulse            = Output(Bool())
   })
   val aSync = RegNext(RegNext(io.signal_A))
   val bSync = RegNext(RegNext(io.signal_B))
@@ -20,9 +21,45 @@ class RotationCounter extends Module {
     when(!bSync) { turns := turns + 1.S }
       .otherwise { turns := turns - 1.S }
   }
+  io.pulse := rise_A
   io.turns := turns
   io.total_rotations := total_rotations
 }
+
+class EncoderStuckDetector(timeout_ms: Int = 500) extends Module {
+  val io = IO(new Bundle {
+    val moving_requested = Input(Bool())
+    val pulse_detected   = Input(Bool())
+    val clear_shutdown   = Input(Bool()) 
+    val motor_disable    = Output(Bool())
+  })
+
+  val clockFreqHz = 100000000
+  val maxCycles   = (clockFreqHz / 1000).U * timeout_ms.U
+  val timer       = RegInit(0.U(32.W))
+  val isStuck     = RegInit(false.B)
+
+  when(io.clear_shutdown) {
+    isStuck := false.B
+    timer := 0.U
+  }.otherwise {
+    when(!isStuck && io.moving_requested) {
+      when(io.pulse_detected) {
+        timer := 0.U // Reset timer if we see movement
+      }.otherwise {
+        when(timer >= maxCycles) {
+          isStuck := true.B
+        }.otherwise {
+          timer := timer + 1.U
+        }
+      }
+    }.otherwise {
+      timer := 0.U
+    }
+  }
+  io.motor_disable := isStuck
+}
+
 
 class DCMotorPwm(pwmFreqHz: Int = 30000) extends Module {
   val io = IO(new Bundle {

@@ -2,7 +2,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms: Int = 2) extends Module {
+class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms: Int = 2, grace_period_seconds: Int = 2) extends Module {
   val io = IO(new Bundle {
     val uart_rx               = Input(Bool())
     val photo_sensor_A        = Input(Bool())
@@ -10,6 +10,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
     val over_current_positive = Input(Bool())
     val over_current_negative = Input(Bool())
     val error_cleared         = Input(Bool())
+    val detector_toggle       = Input(Bool())
     val uart_tx               = Output(Bool())
     val T1                    = Output(Bool())
     val T2                    = Output(Bool())
@@ -30,6 +31,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val display              = Module(new DisplayMultiplexer)
   val rotations            = Module(new RotationCounter)
   val error_clear_debounce = Module(new Debouncer)
+  val encoder_stuck        = Module(new EncoderStuckDetector(200))
 
   def filter(in: Bool): Bool = {
     val sync = in
@@ -82,6 +84,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val cycles             = speed_increment_ms * 100000
   val ramp_timer         = RegInit(0.U(log2Up(cycles).W))
   val ramp_tick          = ramp_timer === (cycles - 1).U
+  val new_cmd_pulse = WireDefault(false.B)
+
 
   when(ramp_tick) {
     ramp_timer := 0.U
@@ -111,6 +115,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
             control_mode := true.B 
             manual_brake := false.B
             target_updated := true.B
+            new_cmd_pulse := true.B
           }
           is(0x02.U) { // Manual mode
             when(!system_active) { initial_offset := rotations.io.turns }
@@ -120,10 +125,11 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
             switch(rx.io.data) {
               is(0.U) { manual_brake := true.B; manual_speed := 512.U } // Brake
               is(1.U) { manual_speed := 720.U; manual_brake := false.B } // sf
-              is(2.U) { manual_speed := 750.U; manual_brake := false.B } // ff
-              is(3.U) { manual_speed := 485.U; manual_brake := false.B } // sb
-              is(4.U) { manual_speed := 465.U; manual_brake := false.B } // fb
+              is(2.U) { manual_speed := 730.U; manual_brake := false.B } // ff
+              is(3.U) { manual_speed := 385.U; manual_brake := false.B } // sb
+              is(4.U) { manual_speed := 335.U; manual_brake := false.B } // fb
             }
+            new_cmd_pulse := true.B
           }
           is(0xFF.U) { reset_triggered := true.B }
         }
@@ -133,10 +139,38 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   }
   stuck_detector.io.clear_shutdown := (error_clear_debounce.io.out || reset_triggered)
 
+  // Grace period timer (2 seconds)
+  val grace_limit = (grace_period_seconds*100000000).U 
+  val grace_timer = RegInit(grace_limit) // Start at limit so it's not active on boot
+
+  when(new_cmd_pulse) {
+    grace_timer := 0.U
+  }.elsewhen(grace_timer < grace_limit) {
+    grace_timer := grace_timer + 1.U
+  }
+
+  val in_grace_period = grace_timer < grace_limit
+
+  // Stillness Detector: Tracks if the motor has physically stopped moving
+  val stillness_limit = 50000000.U // 0.5 seconds at 100MHz
+  val stillness_timer = RegInit(0.U(26.W))
+  
+  when(rotations.io.pulse || new_cmd_pulse) {
+    stillness_timer := 0.U
+  }.elsewhen(stillness_timer < stillness_limit) {
+    stillness_timer := stillness_timer + 1.U
+  }
+  
+  val motor_is_still = stillness_timer === stillness_limit
+
   // PID and PWM out
   val target_turns = RegNext((target_position_cm * 15.S) / 2.S)
-  val tolerance = 2.S
-  val at_position = control_mode && Mux(system_active, (current_turns >= target_turns - tolerance && current_turns <= target_turns + tolerance), true.B)
+  val tolerance = 1.S
+  val in_tolerance_zone = control_mode && Mux(system_active, 
+                          (current_turns >= target_turns - tolerance && 
+                           current_turns <= target_turns + tolerance), true.B)
+  
+  val at_position = in_tolerance_zone && (current_turns === target_turns || motor_is_still)
   
   pid.io.measuredVal := current_position_fixed_point
   pid.io.setPoint := target_position_cm.asFixedPoint(0.BP)
@@ -152,7 +186,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   Adjust how agressive the PID is
   115 is forward, 35 is backwards, 5 and 8 are the bitshifts
   */
-  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 4) + 80.S, (raw_pid_out >> 9) - 10.S)))
+  val pid_offset = RegNext(Mux(raw_pid_out === 0.S, 0.S, Mux(raw_pid_out > 0.S, (raw_pid_out >> 4) + 80.S, (raw_pid_out >> 3) - 10.S)))
 
   val pid_duty_raw = 512.S + pid_offset
   val pid_duty = Mux(at_position, 512.U, Mux(pid_duty_raw > 1023.S, 1023.U, Mux(pid_duty_raw < 0.S, 0.U, pid_duty_raw.asUInt)))
@@ -164,8 +198,17 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   val block_neg = Mux(system_active, current_position_cm <= 0.S, false.B) && is_moving_back
   val block_pos = Mux(system_active, current_position_cm >= 90.S, false.B) && is_moving_fwd
 
+
+  // Encoder stuck
+  val is_driving = system_active && !at_position && !manual_brake && (active_duty =/= 512.U) && !in_grace_period
+  encoder_stuck.io.moving_requested := is_driving
+  encoder_stuck.io.pulse_detected := rotations.io.pulse
+  encoder_stuck.io.clear_shutdown   := (error_clear_debounce.io.out || reset_triggered)
+  val active_stuck = Mux(!io.detector_toggle, encoder_stuck.io.motor_disable, stuck_detector.io.motor_disable)
+
+
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty), 512.U)
-  val motor_stopped = manual_brake || stuck_detector.io.motor_disable || !system_active || at_position || block_neg || block_pos
+  val motor_stopped = manual_brake || !system_active || at_position || block_neg || block_pos || active_stuck
   pwm_signal.io.brake := motor_stopped
 
   when (!system_active) { // Brake
@@ -240,6 +283,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   }.otherwise { txTimer := txTimer + 1.U }
   io.uart_tx := tx.io.tx
 
+
+
   // Display
   io.an := display.io.an; io.seg := display.io.seg
   
@@ -258,5 +303,5 @@ object GenerateAllVerilog extends App {
   val matlab_Ki = 0.15
   val matlab_Kd = 0.2
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 1), Array("-td", "Verilog"))
+  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 1, 1), Array("-td", "Verilog"))
 }
