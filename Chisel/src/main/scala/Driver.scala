@@ -2,7 +2,7 @@ import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
 
-class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms: Int = 2, grace_period_seconds: Int = 2) extends Module {
+class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, manual_speed_step_ms: Int = 2, grace_period_seconds: Int = 2, stopped_threshold_time_tenths: Int = 2) extends Module {
   val io = IO(new Bundle {
     val uart_rx               = Input(Bool())
     val photo_sensor_A        = Input(Bool())
@@ -140,8 +140,8 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   stuck_detector.io.clear_shutdown := (error_clear_debounce.io.out || reset_triggered)
 
   // Grace period timer (2 seconds)
-  val grace_limit = (grace_period_seconds*100000000).U 
-  val grace_timer = RegInit(grace_limit) // Start at limit so it's not active on boot
+  val grace_limit = (grace_period_seconds*100000000).U
+  val grace_timer = RegInit(grace_limit)
 
   when(new_cmd_pulse) {
     grace_timer := 0.U
@@ -151,8 +151,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 
   val in_grace_period = grace_timer < grace_limit
 
-  // Stillness Detector: Tracks if the motor has physically stopped moving
-  val stillness_limit = 50000000.U // 0.5 seconds at 100MHz
+  val stillness_limit = (stopped_threshold_time_tenths*10000000).U
   val stillness_timer = RegInit(0.U(26.W))
   
   when(rotations.io.pulse || new_cmd_pulse) {
@@ -303,5 +302,5 @@ object GenerateAllVerilog extends App {
   val matlab_Ki = 0.15
   val matlab_Kd = 0.2
   val Ts = 0.001
-  emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 1, 1), Array("-td", "Verilog"))
+  emitVerilog(new Driver(Kp = matlab_Kp, Ki = matlab_Ki * Ts, Kd = matlab_Kd / Ts, PWM_frequency = 25000, manual_speed_step_ms = 1,grace_period_seconds = 2, stopped_threshold_time_tenths = 3), Array("-td", "Verilog"))
 }

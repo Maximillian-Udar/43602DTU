@@ -11,8 +11,8 @@ set_property PACKAGE_PIN W5 [get_ports clock]
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports clock]
  
 ## Switches
-set_property PACKAGE_PIN V17 [get_ports io_over_current_positive]
-set_property PACKAGE_PIN V16 [get_ports io_over_current_negative]
+set_property PACKAGE_PIN V17 [get_ports io_detector_toggle]
+#set_property PACKAGE_PIN V16 [get_ports io_over_current_negative]
 #set_property PACKAGE_PIN W16 [get_ports {sw[2]}]
 #set_property PACKAGE_PIN W17 [get_ports {sw[3]}]
 #set_property PACKAGE_PIN W15 [get_ports {sw[4]}]
@@ -27,25 +27,25 @@ set_property PACKAGE_PIN V16 [get_ports io_over_current_negative]
 #set_property PACKAGE_PIN U1  [get_ports {sw[13]}]
 #set_property PACKAGE_PIN T1  [get_ports {sw[14]}]
 #set_property PACKAGE_PIN R2  [get_ports {sw[15]}]
- 
+
 
 ## LEDs
-set_property PACKAGE_PIN U16 [get_ports {io_OC_lights[0]}]
-set_property PACKAGE_PIN E19 [get_ports {io_OC_lights[1]}]
-set_property PACKAGE_PIN U19 [get_ports {io_OC_lights[2]}]
-set_property PACKAGE_PIN V19 [get_ports {io_OC_lights[3]}]
-set_property PACKAGE_PIN W18 [get_ports {io_OC_lights[4]}]
-set_property PACKAGE_PIN U15 [get_ports {io_OC_lights[5]}]
-set_property PACKAGE_PIN U14 [get_ports {io_OC_lights[6]}]
-set_property PACKAGE_PIN V14 [get_ports {io_OC_lights[7]}]
-set_property PACKAGE_PIN V13 [get_ports {io_OC_lights[8]}]
-set_property PACKAGE_PIN V3  [get_ports {io_OC_lights[9]}]
-set_property PACKAGE_PIN W3  [get_ports {io_OC_lights[10]}]
-set_property PACKAGE_PIN U3  [get_ports {io_OC_lights[11]}]
-set_property PACKAGE_PIN P3  [get_ports {io_OC_lights[12]}]
-set_property PACKAGE_PIN N3  [get_ports {io_OC_lights[13]}]
-set_property PACKAGE_PIN P1  [get_ports {io_OC_lights[14]}]
-set_property PACKAGE_PIN L1  [get_ports {io_OC_lights[15]}]
+#set_property PACKAGE_PIN U16 [get_ports {io_OC_lights[0]}]
+#set_property PACKAGE_PIN E19 [get_ports {io_OC_lights[1]}]
+#set_property PACKAGE_PIN U19 [get_ports {io_OC_lights[2]}]
+#set_property PACKAGE_PIN V19 [get_ports {io_OC_lights[3]}]
+#set_property PACKAGE_PIN W18 [get_ports {io_OC_lights[4]}]
+#set_property PACKAGE_PIN U15 [get_ports {io_OC_lights[5]}]
+#set_property PACKAGE_PIN U14 [get_ports {io_OC_lights[6]}]
+#set_property PACKAGE_PIN V14 [get_ports {io_OC_lights[7]}]
+#set_property PACKAGE_PIN V13 [get_ports {io_OC_lights[8]}]
+#set_property PACKAGE_PIN V3  [get_ports {io_OC_lights[9]}]
+#set_property PACKAGE_PIN W3  [get_ports {io_OC_lights[10]}]
+#set_property PACKAGE_PIN U3  [get_ports {io_OC_lights[11]}]
+#set_property PACKAGE_PIN P3  [get_ports {io_OC_lights[12]}]
+#set_property PACKAGE_PIN N3  [get_ports {io_OC_lights[13]}]
+#set_property PACKAGE_PIN P1  [get_ports {io_OC_lights[14]}]
+#set_property PACKAGE_PIN L1  [get_ports {io_OC_lights[15]}]
 
 
 ##Buttons
@@ -87,7 +87,7 @@ set_property PACKAGE_PIN W4 [get_ports {io_an[3]}]
 #set_property PACKAGE_PIN P19 [get_ports Hsync]
 #set_property PACKAGE_PIN R19 [get_ports Vsync]
 
- 
+
 ##USB-RS232 Interface
 set_property PACKAGE_PIN B18 [get_ports io_uart_rx]
 set_property PACKAGE_PIN A18 [get_ports io_uart_tx]
@@ -103,8 +103,8 @@ set_property PACKAGE_PIN A18 [get_ports io_uart_tx]
 ##Pmod Header JA
 set_property PACKAGE_PIN J1 [get_ports io_photo_sensor_A]
 set_property PACKAGE_PIN L2 [get_ports io_photo_sensor_B]
-#set_property PACKAGE_PIN J2 [get_ports io_over_current_positive]
-#set_property PACKAGE_PIN G2 [get_ports io_over_current_negative]
+set_property PACKAGE_PIN J2 [get_ports io_over_current_positive]
+set_property PACKAGE_PIN G2 [get_ports io_over_current_negative]
 #set_property PACKAGE_PIN H1 [get_ports {JA[4]}]
 #set_property PACKAGE_PIN K2 [get_ports {JA[5]}]
 #set_property PACKAGE_PIN H2 [get_ports {JA[6]}]

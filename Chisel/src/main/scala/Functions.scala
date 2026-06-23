@@ -45,7 +45,7 @@ class EncoderStuckDetector(timeout_ms: Int = 500) extends Module {
   }.otherwise {
     when(!isStuck && io.moving_requested) {
       when(io.pulse_detected) {
-        timer := 0.U // Reset timer if we see movement
+        timer := 0.U
       }.otherwise {
         when(timer >= maxCycles) {
           isStuck := true.B
