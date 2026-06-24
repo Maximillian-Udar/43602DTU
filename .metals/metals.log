@@ -2857,3 +2857,835 @@ WARNING: Unmatched cancel notification for request id 4705
 2026.06.23 16:25:21 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.06.23 16:25:21 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7
 2026.06.23 16:25:21 INFO  no build target found for C:\Users\maxim\43602DTU\Chisel\src\main\scala\Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7
+2026.06.23 23:16:23 ERROR cancellation error
+org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-240]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.checkClosed(JdbcConnection.java:1418)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:313)
+	at scala.meta.internal.metals.Fingerprints.save(Fingerprints.scala:33)
+	at scala.meta.internal.metals.MetalsLspService.onShutdown(MetalsLspService.scala:699)
+	at scala.meta.internal.metals.WorkspaceLspService.$anonfun$shutdown$2(WorkspaceLspService.scala:1480)
+	at scala.meta.internal.metals.WorkspaceLspService.$anonfun$shutdown$2$adapted(WorkspaceLspService.scala:1480)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at scala.meta.internal.metals.WorkspaceLspService.shutdown(WorkspaceLspService.scala:1480)
+	at scala.meta.metals.MetalsLanguageServer.shutdown(MetalsLanguageServer.scala:255)
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.lang.reflect.Method.invoke(Method.java:565)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$recursiveFindRpcMethods$0(GenericEndpoint.java:65)
+	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.request(GenericEndpoint.java:128)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleRequest(RemoteEndpoint.java:265)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:195)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.23 23:16:24 ERROR Unexpected error initializing server: 
+org.eclipse.lsp4j.jsonrpc.ResponseErrorException: Request window/showMessageRequest failed with message: Canceled
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleResponse(RemoteEndpoint.java:214)
+	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:198)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:189)
+	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:97)
+	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:97)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:49:04 INFO  Started: Metals version 1.6.7 in folders '/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni, /home/udar/SwimBox, /home/udar/FPGA_Programs, /home/udar/43602DTU' for client Visual Studio Code 1.125.1.[0m
+2026.06.24 08:49:04 INFO  Memory monitor started[0m
+2026.06.24 08:49:04 INFO  Database: jdbc:h2:file:/home/udar/SwimBox/.metals/metals (H2 2.4)[0m
+2026.06.24 08:49:04 INFO  Database: jdbc:h2:file:/home/udar/FPGA_Programs/.metals/metals (H2 2.4)[0m
+2026.06.24 08:49:04 INFO  Database: jdbc:h2:file:/home/udar/43602DTU/.metals/metals (H2 2.4)[0m
+2026.06.24 08:49:04 INFO  Database: jdbc:h2:file:/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/metals (H2 2.4)[0m
+2026.06.24 08:49:04 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.24 08:49:04 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.24 08:49:04 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.24 08:49:04 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.[0m
+2026.06.24 08:49:04 INFO  Successfully validated 7 migrations (execution time 00:00.015s)[0m
+2026.06.24 08:49:04 INFO  Successfully validated 7 migrations (execution time 00:00.015s)[0m
+2026.06.24 08:49:04 INFO  Successfully validated 7 migrations (execution time 00:00.016s)[0m
+2026.06.24 08:49:04 INFO  Successfully validated 7 migrations (execution time 00:00.015s)[0m
+2026.06.24 08:49:04 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.24 08:49:04 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.24 08:49:04 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.24 08:49:04 INFO  Current version of schema "PUBLIC": 7[0m
+2026.06.24 08:49:04 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.24 08:49:04 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.24 08:49:04 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.24 08:49:04 INFO  Schema "PUBLIC" is up to date. No migration necessary.[0m
+2026.06.24 08:49:05 INFO  Attempting to connect to the build server...[0m
+2026.06.24 08:49:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:49:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.bsp.BspServers.newServer(BspServers.scala:167)
+	at scala.meta.internal.bsp.BspConnector.connect$1(BspConnector.scala:185)
+	at scala.meta.internal.bsp.BspConnector.connect(BspConnector.scala:260)
+	at scala.meta.internal.metals.ConnectionProvider$Connect$.$anonfun$createSession$7(ConnectionProvider.scala:586)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:503)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:49:04 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+Jun 24, 2026 8:49:38 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 8:49:38 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 8:49:38 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.24 08:50:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:50:05 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.24 08:50:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:50:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:50:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.24 08:51:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:51:05 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.24 08:51:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:51:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:51:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.24 08:52:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:52:05 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.24 08:52:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:52:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:52:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.24 08:53:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:53:05 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.24 08:53:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:53:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:53:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.24 08:54:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:54:05 WARN  Retrying connection to the build server scala-cli[0m
+2026.06.24 08:54:05 INFO  Running BSP server List(C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe, bsp, --json-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json, --json-launcher-options, C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json, --envs-file, C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json, C:\Users\maxim\My Drive\Uni)[0m
+2026.06.24 08:54:05 ERROR Running process 'C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe bsp --json-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-options-v2.json --json-launcher-options C:\Users\maxim\My Drive\Uni\.scala-build\ide-launcher-options.json --envs-file C:\Users\maxim\My Drive\Uni\.scala-build\ide-envs.json C:\Users\maxim\My Drive\Uni' failed
+java.io.IOException: Cannot run program "C:\Users\maxim\AppData\Local\Coursier\data\bin\.scala-cli.aux.exe" (in directory "/home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni"): Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1112)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+Caused by: java.io.IOException: Exec failed, error: 2 (No such file or directory) 
+	at java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.lang.ProcessImpl.<init>(ProcessImpl.java:300)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:231)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1078)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1046)
+	at scala.meta.internal.process.SystemProcess$.run(SystemProcess.scala:48)
+	at scala.meta.internal.bsp.BspServers.newConnection$1(BspServers.scala:129)
+	at scala.meta.internal.bsp.BspServers.$anonfun$newServer$8(BspServers.scala:172)
+	at scala.meta.internal.metals.BuildServerConnection$.setupServer$1(BuildServerConnection.scala:631)
+	at scala.meta.internal.metals.BuildServerConnection$.fromSockets(BuildServerConnection.scala:700)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:717)
+	at scala.meta.internal.metals.BuildServerConnection$$anonfun$fromSockets$17.applyOrElse(BuildServerConnection.scala:714)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:523)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+2026.06.24 08:54:05 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /home/udar/Insync/maximillian.udar@gmail.com/Google Drive/Uni/.metals/bsp.trace.json or /home/udar/.cache/metals/bsp.trace.json[0m
+2026.06.24 08:55:05 ERROR Timeout waiting for 'build/initialize' response[0m
+2026.06.24 08:55:05 ERROR Failed to connect with build server, no functionality will work.
+java.util.concurrent.TimeoutException
+	at java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1981)
+	at java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2116)
+	at scala.meta.internal.metals.BuildServerConnection$.initialize(BuildServerConnection.scala:806)
+	at scala.meta.internal.metals.BuildServerConnection$.$anonfun$fromSockets$1(BuildServerConnection.scala:658)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:500)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.lang.Thread.run(Thread.java:1474)
+[0m
+Jun 24, 2026 12:35:31 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:35:31 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:35:31 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:36:48 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:51:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:51:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:51:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:53:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:53:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 12:53:39 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:26:24 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Jun 24, 2026 1:49:33 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.24 15:24:16 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala[0m
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 26
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 30
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 33
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 34
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 32
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 29
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:17 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 37
+2026.06.24 15:24:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+Jun 24, 2026 3:24:17 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 38
+2026.06.24 15:24:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:18 INFO  time: code lens generation in 1.05s[0m
+2026.06.24 15:24:18 INFO  time: code lens generation in 1.05s[0m
+2026.06.24 15:24:20 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:46 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:46 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:49 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:49 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:56 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:56 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:24:56 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:00 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:07 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:25:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:13 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:25:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:15 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:25:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:19 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:36 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:36 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:36 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:36 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:36 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:41 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:41 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:41 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:41 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:41 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:43 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:45 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:25:44 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:49 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:49 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:59 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:59 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:59 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:25:59 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:00 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:02 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:13 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:26:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:14 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:16 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:17 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:18 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:26:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:26:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:11 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:12 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:28:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+Jun 24, 2026 3:28:16 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.06.24 15:28:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:23 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala[0m
+2026.06.24 15:28:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Functions.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:40 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:28:40 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:42 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:47 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:56 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:56 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:28:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:08 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:29:10 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:12 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:13 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:30:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:18 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:20 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:20 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:21 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:30:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:21 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:22 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:22 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:22 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:30:22 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:23 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:24 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:30:24 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:25 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:25 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:26 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:26 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:26 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:38 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:38 INFO  Created report: Optional[file:///home/udar/43602DTU/Chisel/src/main/scala/Driver.scala][0m
+2026.06.24 15:30:38 INFO  empty definition using pc, found symbol in pc:  (full report at: "/home/udar/43602DTU/.metals/.reports/metals-full/2026-06-24/r_empty-definition_15-30-38-317.md")[0m
+2026.06.24 15:30:38 INFO  empty definition using pc, found symbol in pc:  (full report at: "/home/udar/43602DTU/.metals/.reports/metals-full/2026-06-24/r_empty-definition_15-30-38-317.md")[0m
+2026.06.24 15:30:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:39 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:55 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:57 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:58 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:30:58 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:00 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:00 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:01 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:01 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:01 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:31:01 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:02 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:02 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:02 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:02 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:03 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:04 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:05 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:06 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:08 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:31:07 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:09 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:13 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:16 WARN  no build target for: /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala[0m
+2026.06.24 15:31:15 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:24 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:30 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:32 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:34 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:35 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m
+2026.06.24 15:31:37 INFO  no build target found for /home/udar/43602DTU/Chisel/src/main/scala/Driver.scala. Using presentation compiler with project's scala-library version: 3.3.7[0m

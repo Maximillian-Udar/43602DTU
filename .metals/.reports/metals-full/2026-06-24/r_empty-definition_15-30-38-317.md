@@ -1,3 +1,25 @@
+error id: file://<WORKSPACE>/Chisel/src/main/scala/Driver.scala:
+file://<WORKSPACE>/Chisel/src/main/scala/Driver.scala
+empty definition using pc, found symbol in pc: 
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+	 -chisel3/detector_toggle.
+	 -chisel3/detector_toggle#
+	 -chisel3/detector_toggle().
+	 -chisel3/util/detector_toggle.
+	 -chisel3/util/detector_toggle#
+	 -chisel3/util/detector_toggle().
+	 -detector_toggle.
+	 -detector_toggle#
+	 -detector_toggle().
+	 -scala/Predef.detector_toggle.
+	 -scala/Predef.detector_toggle#
+	 -scala/Predef.detector_toggle().
+offset: 555
+uri: file://<WORKSPACE>/Chisel/src/main/scala/Driver.scala
+text:
+```scala
 import chisel3._
 import chisel3.util._
 import chisel3.experimental.FixedPoint
@@ -10,7 +32,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
     val over_current_positive = Input(Bool())
     val over_current_negative = Input(Bool())
     val error_cleared         = Input(Bool())
-    val detector_toggle       = Input(Bool())
+    val detector_@@toggle       = Input(Bool())
     val uart_tx               = Output(Bool())
     val T1                    = Output(Bool())
     val T2                    = Output(Bool())
@@ -204,7 +226,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   encoder_stuck.io.moving_requested := is_driving
   encoder_stuck.io.pulse_detected := rotations.io.pulse
   encoder_stuck.io.clear_shutdown   := (error_clear_debounce.io.out || reset_triggered)
-  val active_stuck = Mux(io.detector_toggle, stuck_detector.io.motor_disable, encoder_stuck.io.motor_disable)
+  val active_stuck = Mux(!io.detector_toggle, encoder_stuck.io.motor_disable, stuck_detector.io.motor_disable)
 
 
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty), 512.U)
@@ -305,3 +327,9 @@ object GenerateAllVerilog extends App {
   val Ts = 0.001
   emitVerilog(new Driver(matlab_Kp, matlab_Ki * Ts, matlab_Kd / Ts, 25000, 1, 2), Array("-td", "Verilog"))
 }
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: 
