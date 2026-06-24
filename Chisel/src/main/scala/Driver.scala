@@ -12,6 +12,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
     val error_cleared         = Input(Bool())
     val detector_toggle       = Input(Bool())
     val uart_tx               = Output(Bool())
+    val OC_lights             = Output(UInt(16.W))
     val T1                    = Output(Bool())
     val T2                    = Output(Bool())
     val T3                    = Output(Bool())
@@ -50,6 +51,7 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
 
   stuck_detector.io.external_overcurrent_input := (io.over_current_positive || io.over_current_negative)
   
+  io.OC_lights := 0.U
   val pid_timer = RegInit(0.U(17.W))
   val pid_tick  = pid_timer === 99999.U
   when(pid_tick) { pid_timer := 0.U } .otherwise { pid_timer := pid_timer + 1.U }
@@ -205,7 +207,9 @@ class Driver(Kp: Double, Ki: Double, Kd: Double, PWM_frequency: Int = 30000, man
   encoder_stuck.io.pulse_detected := rotations.io.pulse
   encoder_stuck.io.clear_shutdown   := (error_clear_debounce.io.out || reset_triggered)
   val active_stuck = Mux(io.detector_toggle, stuck_detector.io.motor_disable, encoder_stuck.io.motor_disable)
-
+  when(active_stuck){
+    io.OC_lights := "b1111111111111111".U
+  }
 
   pwm_signal.io.duty_cycle := RegNext(Mux(block_neg || block_pos, 512.U, active_duty), 512.U)
   val motor_stopped = manual_brake || !system_active || at_position || block_neg || block_pos || active_stuck
