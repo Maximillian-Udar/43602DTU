@@ -79,6 +79,13 @@
   },
   {
     "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~Driver|Driver>io_OC_lights",
+    "sources":[
+      "~Driver|Driver>io_detector_toggle"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
     "sink":"~Driver|Driver>io_T1",
     "sources":[
       "~Driver|Driver>io_detector_toggle"

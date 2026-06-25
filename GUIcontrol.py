@@ -77,9 +77,9 @@ class MotorControllerGUI:
         left_col.pack_propagate(False)
 
         # Big Retrieve Button
-        tk.Button(left_col, text="RETRIEVE TARGET (0 CM)", bg=ACCENT_BLUE, fg=TEXT_PRIMARY,
+        tk.Button(left_col, text="RETRIEVE TARGET FOR SERVICE", bg=ACCENT_BLUE, fg=TEXT_PRIMARY,
                                  font=("Arial", 14, "bold"), relief="flat", height=2,
-                                 command=lambda: self.send(0x01, 0)).pack(fill="x", pady=(0, 20))
+                                 command=lambda: self.send(0x02, 3)).pack(fill="x", pady=(0, 20))
 
         # --- ENLARGED PID SECTION ---
         pid_frame = tk.Frame(left_col, bg=CARD_BG, padx=25, pady=30)
@@ -124,8 +124,8 @@ class MotorControllerGUI:
         stats_frame = tk.Frame(right_col, bg=CARD_BG, padx=25, pady=25)
         stats_frame.pack(fill="x", pady=(0, 20))
         
-        tk.Label(stats_frame, text="CURRENT POSITION", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).grid(row=0, column=0, sticky="w")
-        tk.Label(stats_frame, textvariable=self.current_pos, fg=TEXT_PRIMARY, bg=CARD_BG, font=("Arial", 28, "bold")).grid(row=1, column=0, sticky="w")
+        #tk.Label(stats_frame, text="CURRENT POSITION", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).grid(row=0, column=0, sticky="w")
+        #tk.Label(stats_frame, textvariable=self.current_pos, fg=TEXT_PRIMARY, bg=CARD_BG, font=("Arial", 28, "bold")).grid(row=1, column=0, sticky="w")
         
         tk.Label(stats_frame, text="TOTAL TRAVEL (ODOMETER)", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).grid(row=0, column=1, sticky="w", padx=60)
         tk.Label(stats_frame, textvariable=self.odometer_str, fg=ACCENT_ORANGE, bg=CARD_BG, font=("Arial", 28, "bold")).grid(row=1, column=1, sticky="w", padx=60)
@@ -151,7 +151,7 @@ class MotorControllerGUI:
 
         tk.Label(select_frame, text="QUICK PRESETS", fg=TEXT_SECONDARY, bg=CARD_BG, font=("Arial", 10, "bold")).pack(pady=(0, 15))
         
-        presets = [("0 cm (HOME)", 0), ("10 cm", 10), ("25 cm", 25), ("50 cm", 50), ("75 cm", 75), ("90 cm", 90)]
+        presets = [("5 cm", 5), ("10 cm", 10), ("25 cm", 25), ("50 cm", 50), ("75 cm", 75), ("90 cm", 90)]
         for label, val in presets:
             tk.Button(select_frame, text=label, bg="#2d333b", fg=TEXT_PRIMARY, relief="flat",
                       font=("Arial", 10, "bold"), height=2, command=lambda v=val: self.send(0x01, v)).pack(fill="x", pady=4)
